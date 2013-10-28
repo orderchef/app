@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E520181E672B00E4FDD9 /* MenuViewController.m */; };
+		4F33E524181E673000E4FDD9 /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E523181E673000E4FDD9 /* CategoryViewController.m */; };
+		4F422257181E60C2006FB78D /* BasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F422256181E60C2006FB78D /* BasketViewController.m */; };
+		4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TableViewController.m */; };
 		4FF0F39F181DC6DE00447906 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F39E181DC6DE00447906 /* Foundation.framework */; };
 		4FF0F3A1181DC6DE00447906 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */; };
 		4FF0F3A3181DC6DE00447906 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A2181DC6DE00447906 /* UIKit.framework */; };
@@ -22,6 +26,10 @@
 		4FF0F3C0181DC6DE00447906 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A4181DC6DE00447906 /* CoreData.framework */; };
 		4FF0F3C8181DC6DE00447906 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3C6181DC6DE00447906 /* InfoPlist.strings */; };
 		4FF0F3CA181DC6DE00447906 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0F3C9181DC6DE00447906 /* iOrderTests.m */; };
+		4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */; };
+		4FF63BB4181E631200293D5E /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF63BB3181E631200293D5E /* Table.m */; };
+		4FF63BB7181E636000293D5E /* ItemCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF63BB6181E636000293D5E /* ItemCategory.m */; };
+		4FF63BBA181E637100293D5E /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF63BB9181E637100293D5E /* Item.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +43,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F33E51F181E672B00E4FDD9 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		4F33E520181E672B00E4FDD9 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		4F33E522181E673000E4FDD9 /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
+		4F33E523181E673000E4FDD9 /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
+		4F422255181E60C2006FB78D /* BasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketViewController.h; sourceTree = "<group>"; };
+		4F422256181E60C2006FB78D /* BasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketViewController.m; sourceTree = "<group>"; };
+		4F5BE44B181DD255007EF69F /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		4F5BE44C181DD255007EF69F /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4FF0F39B181DC6DE00447906 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF0F39E181DC6DE00447906 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,6 +69,13 @@
 		4FF0F3C5181DC6DE00447906 /* iOrderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOrderTests-Info.plist"; sourceTree = "<group>"; };
 		4FF0F3C7181DC6DE00447906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FF0F3C9181DC6DE00447906 /* iOrderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOrderTests.m; sourceTree = "<group>"; };
+		4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
+		4FF63BB2181E631200293D5E /* Table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Table.h; sourceTree = "<group>"; };
+		4FF63BB3181E631200293D5E /* Table.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Table.m; sourceTree = "<group>"; };
+		4FF63BB5181E636000293D5E /* ItemCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCategory.h; sourceTree = "<group>"; };
+		4FF63BB6181E636000293D5E /* ItemCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCategory.m; sourceTree = "<group>"; };
+		4FF63BB8181E637100293D5E /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		4FF63BB9181E637100293D5E /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,9 +140,19 @@
 			children = (
 				4FF0F3AF181DC6DE00447906 /* AppDelegate.h */,
 				4FF0F3B0181DC6DE00447906 /* AppDelegate.m */,
+				4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */,
 				4FF0F3B5181DC6DE00447906 /* Images.xcassets */,
 				4FF0F3B2181DC6DE00447906 /* iOrder.xcdatamodeld */,
 				4FF0F3A7181DC6DE00447906 /* Supporting Files */,
+				4F5BE44B181DD255007EF69F /* TableViewController.h */,
+				4F5BE44C181DD255007EF69F /* TableViewController.m */,
+				4F422255181E60C2006FB78D /* BasketViewController.h */,
+				4F422256181E60C2006FB78D /* BasketViewController.m */,
+				4F33E51F181E672B00E4FDD9 /* MenuViewController.h */,
+				4F33E520181E672B00E4FDD9 /* MenuViewController.m */,
+				4F33E522181E673000E4FDD9 /* CategoryViewController.h */,
+				4F33E523181E673000E4FDD9 /* CategoryViewController.m */,
+				4FF63BBB181E637800293D5E /* Models */,
 			);
 			path = iOrder;
 			sourceTree = "<group>";
@@ -151,6 +184,19 @@
 				4FF0F3C6181DC6DE00447906 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4FF63BBB181E637800293D5E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4FF63BB2181E631200293D5E /* Table.h */,
+				4FF63BB3181E631200293D5E /* Table.m */,
+				4FF63BB5181E636000293D5E /* ItemCategory.h */,
+				4FF63BB6181E636000293D5E /* ItemCategory.m */,
+				4FF63BB8181E637100293D5E /* Item.h */,
+				4FF63BB9181E637100293D5E /* Item.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +246,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Matej Kramny";
 				TargetAttributes = {
+					4FF0F39A181DC6DE00447906 = {
+						DevelopmentTeam = TCRG56FQHV;
+					};
 					4FF0F3BA181DC6DE00447906 = {
 						TestTargetID = 4FF0F39A181DC6DE00447906;
 					};
@@ -230,6 +279,7 @@
 			files = (
 				4FF0F3AB181DC6DE00447906 /* InfoPlist.strings in Resources */,
 				4FF0F3B6181DC6DE00447906 /* Images.xcassets in Resources */,
+				4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,9 +298,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF63BBA181E637100293D5E /* Item.m in Sources */,
+				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
+				4F422257181E60C2006FB78D /* BasketViewController.m in Sources */,
 				4FF0F3B4181DC6DE00447906 /* iOrder.xcdatamodeld in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
+				4F33E524181E673000E4FDD9 /* CategoryViewController.m in Sources */,
+				4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */,
+				4FF63BB7181E636000293D5E /* ItemCategory.m in Sources */,
+				4FF63BB4181E631200293D5E /* Table.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +428,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOrder/iOrder-Prefix.pch";
 				INFOPLIST_FILE = "iOrder/iOrder-Info.plist";
@@ -384,6 +442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOrder/iOrder-Prefix.pch";
 				INFOPLIST_FILE = "iOrder/iOrder-Info.plist";
@@ -453,6 +512,7 @@
 				4FF0F3CF181DC6DE00447906 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4FF0F3D0181DC6DE00447906 /* Build configuration list for PBXNativeTarget "iOrderTests" */ = {
 			isa = XCConfigurationList;
@@ -461,6 +521,7 @@
 				4FF0F3D2181DC6DE00447906 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
