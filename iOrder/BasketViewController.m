@@ -25,6 +25,24 @@
 	
 	[self.navigationItem.rightBarButtonItem setTarget:self];
 	[self.navigationItem.rightBarButtonItem setAction:@selector(openMenu:)];
+    
+    [table addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
+    [table loadItems];
+    
+    [self reloadData];
+}
+
+- (void)dealloc {
+    @try {
+        [table removeObserver:self forKeyPath:@"items"];
+    }
+    @catch (NSException *exception) {}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"items"]) {
+        [self reloadData];
+    }
 }
 
 - (void)openMenu:(id) sender {
@@ -39,12 +57,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[table items] count];
+	return section == 0 ? 1 : [[table items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -52,18 +70,34 @@
     static NSString *CellIdentifier = @"basket";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	Item *item = [[table items] objectAtIndex:indexPath.row];
-	cell.textLabel.text = item.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"£%f", [item.price floatValue]];
+    if (indexPath.section == 0) {
+        cell.textLabel.text = @"Order more items";
+        cell.detailTextLabel.text = @"";
+    } else {
+        NSDictionary *item = [[table items] objectAtIndex:indexPath.row];
+        Item *it = [item objectForKey:@"item"];
+        cell.textLabel.text = it.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"£%fx%@", [it.price floatValue], (NSNumber *)[item objectForKey:@"quantity"]];
+    }
 	
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        [self openMenu:nil];
+    }
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"openMenu"]) {
-        MenuViewController *vc = (MenuViewController *)[segue.destinationViewController topViewController];
+        MenuViewController *vc = (MenuViewController *)segue.destinationViewController;
 		vc.table = table;
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return section == 1 ? @"Items in basket" : @"";
 }
 
 @end

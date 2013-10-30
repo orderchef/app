@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Storage.h"
 
 @class Item;
 
-@interface ItemCategory : NSObject <NSCoding>
+@interface ItemCategory : NSObject <NetworkLoadingProtocol>
 
-@property (nonatomic, strong) NSString * name;
-@property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) NSString *_id;
+@property (nonatomic, strong) NSString *name;
+
+- (void)save;
 
 @end

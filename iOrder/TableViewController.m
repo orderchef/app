@@ -28,7 +28,21 @@
     [self.navigationItem.rightBarButtonItem setTarget:self];
     [self.navigationItem.rightBarButtonItem setAction:@selector(addTable:)];
     
+    [[Storage getStorage] addObserver:self forKeyPath:@"tables" options:NSKeyValueObservingOptionNew context:nil];
+    
     [self reloadData];
+}
+
+- (void)dealloc {
+    @try {
+        [[Storage getStorage] addObserver:self forKeyPath:@"tables" options:NSKeyValueObservingOptionNew context:nil];
+    } @catch (NSException *ex) {}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"tables"]) {
+        [self reloadData];
+    }
 }
 
 - (void)reloadData {
@@ -52,7 +66,7 @@
 		Table *table = [[Table alloc] init];
 		[table setName:[[alertView textFieldAtIndex:0] text]];
 		
-		[[[Storage getStorage] tables] addObject:table];
+        [table save];
 		
 		[self reloadData];
 	}
@@ -81,12 +95,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Table *table = [tables objectAtIndex:indexPath.row];
-	if ([table items].count > 0) {
-		[self performSegueWithIdentifier:@"openBasket" sender:[tables objectAtIndex:indexPath.row]];
-	} else {
-		[self performSegueWithIdentifier:@"openMenu" sender:[tables objectAtIndex:indexPath.row]];
-	}
+	[self performSegueWithIdentifier:@"openBasket" sender:[tables objectAtIndex:indexPath.row]];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

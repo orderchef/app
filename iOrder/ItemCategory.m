@@ -8,38 +8,31 @@
 
 #import "ItemCategory.h"
 #import "Item.h"
-
+#import "Connection.h"
 
 @implementation ItemCategory
 
 @synthesize name;
-@synthesize items;
 
 - (id)init {
     self = [super init];
     
     if (self) {
         name = @"";
-        items = [[NSMutableArray alloc] init];
     }
     
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
-    
-    if (self) {
-        name = [aDecoder decodeObjectForKey:@"name"];
-        items = [aDecoder decodeObjectForKey:@"items"];
-    }
-    
-    return self;
+- (void)loadFromJSON:(NSDictionary *)json {
+    [self set_id:[json objectForKey:@"_id"]];
+    [self setName:[json objectForKey:@"name"]];
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:name forKey:@"name"];
-    [aCoder encodeObject:items forKey:@"items"];
+- (void)save {
+    Connection *c = [Connection getConnection];
+    SocketIO *socket = [c socket];
+    [socket sendEvent:@"create.category" withData:@{@"name": name}];
 }
 
 @end

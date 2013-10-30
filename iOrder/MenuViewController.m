@@ -13,7 +13,7 @@
 #import "Storage.h"
 
 @interface MenuViewController () {
-	NSArray *categories;
+	NSArray *items;
 }
 
 @end
@@ -39,12 +39,12 @@
 }
 
 - (void)closeView:(id)sender {
-	[[self navigationController] dismissViewControllerAnimated:YES completion:nil];
+	[[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void)reloadData {
     Storage *storage = [Storage getStorage];
-    categories = [storage categories];
+    items = [storage items];
     
     [self.tableView reloadData];
 }
@@ -53,13 +53,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [categories count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	ItemCategory *category = [categories objectAtIndex:section];
-    return [[category items] count];
+    return [items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,23 +66,20 @@
     static NSString *CellIdentifier = @"menu";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	ItemCategory *category = [categories objectAtIndex:indexPath.section];
-	Item *item = [[category items] objectAtIndex:indexPath.row];
-	cell.textLabel.text = item.name;
+	Item *item = [items objectAtIndex:indexPath.row];
+    cell.textLabel.text = item.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"£%f", [item.price floatValue]];
 	
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ItemCategory *category = [categories objectAtIndex:indexPath.section];
-    Item *item = [[category items] objectAtIndex:indexPath.row];
-    [item setTable:table];
-    [[table items] addObject:item];
+    Item *item = [items objectAtIndex:indexPath.row];
+    [table addItem:item];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [[categories objectAtIndex:section] name];
+    return nil;
 }
 
 @end

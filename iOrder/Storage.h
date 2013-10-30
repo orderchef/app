@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class SocketIOPacket;
+
+@protocol NetworkLoadingProtocol <NSObject>
+
+- (void)loadFromJSON:(NSDictionary *)json;
+
+@end
+
 @interface Storage : NSObject
 
 + (Storage *)getStorage;
@@ -16,7 +24,8 @@
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableArray *categories;
 
-- (void)saveData;
 - (void)loadData;
+
+- (void)parseEvent:(SocketIOPacket *)packet;
 
 @end

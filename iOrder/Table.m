@@ -8,9 +8,11 @@
 
 #import "Table.h"
 #import "Item.h"
+#import "Connection.h"
 
 @implementation Table
 
+@synthesize _id;
 @synthesize name;
 @synthesize items;
 
@@ -19,26 +21,41 @@
     
     if (self) {
         name = @"";
-        items = [[NSMutableArray alloc] init];
     }
     
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
-    
-    if (self) {
-        name = [aDecoder decodeObjectForKey:@"name"];
-        items = [aDecoder decodeObjectForKey:@"items"];
-    }
-    
-    return self;
+- (void)save {
+    Connection *c = [Connection getConnection];
+    SocketIO *socket = [c socket];
+    [socket sendEvent:@"create.table" withData:@{@"name": name}];
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:name forKey:@"name"];
-    [aCoder encodeObject:items forKey:@"items"];
+- (void)loadFromJSON:(NSDictionary *)json {
+    [self set_id:[json objectForKey:@"_id"]];
+    [self setName:[json objectForKey:@"name"]];
+}
+
+- (void)loadItems {
+    [[[Connection getConnection] socket] sendEvent:@"get.items table" withData:@{ @"table": _id }];
+}
+
+- (void)loadItems:(NSArray *)items {
+    NSMutableArray *its = [[NSMutableArray alloc] init];
+    for (NSDictionary *item in items) {
+        Item *it = [[Item alloc] init];
+        [it loadFromJSON:[item objectForKey:@"item"]];
+        
+        NSDictionary *itDict = @{@"item": it, @"quantity": [item objectForKey:@"quantity"]};
+        [its addObject:itDict];
+    }
+    
+    [self setItems:its];
+}
+
+- (void)addItem:(Item *)item {
+    [[[Connection getConnection] socket] sendEvent:@"add.table item" withData:@{@"table": _id, @"item": item._id}];
 }
 
 @end

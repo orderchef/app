@@ -8,15 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Storage.h"
 
 @class ItemCategory, Table;
 
-@interface Item : NSObject <NSCoding>
+@interface Item : NSObject <NetworkLoadingProtocol>
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * price;
-@property (nonatomic, retain) NSDecimalNumber * quantity;
-@property (nonatomic, retain) ItemCategory *category;
-@property (nonatomic, retain) Table *table;
+@property (nonatomic, strong) NSString *_id;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSNumber *price;
+@property (nonatomic, strong) ItemCategory *category;
+@property (nonatomic, strong) Table *table;
+
+- (void)save;
+- (void)saveCategory:(ItemCategory *)theCategory;
 
 @end

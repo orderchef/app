@@ -37,7 +37,6 @@
                     </navigationItem>
                     <connections>
                         <segue destination="Smb-Ut-C7X" kind="push" identifier="openBasket" id="ifL-g8-HI3"/>
-                        <segue destination="pWq-aF-n66" kind="modal" identifier="openMenu" id="0WA-7o-Ygt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NO0-fy-PB6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -53,11 +52,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="basket" textLabel="rEC-G4-m1i" detailTextLabel="rXZ-Or-dOh" style="IBUITableViewCellStyleValue1" id="h8Z-1e-Mvo">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="basket" textLabel="rEC-G4-m1i" detailTextLabel="rXZ-Or-dOh" style="IBUITableViewCellStyleValue1" id="h8Z-1e-Mvo">
                                 <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h8Z-1e-Mvo" id="Ttb-1c-MEr">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rEC-G4-m1i">
@@ -68,7 +67,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rXZ-Or-dOh">
-                                            <rect key="frame" x="261" y="11" width="44" height="21"/>
+                                            <rect key="frame" x="241" y="11" width="44" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -84,15 +83,15 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Basket" id="nVS-Mf-kAg">
-                        <barButtonItem key="rightBarButtonItem" title="Order" id="ZvO-OQ-xpb"/>
+                        <barButtonItem key="rightBarButtonItem" title="Checkout" id="ZvO-OQ-xpb"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="pWq-aF-n66" kind="modal" identifier="openMenu" id="hzD-4p-SRn"/>
+                        <segue destination="IMB-4C-WAk" kind="push" identifier="openMenu" id="VPj-Yh-QDP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rcv-dU-BDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1006" y="334"/>
+            <point key="canvasLocation" x="904" y="87"/>
         </scene>
         <!--Menu View Controller - Add to Basket-->
         <scene sceneID="k6C-m0-Qol">
@@ -134,7 +133,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="YoM-UX-hO4"/>
                         <barButtonItem key="rightBarButtonItem" title="New Item" id="wzo-dd-aXS"/>
                     </navigationItem>
                     <connections>
@@ -143,7 +141,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrC-K2-dtt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1960" y="-139"/>
+            <point key="canvasLocation" x="1424" y="-489"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ftb-kd-xaO">
@@ -158,7 +156,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JlY-6j-LfK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2398" y="-523"/>
+            <point key="canvasLocation" x="1880" y="-495"/>
         </scene>
         <!--Category View Controller - New Item-->
         <scene sceneID="1BI-NX-jlf">
@@ -218,22 +216,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JZC-Nc-kcx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2804" y="-523"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Lmh-kE-IL7">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="pWq-aF-n66" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DbG-VJ-461">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="IMB-4C-WAk" kind="relationship" relationship="rootViewController" id="Ftr-Ew-CE6"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uT5-QW-klp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1543" y="-139"/>
+            <point key="canvasLocation" x="2286" y="-495"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Yyi-R3-7Vk">
@@ -256,7 +239,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="hzD-4p-SRn"/>
-    </inferredMetricsTieBreakers>
 </document>

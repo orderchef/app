@@ -7,6 +7,11 @@
 //
 
 #import "Storage.h"
+#import "Connection.h"
+#import <socket.IO/SocketIOPacket.h>
+#import "Table.h"
+#import "Item.h"
+#import "ItemCategory.h"
 
 @implementation Storage {
 	NSString *documentsDirectory;
@@ -44,49 +49,57 @@ static NSString *categoriesPath = @"Categories.plist";
 	return self;
 }
 
-#pragma mark - Data Saving
-
-- (void)saveObject:(id)dataObject to:(NSString *)savePath {
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dataObject];
+- (NSMutableArray *)loopAndLoad:(NSArray *)args object:(Class)target {
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
     
-    @try {
-		// Write the data
-		NSError *error = nil;
-		[data writeToFile:savePath options:NSDataWritingAtomic error:&error];
-	} @catch (id exception) {
-		NSLog(@"Crashed while saving data %@", [(NSException *)exception description]);
-	}
+    if ([args count] == 0) {
+        return arr;
+    }
+    
+    for (NSDictionary *x in [args objectAtIndex:0]) {
+        id<NetworkLoadingProtocol> obj = [[target alloc] init];
+        [obj loadFromJSON:x];
+        
+        [arr addObject:obj];
+    }
+    
+    return arr;
 }
 
-- (id)loadObject:(NSString *)savePath {
-    NSData *objectData = [NSData dataWithContentsOfFile:savePath];
-	
-	id object = [NSKeyedUnarchiver unarchiveObjectWithData:objectData];
-	
-	return object;
+- (void)forwardToTable:(NSArray *)args {
+    NSDictionary *obj = [args objectAtIndex:0];
+    NSString *_id = [obj objectForKey:@"table"];
+    
+    for (Table *table in tables) {
+        if ([[table _id] isEqualToString:_id]) {
+            [table loadItems:[obj objectForKey:@"items"]];
+            break;
+        }
+    }
 }
 
-- (void)saveData {
-	// Data
-    [self saveObject:tables to:[documentsDirectory stringByAppendingPathComponent:tablesPath]];
-    [self saveObject:items to:[documentsDirectory stringByAppendingPathComponent:itemsPath]];
-    [self saveObject:categories to:[documentsDirectory stringByAppendingPathComponent:categoriesPath]];
+- (void)parseEvent:(SocketIOPacket *)packet {
+    NSString *name = [packet name];
+    if ([name isEqualToString:@"get.tables"]) {
+        [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
+    } else if ([name isEqualToString:@"get.categories"]) {
+        categories = [self loopAndLoad:[packet args] object:[ItemCategory class]];
+    } else if ([name isEqualToString:@"get.items"]) {
+        items = [self loopAndLoad:[packet args] object:[Item class]];
+    }
+    
+    // for specific table
+    else if ([name isEqualToString:@"get.items table"]) {
+        [self forwardToTable:[packet args]];
+    }
 }
 
 - (void)loadData {
-    tables = [self loadObject:[documentsDirectory stringByAppendingPathComponent:tablesPath]];
-    items = [self loadObject:[documentsDirectory stringByAppendingPathComponent:itemsPath]];
-    categories = [self loadObject:[documentsDirectory stringByAppendingPathComponent:categoriesPath]];
+    SocketIO *socket = [[Connection getConnection] socket];
     
-    if (!tables) {
-        tables = [[NSMutableArray alloc] init];
-    }
-    if (!items) {
-        items = [[NSMutableArray alloc] init];
-    }
-    if (!categories) {
-        categories = [[NSMutableArray alloc] init];
-    }
+    [socket sendEvent:@"get.tables" withData:nil];
+    [socket sendEvent:@"get.categories" withData:nil];
+    [socket sendEvent:@"get.items" withData:nil];
 }
 
 @end

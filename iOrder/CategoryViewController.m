@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "ItemCategory.h"
 #import "Storage.h"
+#import "Connection.h"
 
 @interface CategoryViewController () {
     NSArray *categories;
@@ -58,7 +59,7 @@
     [item setCategory:category];
     [item setPrice:price];
     
-    [[category items] addObject:item];
+    [item save];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -140,10 +141,10 @@
     
     if (buttonIndex == 1) {
         category = [[ItemCategory alloc] init];
-        [[[Storage getStorage] categories] addObject:category];
-        
 		[category setName:[[alertView textFieldAtIndex:0] text]];
 		
+        [category save];
+        
         [self reloadData];
     }
 }
