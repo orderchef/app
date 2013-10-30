@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Table.h"
 #import "BasketViewController.h"
+#import "MenuViewController.h"
 
 @interface TableViewController () {
     NSArray *tables;
@@ -32,7 +33,6 @@
 - (void)reloadData {
     NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
     
-    // Test listing all FailedBankInfos from the store
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Table"
                                               inManagedObjectContext:context];
@@ -88,12 +88,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self performSegueWithIdentifier:@"openBasket" sender:[tables objectAtIndex:indexPath.row]];
+	Table *table = [tables objectAtIndex:indexPath.row];
+	if ([[table items] allObjects].count > 0) {
+		[self performSegueWithIdentifier:@"openBasket" sender:[tables objectAtIndex:indexPath.row]];
+	} else {
+		[self performSegueWithIdentifier:@"openMenu" sender:[tables objectAtIndex:indexPath.row]];
+	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([[segue identifier] isEqualToString:@"openBasket"]) {
 		BasketViewController *vc = (BasketViewController *)[segue destinationViewController];
+		vc.table = (Table *)sender;
+	} else if ([[segue identifier] isEqualToString:@"openMenu"]) {
+		MenuViewController *vc = (MenuViewController *)[segue.destinationViewController topViewController];
 		vc.table = (Table *)sender;
 	}
 }

@@ -12,6 +12,6 @@
 
 @interface BasketViewController : UITableViewController
 
-@property (nonatomic, weak) Table *table;
+@property (nonatomic, strong) Table *table;
 
 @end

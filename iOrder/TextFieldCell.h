@@ -1,5 +1,5 @@
 //
-//  MenuViewController.h
+//  TextFieldCell.h
 //  iOrder
 //
 //  Created by Matej Kramny on 28/10/2013.
@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class Table;
+@interface TextFieldCell : UITableViewCell
 
-@interface MenuViewController : UITableViewController
-
-@property (nonatomic, strong) Table *table;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CategoryViewController : UITableViewController
+@interface CategoryViewController : UITableViewController <UIAlertViewDelegate>
 
 @end
