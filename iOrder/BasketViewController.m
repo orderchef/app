@@ -44,7 +44,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[[table items] allObjects] count];
+	return [[table items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -52,7 +52,7 @@
     static NSString *CellIdentifier = @"basket";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	Item *item = [[[table items] allObjects] objectAtIndex:indexPath.row];
+	Item *item = [[table items] objectAtIndex:indexPath.row];
 	cell.textLabel.text = item.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"£%f", [item.price floatValue]];
 	

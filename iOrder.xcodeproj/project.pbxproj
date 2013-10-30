@@ -12,7 +12,7 @@
 		4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6C1820846800201B8C /* ItemCategory.m */; };
 		4F3A5D701820846800201B8C /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6F1820846800201B8C /* Table.m */; };
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
-		4F3A5D761820856000201B8C /* iOrder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D741820856000201B8C /* iOrder.xcdatamodeld */; };
+		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
 		4F422257181E60C2006FB78D /* BasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F422256181E60C2006FB78D /* BasketViewController.m */; };
 		4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TableViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
@@ -54,7 +54,8 @@
 		4F3A5D6F1820846800201B8C /* Table.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Table.m; sourceTree = "<group>"; };
 		4F3A5D711820846800201B8C /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		4F3A5D721820846800201B8C /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
-		4F3A5D751820856000201B8C /* iOrder.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iOrder.xcdatamodel; sourceTree = "<group>"; };
+		4F3A5D77182085F100201B8C /* Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Storage.h; sourceTree = "<group>"; };
+		4F3A5D78182085F100201B8C /* Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Storage.m; sourceTree = "<group>"; };
 		4F422255181E60C2006FB78D /* BasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketViewController.h; sourceTree = "<group>"; };
 		4F422256181E60C2006FB78D /* BasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketViewController.m; sourceTree = "<group>"; };
 		4F5BE44B181DD255007EF69F /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
@@ -150,12 +151,11 @@
 		4FF0F3A6181DC6DE00447906 /* iOrder */ = {
 			isa = PBXGroup;
 			children = (
-				4F3A5D741820856000201B8C /* iOrder.xcdatamodeld */,
 				4FF0F3AF181DC6DE00447906 /* AppDelegate.h */,
 				4FF0F3B0181DC6DE00447906 /* AppDelegate.m */,
 				4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */,
-				4FF0F3B5181DC6DE00447906 /* Images.xcassets */,
-				4FF0F3A7181DC6DE00447906 /* Supporting Files */,
+				4F3A5D77182085F100201B8C /* Storage.h */,
+				4F3A5D78182085F100201B8C /* Storage.m */,
 				4F5BE44B181DD255007EF69F /* TableViewController.h */,
 				4F5BE44C181DD255007EF69F /* TableViewController.m */,
 				4F422255181E60C2006FB78D /* BasketViewController.h */,
@@ -166,6 +166,8 @@
 				4F33E523181E673000E4FDD9 /* CategoryViewController.m */,
 				4F6F7862181F1B9F0042BC47 /* Cells */,
 				4FF63BBB181E637800293D5E /* Models */,
+				4FF0F3B5181DC6DE00447906 /* Images.xcassets */,
+				4FF0F3A7181DC6DE00447906 /* Supporting Files */,
 			);
 			path = iOrder;
 			sourceTree = "<group>";
@@ -314,9 +316,9 @@
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
 				4F3A5D701820846800201B8C /* Table.m in Sources */,
+				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
 				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
 				4F422257181E60C2006FB78D /* BasketViewController.m in Sources */,
-				4F3A5D761820856000201B8C /* iOrder.xcdatamodeld in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
@@ -538,19 +540,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		4F3A5D741820856000201B8C /* iOrder.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				4F3A5D751820856000201B8C /* iOrder.xcdatamodel */,
-			);
-			currentVersion = 4F3A5D751820856000201B8C /* iOrder.xcdatamodel */;
-			path = iOrder.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 4FF0F393181DC6DE00447906 /* Project object */;
 }

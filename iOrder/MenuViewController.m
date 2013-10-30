@@ -7,10 +7,10 @@
 //
 
 #import "MenuViewController.h"
-#import "AppDelegate.h"
 #import "Item.h"
 #import "ItemCategory.h"
 #import "Table.h"
+#import "Storage.h"
 
 @interface MenuViewController () {
 	NSArray *categories;
@@ -43,15 +43,8 @@
 }
 
 - (void)reloadData {
-	NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-    
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCategory"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-	NSError *error;
-    categories = [context executeFetchRequest:fetchRequest error:&error];
+    Storage *storage = [Storage getStorage];
+    categories = [storage categories];
     
     [self.tableView reloadData];
 }
@@ -66,7 +59,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	ItemCategory *category = [categories objectAtIndex:section];
-    return [[[category items] allObjects] count];
+    return [[category items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,7 +68,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 	ItemCategory *category = [categories objectAtIndex:indexPath.section];
-	Item *item = [[[category items] allObjects] objectAtIndex:indexPath.row];
+	Item *item = [[category items] objectAtIndex:indexPath.row];
 	cell.textLabel.text = item.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"£%f", [item.price floatValue]];
 	
@@ -84,9 +77,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ItemCategory *category = [categories objectAtIndex:indexPath.section];
-    Item *item = [[[category items] allObjects] objectAtIndex:indexPath.row];
+    Item *item = [[category items] objectAtIndex:indexPath.row];
     [item setTable:table];
-    [table addItemsObject:item];
+    [[table items] addObject:item];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

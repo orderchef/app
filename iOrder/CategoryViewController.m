@@ -11,6 +11,7 @@
 #import "Item.h"
 #import "AppDelegate.h"
 #import "ItemCategory.h"
+#import "Storage.h"
 
 @interface CategoryViewController () {
     NSArray *categories;
@@ -34,15 +35,7 @@
 }
 
 - (void)reloadData {
-    NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-    
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ItemCategory"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-	NSError *error;
-    categories = [context executeFetchRequest:fetchRequest error:&error];
+    categories = [[Storage getStorage] categories];
     
     [self.tableView reloadData];
 }
@@ -52,8 +45,9 @@
 }
 
 - (void)saveItem:(id)sender {
-	NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-    Item *item = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:context];
+    Storage *storage = [Storage getStorage];
+    Item *item = [[Item alloc] init];
+    [[storage items] addObject:item];
     
     NSString *name = [(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField].text;
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -64,9 +58,7 @@
     [item setCategory:category];
     [item setPrice:price];
     
-    [category addItemsObject:item];
-    
-    [context save:nil];
+    [[category items] addObject:item];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -147,12 +139,11 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
     if (buttonIndex == 1) {
-        NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-		category = [NSEntityDescription insertNewObjectForEntityForName:@"ItemCategory" inManagedObjectContext:context];
+        category = [[ItemCategory alloc] init];
+        [[[Storage getStorage] categories] addObject:category];
+        
 		[category setName:[[alertView textFieldAtIndex:0] text]];
 		
-		[context save:nil];
-        
         [self reloadData];
     }
 }

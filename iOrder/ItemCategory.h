@@ -11,17 +11,9 @@
 
 @class Item;
 
-@interface ItemCategory : NSManagedObject
+@interface ItemCategory : NSObject <NSCoding>
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *items;
-@end
-
-@interface ItemCategory (CoreDataGeneratedAccessors)
-
-- (void)addItemsObject:(Item *)value;
-- (void)removeItemsObject:(Item *)value;
-- (void)addItems:(NSSet *)values;
-- (void)removeItems:(NSSet *)values;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSMutableArray *items;
 
 @end

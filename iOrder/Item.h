@@ -11,7 +11,7 @@
 
 @class ItemCategory, Table;
 
-@interface Item : NSManagedObject
+@interface Item : NSObject <NSCoding>
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * price;

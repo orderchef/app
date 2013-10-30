@@ -11,6 +11,7 @@
 #import "Table.h"
 #import "BasketViewController.h"
 #import "MenuViewController.h"
+#import "Storage.h"
 
 @interface TableViewController () {
     NSArray *tables;
@@ -31,15 +32,8 @@
 }
 
 - (void)reloadData {
-    NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Table"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSError *error;
-    tables = [context executeFetchRequest:fetchRequest error:&error];
+    Storage *storage = [Storage getStorage];
+    tables = [storage tables];
     
     [self.tableView reloadData];
 }
@@ -55,11 +49,10 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
-		NSManagedObjectContext *context = [(AppDelegate *)[UIApplication sharedApplication].delegate managedObjectContext];
-		Table *table = [NSEntityDescription insertNewObjectForEntityForName:@"Table" inManagedObjectContext:context];
+		Table *table = [[Table alloc] init];
 		[table setName:[[alertView textFieldAtIndex:0] text]];
 		
-		[context save:nil];
+		[[[Storage getStorage] tables] addObject:table];
 		
 		[self reloadData];
 	}
@@ -89,7 +82,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Table *table = [tables objectAtIndex:indexPath.row];
-	if ([[table items] allObjects].count > 0) {
+	if ([table items].count > 0) {
 		[self performSegueWithIdentifier:@"openBasket" sender:[tables objectAtIndex:indexPath.row]];
 	} else {
 		[self performSegueWithIdentifier:@"openMenu" sender:[tables objectAtIndex:indexPath.row]];
