@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[MenuViewController tableView:didSelectRowAtIndexPath:]:MenuViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CategoryViewController saveItem:]:CategoryViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[Item save]:Item.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[Table addItem:]:Table.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

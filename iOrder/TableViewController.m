@@ -12,6 +12,7 @@
 #import "BasketViewController.h"
 #import "MenuViewController.h"
 #import "Storage.h"
+#import "Connection.h"
 
 @interface TableViewController () {
     NSArray *tables;
@@ -30,6 +31,9 @@
     
     [[Storage getStorage] addObserver:self forKeyPath:@"tables" options:NSKeyValueObservingOptionNew context:nil];
     
+    [self setRefreshControl:[[UIRefreshControl alloc] init]];
+    [self.refreshControl addTarget:self action:@selector(reloadTables:) forControlEvents:UIControlEventValueChanged];
+    
     [self reloadData];
 }
 
@@ -42,7 +46,15 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"tables"]) {
         [self reloadData];
+        if ([self.refreshControl isRefreshing]) {
+            [self.refreshControl endRefreshing];
+        }
     }
+}
+
+- (void)reloadTables:(id)sender {
+    [[[Connection getConnection] socket] sendEvent:@"get.tables" withData:nil];
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)reloadData {
@@ -68,7 +80,7 @@
 		
         [table save];
 		
-		[self reloadData];
+		[self reloadTables:nil];
 	}
 }
 

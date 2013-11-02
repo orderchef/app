@@ -1,6 +1,7 @@
 var io = require('socket.io').listen(8080);
 var mongoose = require('mongoose')
 	, models = require('./models')
+	, spawn = require('child_process').spawn
 
 mongoose.connect("mongodb://127.0.0.1/iorder", {
 	auto_reconnect: true,
@@ -68,8 +69,18 @@ io.sockets.on('connection', function(socket) {
 	socket.on('create.table', function(data) {
 		console.log("Creating table ")
 		console.log(data);
-		var table = new models.Table(data);
-		table.save();
+		
+		models.Table.findById(data._id, function(err, table) {
+			if (table) {
+				table.update(data);
+			} else {
+				table = new models.Table({
+					name: data.name
+				});
+			}
+			
+			table.save();
+		});
 	})
 	socket.on('create.category', function(data) {
 		console.log("Creating category ")
@@ -120,6 +131,54 @@ io.sockets.on('connection', function(socket) {
 		models.Item.findById(itemID, function(err, item) {
 			item.category = categoryID;
 			item.save();
+		})
+	})
+	
+	socket.on('remove.table items', function(data) {
+		console.log("Clearing Table")
+		
+		var table = mongoose.Types.ObjectId(data.table);
+		
+		models.Table.findById(table, function(err, table) {
+			if (err) throw err;
+			
+			table.items = [];
+			table.save();
+		})
+	})
+	
+	socket.on('table.send kitchen', function(data) {
+		console.log("Sending order to kitchen..")
+		
+		var table = mongoose.Types.ObjectId(data.table);
+		
+		models.Table.findById(table).populate('items.item').exec(function(err, table) {
+			if (err) throw err;
+			
+			var d = new Date()
+			var date = "" + d.getHours() + ":" + d.getMinutes() + "hrs and " + d.getSeconds() + " seconds"
+			var orderedString = "";
+			
+			for (var i = 0; i < table.items.length; i++) {
+				orderedString += " -- "+table.items[i].quantity+" x "+table.items[i].item.name+"\n";
+			}
+			
+			var output = "--------------------\n\
+New Order for Table: -"+ table.name +"\n\
+Time of order:\n" + date + "\n\n\
+Ordered Items:\n" + orderedString;
+			
+			var proc = spawn('python', ['print.py']);
+			proc.stdout.on('data', function (data) {
+				console.log("Out ~>")
+				console.log(data.toString());
+			})
+			proc.stderr.on('data', function(data) {
+				console.log("Err ~>")
+				console.log(data.toString());
+			})
+			proc.stdin.write(output, 'utf-8');
+			proc.stdin.end();
 		})
 	})
 })

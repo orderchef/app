@@ -37,7 +37,7 @@
 
 - (void)connect {
     socket = [[SocketIO alloc] initWithDelegate:self];
-    [socket connectToHost:@"192.168.2.136" onPort:8080];
+    [socket connectToHost:@"192.168.2.31" onPort:8080];
 }
 
 - (void)socketIODidConnect:(SocketIO *)socket {

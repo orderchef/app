@@ -14,7 +14,7 @@
 
 @synthesize _id;
 @synthesize name;
-@synthesize items;
+@synthesize items = _items;
 
 - (id)init {
     self = [super init];
@@ -29,7 +29,13 @@
 - (void)save {
     Connection *c = [Connection getConnection];
     SocketIO *socket = [c socket];
-    [socket sendEvent:@"create.table" withData:@{@"name": name}];
+    
+    NSString *__id = _id;
+    if (!__id) {
+        __id = @"";
+    }
+    
+    [socket sendEvent:@"create.table" withData:@{@"_id": __id, @"name": name}];
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {
@@ -54,8 +60,17 @@
     [self setItems:its];
 }
 
+- (void)clearTable {
+    [[[Connection getConnection] socket] sendEvent:@"remove.table items" withData:@{@"table": _id}];
+}
+
+- (void)sendToKitchen {
+    [[[Connection getConnection] socket] sendEvent:@"table.send kitchen" withData:@{@"table": _id}];
+}
+
 - (void)addItem:(Item *)item {
     [[[Connection getConnection] socket] sendEvent:@"add.table item" withData:@{@"table": _id, @"item": item._id}];
+    [self loadItems];
 }
 
 @end

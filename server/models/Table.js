@@ -10,4 +10,8 @@ var scheme = schema({
 	}]
 });
 
+scheme.methods.update = function (data) {
+	this.name = data.name;
+}
+
 module.exports = mongoose.model("Table", scheme);

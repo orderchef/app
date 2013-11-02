@@ -22,5 +22,7 @@
 - (void)loadItems;
 - (void)loadItems:(NSArray *)items;
 - (void)addItem:(Item *)item;
+- (void)clearTable;
+- (void)sendToKitchen;
 
 @end

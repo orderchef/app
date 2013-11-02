@@ -83,9 +83,9 @@ static NSString *categoriesPath = @"Categories.plist";
     if ([name isEqualToString:@"get.tables"]) {
         [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
     } else if ([name isEqualToString:@"get.categories"]) {
-        categories = [self loopAndLoad:[packet args] object:[ItemCategory class]];
+        [self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
     } else if ([name isEqualToString:@"get.items"]) {
-        items = [self loopAndLoad:[packet args] object:[Item class]];
+        [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
     }
     
     // for specific table

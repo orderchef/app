@@ -31,7 +31,19 @@
 	[self.navigationItem.leftBarButtonItem setTarget:self];
 	[self.navigationItem.leftBarButtonItem setAction:@selector(closeView:)];
     
+    [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
+    
     [self reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self reloadData];
+}
+
+- (void)dealloc {
+    @try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"items"];
+    } @catch (NSException *exception) {}
 }
 
 - (void)newItem:(id) sender {
@@ -47,6 +59,12 @@
     items = [storage items];
     
     [self.tableView reloadData];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"items"]) {
+        [self reloadData];
+    }
 }
 
 #pragma mark - Table view data source
@@ -76,6 +94,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Item *item = [items objectAtIndex:indexPath.row];
     [table addItem:item];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

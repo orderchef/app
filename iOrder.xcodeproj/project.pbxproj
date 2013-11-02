@@ -13,11 +13,11 @@
 		4F3A5D701820846800201B8C /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6F1820846800201B8C /* Table.m */; };
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
 		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
-		4F422257181E60C2006FB78D /* BasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F422256181E60C2006FB78D /* BasketViewController.m */; };
 		4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TableViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
+		4FD59E5D182573860077A70E /* BasketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5C182573860077A70E /* BasketViewController.m */; };
 		4FF0F39F181DC6DE00447906 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F39E181DC6DE00447906 /* Foundation.framework */; };
 		4FF0F3A1181DC6DE00447906 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */; };
 		4FF0F3A3181DC6DE00447906 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A2181DC6DE00447906 /* UIKit.framework */; };
@@ -59,15 +59,15 @@
 		4F3A5D721820846800201B8C /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		4F3A5D77182085F100201B8C /* Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Storage.h; sourceTree = "<group>"; };
 		4F3A5D78182085F100201B8C /* Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Storage.m; sourceTree = "<group>"; };
-		4F422255181E60C2006FB78D /* BasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketViewController.h; sourceTree = "<group>"; };
-		4F422256181E60C2006FB78D /* BasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketViewController.m; sourceTree = "<group>"; };
 		4F5BE44B181DD255007EF69F /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		4F5BE44C181DD255007EF69F /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		4FD59E5618211E870077A70E /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		4FD59E5718211E870077A70E /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
-		4FD59E59182128FF0077A70E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		4FD59E59182128FF0077A70E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		4FD59E5B182573860077A70E /* BasketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketViewController.h; sourceTree = "<group>"; };
+		4FD59E5C182573860077A70E /* BasketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketViewController.m; sourceTree = "<group>"; };
 		4FF0F39B181DC6DE00447906 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF0F39E181DC6DE00447906 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -171,8 +171,8 @@
 				4F3A5D78182085F100201B8C /* Storage.m */,
 				4F5BE44B181DD255007EF69F /* TableViewController.h */,
 				4F5BE44C181DD255007EF69F /* TableViewController.m */,
-				4F422255181E60C2006FB78D /* BasketViewController.h */,
-				4F422256181E60C2006FB78D /* BasketViewController.m */,
+				4FD59E5B182573860077A70E /* BasketViewController.h */,
+				4FD59E5C182573860077A70E /* BasketViewController.m */,
 				4F33E51F181E672B00E4FDD9 /* MenuViewController.h */,
 				4F33E520181E672B00E4FDD9 /* MenuViewController.m */,
 				4F33E522181E673000E4FDD9 /* CategoryViewController.h */,
@@ -366,7 +366,7 @@
 				4F3A5D701820846800201B8C /* Table.m in Sources */,
 				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
 				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
-				4F422257181E60C2006FB78D /* BasketViewController.m in Sources */,
+				4FD59E5D182573860077A70E /* BasketViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,

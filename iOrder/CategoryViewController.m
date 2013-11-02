@@ -17,6 +17,8 @@
 @interface CategoryViewController () {
     NSArray *categories;
     ItemCategory *category;
+    UITextField *name;
+    UITextField *price;
 }
 
 @end
@@ -32,7 +34,28 @@
 	[self.navigationItem.rightBarButtonItem setTarget:self];
 	[self.navigationItem.rightBarButtonItem setAction:@selector(saveItem:)];
     
+    [[Storage getStorage] addObserver:self forKeyPath:@"categories" options:NSKeyValueObservingOptionNew context:nil];
+    [self setRefreshControl:[[UIRefreshControl alloc] init]];
+    [self.refreshControl addTarget:self action:@selector(reloadCategories:) forControlEvents:UIControlEventValueChanged];
+    
     [self reloadData];
+}
+
+- (void)dealloc {
+    @try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"categories"];
+    } @catch (NSException *exception) {}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"categories"]) {
+        [self reloadData];
+        [self.refreshControl endRefreshing];
+    }
+}
+
+- (void)reloadCategories:(id)sender {
+    [[Storage getStorage] loadData];
 }
 
 - (void)reloadData {
@@ -48,18 +71,19 @@
 - (void)saveItem:(id)sender {
     Storage *storage = [Storage getStorage];
     Item *item = [[Item alloc] init];
-    [[storage items] addObject:item];
     
-    NSString *name = [(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]] textField].text;
+    [item setName:name.text];
+    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *price = [formatter numberFromString:[(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]] textField].text];
+    [item setPrice:[formatter numberFromString:price.text]];
     
-    [item setName:name];
     [item setCategory:category];
-    [item setPrice:price];
     
     [item save];
+    [[storage items] addObject:item];
+    
+    [storage loadData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -90,10 +114,12 @@
             case 0:
                 [cell.textField setPlaceholder:@"Item Name"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                name = cell.textField;
                 break;
             case 1:
                 [cell.textField setPlaceholder:@"Item Price"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDecimalPad];
+                price = cell.textField;
                 break;
         }
         
@@ -144,6 +170,8 @@
 		[category setName:[[alertView textFieldAtIndex:0] text]];
 		
         [category save];
+        [self.refreshControl beginRefreshing];
+        [[Storage getStorage] loadData];
         
         [self reloadData];
     }

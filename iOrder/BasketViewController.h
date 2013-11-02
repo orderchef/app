@@ -2,7 +2,7 @@
 //  BasketViewController.h
 //  iOrder
 //
-//  Created by Matej Kramny on 28/10/2013.
+//  Created by Matej Kramny on 02/11/2013.
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
@@ -10,8 +10,10 @@
 
 @class Table;
 
-@interface BasketViewController : UITableViewController
+@interface BasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) Table *table;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @end
