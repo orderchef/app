@@ -18,6 +18,7 @@
 {
     [Connection getConnection];
     [Storage getStorage];
+    [self customizeAppearance];
     
     return YES;
 }
@@ -47,6 +48,13 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
+}
+
+- (void)customizeAppearance {
+	[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+	[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.398f green:0.798f blue:0.802f alpha:1.f]];
+	[[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 @end

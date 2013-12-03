@@ -13,7 +13,8 @@
 #import "Storage.h"
 
 @interface MenuViewController () {
-	NSArray *items;
+	NSArray *categories;
+    NSArray *titles;
 }
 
 @end
@@ -33,6 +34,11 @@
     
     [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    
+    [self setRefreshControl:[[UIRefreshControl alloc] init]];
+    [self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
+    
     [self reloadData];
 }
 
@@ -46,6 +52,10 @@
     } @catch (NSException *exception) {}
 }
 
+- (void)refreshData:(id)sender {
+    [[Storage getStorage] loadData];
+}
+
 - (void)newItem:(id) sender {
 	[self performSegueWithIdentifier:@"newItem" sender:nil];
 }
@@ -56,7 +66,31 @@
 
 - (void)reloadData {
     Storage *storage = [Storage getStorage];
-    items = [storage items];
+    
+    NSMutableDictionary *secs = [[NSMutableDictionary alloc] init];
+    
+    NSArray *items = [storage items];
+    for (Item *i in items) {
+        ItemCategory *category = i.category;
+        
+        NSString *section;
+        if (!category) {
+            section = @"Uncategorised";
+        } else {
+            section = [category name];
+        }
+        
+        NSMutableArray *sec = [secs objectForKey:section];
+        if (!sec) {
+            sec = [[NSMutableArray alloc] init];
+            [secs setObject:sec forKey:section];
+        }
+        
+        [sec addObject:i];
+    }
+    
+    categories = [secs allValues];
+    titles = [secs allKeys];
     
     [self.tableView reloadData];
 }
@@ -64,6 +98,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"items"]) {
         [self reloadData];
+        [self.refreshControl endRefreshing];
     }
 }
 
@@ -71,12 +106,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [categories count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [items count];
+    return [[categories objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,22 +119,38 @@
     static NSString *CellIdentifier = @"menu";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	Item *item = [items objectAtIndex:indexPath.row];
+	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.text = item.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"£%f", [item.price floatValue]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [item.price floatValue]];
 	
+    cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+    cell.layer.borderWidth = 0.5f;
+    cell.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+    [cell backgroundView].backgroundColor = [UIColor blackColor];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Item *item = [items objectAtIndex:indexPath.row];
+    Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [table addItem:item];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+        UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
+        v.textLabel.textAlignment = NSTextAlignmentCenter;
+        v.textLabel.textColor = [UIColor colorWithRed:0.398f green:0.798f blue:0.802f alpha:1.f];
+        v.backgroundView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.95f];
+        //v.backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
+        //v.backgroundView.layer.borderWidth = 0.5f;
+    }
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return nil;
+    return [titles objectAtIndex:section];
 }
 
 @end

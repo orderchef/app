@@ -36,6 +36,9 @@
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
     [self setPrice:[json objectForKey:@"price"]];
+    
+    NSString *catId = [json objectForKey:@"category"];
+    category = [[Storage getStorage] findCategoryById:catId];
 }
 
 - (void)save {

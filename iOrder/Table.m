@@ -15,6 +15,7 @@
 @synthesize _id;
 @synthesize name;
 @synthesize items = _items;
+@synthesize notes;
 
 - (id)init {
     self = [super init];
@@ -35,12 +36,17 @@
         __id = @"";
     }
     
-    [socket sendEvent:@"create.table" withData:@{@"_id": __id, @"name": name}];
+    [socket sendEvent:@"create.table" withData:@{
+                                                 @"_id": __id,
+                                                 @"name": name,
+                                                 @"notes": notes
+                                                 }];
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
+    [self setNotes:[json objectForKey:@"notes"]];
 }
 
 - (void)loadItems {

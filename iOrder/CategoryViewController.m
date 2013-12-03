@@ -69,6 +69,11 @@
 }
 
 - (void)saveItem:(id)sender {
+    if (!category) {
+        [[[UIAlertView alloc] initWithTitle:@"Select a category!" message:@"Please select a category before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+    }
+    
     Storage *storage = [Storage getStorage];
     Item *item = [[Item alloc] init];
     

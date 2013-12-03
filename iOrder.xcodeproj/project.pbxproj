@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E520181E672B00E4FDD9 /* MenuViewController.m */; };
 		4F33E524181E673000E4FDD9 /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E523181E673000E4FDD9 /* CategoryViewController.m */; };
+		4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F345AD7184E83D000A98BEB /* TextareaCell.m */; };
 		4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6C1820846800201B8C /* ItemCategory.m */; };
 		4F3A5D701820846800201B8C /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6F1820846800201B8C /* Table.m */; };
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
@@ -51,6 +52,8 @@
 		4F33E520181E672B00E4FDD9 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		4F33E522181E673000E4FDD9 /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
 		4F33E523181E673000E4FDD9 /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
+		4F345AD6184E83D000A98BEB /* TextareaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextareaCell.h; sourceTree = "<group>"; };
+		4F345AD7184E83D000A98BEB /* TextareaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextareaCell.m; sourceTree = "<group>"; };
 		4F3A5D6B1820846800201B8C /* ItemCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCategory.h; sourceTree = "<group>"; };
 		4F3A5D6C1820846800201B8C /* ItemCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCategory.m; sourceTree = "<group>"; };
 		4F3A5D6E1820846800201B8C /* Table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Table.h; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 			children = (
 				4F6F7863181F1BB10042BC47 /* TextFieldCell.h */,
 				4F6F7864181F1BB10042BC47 /* TextFieldCell.m */,
+				4F345AD6184E83D000A98BEB /* TextareaCell.h */,
+				4F345AD7184E83D000A98BEB /* TextareaCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
 				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
 				4FD59E5D182573860077A70E /* BasketViewController.m in Sources */,
+				4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,

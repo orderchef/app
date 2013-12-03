@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) NSString *notes;
 
 - (void)save;
 - (void)loadItems;

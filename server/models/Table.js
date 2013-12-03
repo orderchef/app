@@ -7,11 +7,13 @@ var scheme = schema({
 	items: [{
 		item: { type: ObjectId, ref: 'Item' },
 		quantity: Number
-	}]
+	}],
+	notes: String
 });
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
+	this.notes = data.notes;
 }
 
 module.exports = mongoose.model("Table", scheme);

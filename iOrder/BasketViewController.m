@@ -10,9 +10,12 @@
 #import "Table.h"
 #import "Item.h"
 #import "MenuViewController.h"
+#import "TextareaCell.h"
 
 @interface BasketViewController () {
     UIRefreshControl *refreshControl;
+    UITapGestureRecognizer *dismissKeyboardGesture;
+    bool keyboardIsOpen;
 }
 
 @end
@@ -25,6 +28,8 @@
 {
     [super viewDidLoad];
 	
+    keyboardIsOpen = false;
+    
     [table addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     [table loadItems];
     
@@ -76,27 +81,55 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return [[table items] count] > 0 ? 4 : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return section == 0 ? 1 : [[table items] count];
+    if (section == 1) {
+        return [[table items] count];
+    }
+    if (section == 3) {
+        return 0;
+    }
+    
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"basket";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell;
+    
+    if (indexPath.section < 2) {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"notes" forIndexPath:indexPath];
+        if (!cell) {
+            cell = [[TextareaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"notes"];
+        }
+    }
     
     if (indexPath.section == 0) {
         cell.textLabel.text = @"Order more items";
         cell.detailTextLabel.text = @"";
-    } else {
+    } else if (indexPath.section == 1) {
         NSDictionary *item = [[table items] objectAtIndex:indexPath.row];
         Item *it = [item objectForKey:@"item"];
+        int quantity = [[item objectForKey:@"quantity"] intValue];
+        float total = quantity * [it.price floatValue];
+        
         cell.textLabel.text = it.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"£%fx%@", [it.price floatValue], (NSNumber *)[item objectForKey:@"quantity"]];
+        if (quantity > 1) {
+            cell.textLabel.text = [it.name stringByAppendingFormat:@" (%d)", quantity];
+        }
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", total];
+    } else if (indexPath.section == 2) {
+        // notes
+        [[(TextareaCell *)cell textField] setText:table.notes];
+        [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
+        [(TextareaCell *)cell setDelegate:self];
     }
 	
     return cell;
@@ -105,6 +138,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
+    } else {
+        
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -118,7 +153,82 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 1:
+            return @"Items in Basket";
+        case 2:
+            return @"Notes for Order";
+        default:
+            return @"";
+    }
     return section == 1 ? @"Items in basket" : @"";
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    if (section == 3) {
+        float total = 0.f;
+        for (NSDictionary *item in [table items]) {
+            Item *it = [item objectForKey:@"item"];
+            total += [[item objectForKey:@"quantity"] intValue] * [it.price floatValue];
+        }
+        
+        return [@"Total £" stringByAppendingFormat:@"%.2f", total];
+    }
+    
+    return nil;
+}
+
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2) {
+        return 100.f;
+    }
+    
+    return 44.f;
+}
+
+#pragma mark - TextfieldDelegate methods
+
+- (void)dismissKeyboard:(id)sender {
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    [[cell textField] resignFirstResponder];
+}
+
+- (void)textFieldDidBeginEditing {
+    [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  - 216 + self.toolbar.frame.size.height)];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+    dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    dismissKeyboardGesture.cancelsTouchesInView = YES;
+    
+    [self.tableView addGestureRecognizer:dismissKeyboardGesture];
+    
+    keyboardIsOpen = true;
+}
+
+- (void)textFieldDidEndEditing {
+    [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  + 216 - self.toolbar.frame.size.height)];
+    
+    keyboardIsOpen = false;
+    
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    table.notes = [cell.textField text];
+    [table save];
+    
+    @try {
+        [self.tableView removeGestureRecognizer:dismissKeyboardGesture];
+    }
+    @catch (NSException *exception) {}
+    @finally {
+        dismissKeyboardGesture = nil;
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (keyboardIsOpen) {
+        [self dismissKeyboard:nil];
+    }
 }
 
 @end

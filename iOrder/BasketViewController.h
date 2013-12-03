@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TextareaCell.h"
 
 @class Table;
 
-@interface BasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface BasketViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, TextareaDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) Table *table;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

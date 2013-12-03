@@ -102,4 +102,14 @@ static NSString *categoriesPath = @"Categories.plist";
     [socket sendEvent:@"get.items" withData:nil];
 }
 
+- (ItemCategory *)findCategoryById:(NSString *)_id {
+    for (ItemCategory *category in self.categories) {
+        if ([category._id isEqualToString:_id]) {
+            return category;
+        }
+    }
+    
+    return nil;
+}
+
 @end

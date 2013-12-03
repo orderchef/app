@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SocketIOPacket;
+@class ItemCategory;
 
 @protocol NetworkLoadingProtocol <NSObject>
 
@@ -27,5 +28,7 @@
 - (void)loadData;
 
 - (void)parseEvent:(SocketIOPacket *)packet;
+
+- (ItemCategory *)findCategoryById:(NSString *)_id;
 
 @end
