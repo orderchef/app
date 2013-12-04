@@ -35,11 +35,21 @@
     if (!__id) {
         __id = @"";
     }
-    
+	
+	NSMutableArray *its = [[NSMutableArray alloc] initWithCapacity:[_items count]];
+    for (NSDictionary *item in _items) {
+		[its addObject:@{
+						 @"_id": [item objectForKey:@"_id"],
+						 @"quantity": [item objectForKey:@"quantity"],
+						 @"notes": [item objectForKey:@"notes"]
+						 }];
+	}
+	
     [socket sendEvent:@"create.table" withData:@{
                                                  @"_id": __id,
                                                  @"name": name,
-                                                 @"notes": notes
+                                                 @"notes": notes,
+												 @"items": its
                                                  }];
 }
 
@@ -47,6 +57,10 @@
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
     [self setNotes:[json objectForKey:@"notes"]];
+	
+	if (notes == nil) {
+		notes = @"";
+	}
 }
 
 - (void)loadItems {
@@ -59,7 +73,12 @@
         Item *it = [[Item alloc] init];
         [it loadFromJSON:[item objectForKey:@"item"]];
         
-        NSDictionary *itDict = @{@"item": it, @"quantity": [item objectForKey:@"quantity"]};
+        NSDictionary *itDict = @{
+								 @"item": it,
+								 @"quantity": [item objectForKey:@"quantity"],
+								 @"notes": [item objectForKey:@"notes"],
+								 @"_id": [item objectForKey:@"_id"]
+								};
         [its addObject:itDict];
     }
     

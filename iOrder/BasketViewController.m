@@ -10,6 +10,7 @@
 #import "Table.h"
 #import "Item.h"
 #import "MenuViewController.h"
+#import "BasketItemViewController.h"
 #import "TextareaCell.h"
 
 @interface BasketViewController () {
@@ -139,7 +140,7 @@
     if (indexPath.section == 0) {
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
     } else {
-        
+        [self performSegueWithIdentifier:@"openBasketItem" sender:indexPath];
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -149,7 +150,12 @@
     if ([[segue identifier] isEqualToString:@"openMenu"]) {
         MenuViewController *vc = (MenuViewController *)segue.destinationViewController;
 		vc.table = table;
-    }
+    } else if ([[segue identifier] isEqualToString:@"openBasketItem"]) {
+		BasketItemViewController *vc = (BasketItemViewController *)segue.destinationViewController;
+		NSDictionary *item = [[table items] objectAtIndex:((NSIndexPath *)sender).row];
+		vc.item = item;
+		vc.table = table;
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
