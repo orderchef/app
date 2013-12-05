@@ -139,9 +139,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
-    } else {
+    } else if (indexPath.section == 1) {
         [self performSegueWithIdentifier:@"openBasketItem" sender:indexPath];
-    }
+    } else if (indexPath.section == 2) {
+		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
+		[[cell textField] becomeFirstResponder];
+	}
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
