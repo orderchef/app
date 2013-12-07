@@ -1,12 +1,15 @@
 PODS:
+  - LTHPasscodeViewController (1.2.1)
   - socket.IO (0.4.0.1):
     - SocketRocket (~> 0.2)
   - SocketRocket (0.3.1-beta2)
 
 DEPENDENCIES:
+  - LTHPasscodeViewController
   - socket.IO (~> 0.4.0.1)
 
 SPEC CHECKSUMS:
+  LTHPasscodeViewController: f1528991ad91f141a9b2cb48a5d0a2d225d084e4
   socket.IO: 88132f82db2700840686a8b0de68875eadca2009
   SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
 

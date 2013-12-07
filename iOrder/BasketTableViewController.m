@@ -40,6 +40,7 @@
     [self reloadData];
 	
 	[self.navigationItem setTitle:[table name]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
 }
 
 - (void)dealloc {
@@ -62,6 +63,10 @@
 
 - (void)reloadData {
 	[self.tableView reloadData];
+}
+
+- (void)openMenu:(id)sender {
+	
 }
 
 - (void)clear:(id)sender {

@@ -142,7 +142,7 @@
     if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
         UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
         v.textLabel.textAlignment = NSTextAlignmentCenter;
-        v.textLabel.textColor = [UIColor colorWithRed:0.398f green:0.798f blue:0.802f alpha:1.f];
+        v.textLabel.textColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f];
         v.backgroundView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.95f];
         //v.backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
         //v.backgroundView.layer.borderWidth = 0.5f;

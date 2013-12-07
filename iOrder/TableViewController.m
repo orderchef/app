@@ -14,6 +14,7 @@
 #import "Storage.h"
 #import "Connection.h"
 #import "EditTableViewController.h"
+#import <LTHPasscodeViewController.h>
 
 @interface TableViewController () {
     NSArray *tables;

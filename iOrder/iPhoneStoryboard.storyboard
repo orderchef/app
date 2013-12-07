@@ -187,8 +187,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="{{ Table Name }}" id="AGW-bQ-9wo"/>
                     <connections>
-                        <segue destination="IMB-4C-WAk" kind="push" id="JES-Xa-qbr"/>
-                        <segue destination="thd-Ne-pdW" kind="push" id="JUL-Vl-hDn"/>
+                        <segue destination="IMB-4C-WAk" kind="push" identifier="openMenu" id="JES-Xa-qbr"/>
+                        <segue destination="thd-Ne-pdW" kind="push" identifier="openBasketItem" id="JUL-Vl-hDn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HAm-Ud-6hN" userLabel="First Responder" sceneMemberID="firstResponder"/>
