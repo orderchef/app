@@ -36,7 +36,9 @@ io.sockets.on('connection', function(socket) {
 	socket.on('get.tables', function(data) {
 		console.log("Listing Tables")
 		
-		models.Table.find({}, function(err, tables) {
+		models.Table.find({
+			deleted: false
+		}, function(err, tables) {
 			if (err) throw err;
 			
 			console.log(tables);
@@ -143,6 +145,19 @@ io.sockets.on('connection', function(socket) {
 			if (err) throw err;
 			
 			table.items = [];
+			table.save();
+		})
+	})
+	
+	socket.on('remove.table', function(data) {
+		console.log("Deleting a table")
+		
+		var table = mongoose.Types.ObjectId(data.table);
+		
+		models.Table.findById(table, function(err, table) {
+			if (err) throw err;
+			
+			table.deleted = true;
 			table.save();
 		})
 	})

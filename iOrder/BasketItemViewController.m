@@ -92,7 +92,7 @@
 		Item *it = [item objectForKey:@"item"];
 		
 		if (indexPath.row == 0) {
-			[[cell textLabel] setText:@"Base Price"];
+			[[cell textLabel] setText:@"Item Price"];
 			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", [it.price floatValue]]];
 		} else {
 			[[cell textLabel] setText:@"Total Price"];
@@ -187,7 +187,7 @@
 }
 
 - (void)textFieldDidBeginEditing {
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
     dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     dismissKeyboardGesture.cancelsTouchesInView = YES;

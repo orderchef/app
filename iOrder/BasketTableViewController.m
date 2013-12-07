@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "BasketViewController.h"
+#import "BasketTableViewController.h"
 #import "Table.h"
 #import "Item.h"
 #import "MenuViewController.h"
 #import "BasketItemViewController.h"
 #import "TextareaCell.h"
 
-@interface BasketViewController () {
+@interface BasketTableViewController () {
     UIRefreshControl *refreshControl;
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
@@ -21,9 +21,9 @@
 
 @end
 
-@implementation BasketViewController
+@implementation BasketTableViewController
 
-@synthesize table, tableView = _tableView, toolbar = _toolbar;
+@synthesize table;
 
 - (void)viewDidLoad
 {
@@ -34,17 +34,12 @@
     [table addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     [table loadItems];
     
-    [self.toolbar setItems:@[
-                             [[UIBarButtonItem alloc] initWithTitle:@"Clear table" style:UIBarButtonItemStylePlain target:self action:@selector(clear:)],
-                             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-                             [[UIBarButtonItem alloc] initWithTitle:@"Send to Kitchen" style:UIBarButtonItemStylePlain target:self action:@selector(sendToKitchen:)]
-    ] animated:YES];
-    
-    refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:refreshControl];
+	[self setRefreshControl:[[UIRefreshControl alloc] init]];
+    [self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
     
     [self reloadData];
+	
+	[self.navigationItem setTitle:[table name]];
 }
 
 - (void)dealloc {
@@ -203,7 +198,7 @@
 }
 
 - (void)textFieldDidBeginEditing {
-    [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  - 216 + self.toolbar.frame.size.height)];
+    //[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  - 216 + self.toolbar.frame.size.height)];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
     dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -215,7 +210,7 @@
 }
 
 - (void)textFieldDidEndEditing {
-    [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  + 216 - self.toolbar.frame.size.height)];
+    //[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  + 216 - self.toolbar.frame.size.height)];
     
     keyboardIsOpen = false;
     

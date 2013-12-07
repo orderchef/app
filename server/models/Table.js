@@ -9,7 +9,8 @@ var scheme = schema({
 		quantity: Number,
 		notes: { type: String, default: "" }
 	}],
-	notes: String
+	notes: String,
+	deleted: { type: Boolean, default: false }
 });
 
 scheme.methods.update = function (data) {

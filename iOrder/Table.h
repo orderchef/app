@@ -25,5 +25,6 @@
 - (void)addItem:(Item *)item;
 - (void)clearTable;
 - (void)sendToKitchen;
+- (void)deleteTable;
 
 @end

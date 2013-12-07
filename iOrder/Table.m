@@ -98,4 +98,8 @@
     [self loadItems];
 }
 
+- (void)deleteTable {
+	[[[Connection getConnection] socket] sendEvent:@"remove.table" withData:@{@"table": _id}];
+}
+
 @end
