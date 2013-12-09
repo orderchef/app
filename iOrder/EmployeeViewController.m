@@ -27,14 +27,10 @@
     if (employee.name.length == 0) {
         [self.navigationItem setTitle:@"Enter a Name"];
     }
-    
-    [[Storage getStorage] setManagedEmployee:employee];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [[Storage getStorage] setManagedEmployee:nil];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     
     if (employee.name.length > 0) {
         [employee save];
@@ -42,6 +38,9 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [[Storage getStorage] setManagedEmployee:employee];
     //TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     //[[cell textField] becomeFirstResponder];
 }
@@ -139,12 +138,7 @@
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
-        if (employee.code.length == 0) {
-            [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController:self];
-        } else {
-            [LTHPasscodeViewController setPasscode:employee.code];
-            [[LTHPasscodeViewController sharedUser] showForChangingPasscodeInViewController:self];
-        }
+        [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController:self];
     } else if (indexPath.section == 1 && indexPath.row == 1) {
         if ([employee._id isEqualToString:[Storage getStorage].employee._id]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable Downgrade Yourself" message:@"Sorry, Please have one of the other Managers downgrade you." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];

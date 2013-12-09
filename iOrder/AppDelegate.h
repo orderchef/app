@@ -12,4 +12,12 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+- (void)showMessage:(NSString *)message
+             detail:(NSString *)detail
+          hideAfter:(NSTimeInterval)interval
+       showAnimated:(BOOL)animated
+       hideAnimated:(BOOL)hideAnimated
+               hide:(BOOL)doesHide
+      tapRecognizer:(UITapGestureRecognizer *)recognizer;
+
 @end

@@ -116,7 +116,7 @@
                                             <rect key="frame" x="20" y="0.0" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         </textField>
                                     </subviews>
                                 </tableViewCellContentView>
@@ -364,8 +364,8 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KjZ-QG-uKQ">
                                             <rect key="frame" x="20" y="0.0" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         </textField>
                                     </subviews>
                                 </tableViewCellContentView>
@@ -441,9 +441,7 @@
                             <outlet property="delegate" destination="IMB-4C-WAk" id="iZ3-ta-u6u"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM">
-                        <barButtonItem key="rightBarButtonItem" title="New Item" id="wzo-dd-aXS"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM"/>
                     <connections>
                         <segue destination="4WQ-tZ-HpA" kind="modal" identifier="newItem" id="bCr-09-rBi"/>
                     </connections>
@@ -487,7 +485,7 @@
                                             <rect key="frame" x="20" y="0.0" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         </textField>
                                     </subviews>
                                 </tableViewCellContentView>

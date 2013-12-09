@@ -56,6 +56,8 @@
     } else {
         [self performSegueWithIdentifier:@"about" sender:nil];
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

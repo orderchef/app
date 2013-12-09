@@ -14,6 +14,8 @@
 
 @interface StaffViewController () {
     Staff *newEmployee;
+    NSArray *managers;
+    NSArray *normal;
 }
 
 @end
@@ -32,8 +34,30 @@
     [[Storage getStorage] addObserver:self forKeyPath:@"staff" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)reloadData {
+    NSMutableArray *_managers = [[NSMutableArray alloc] init];
+    NSMutableArray *_normal = [[NSMutableArray alloc] init];
+    
+    NSArray *staff = [Storage getStorage].staff;
+    
+    for (Staff *employee in staff) {
+        if (employee.manager) {
+            [_managers addObject:employee];
+        } else {
+            [_normal addObject:employee];
+        }
+    }
+    
+    managers = [_managers copy];
+    normal = [_normal copy];
+    
     [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self reloadData];
+    
+    [[Storage getStorage] setManagedEmployee:nil];
     
     if (newEmployee) {
         [self refreshStaff:nil];
@@ -53,30 +77,8 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"staff"]) {
         [self.refreshControl endRefreshing];
-        [self.tableView reloadData];
+        [self reloadData];
     }
-}
-
-- (int)numberOfManagers {
-    NSArray *staff = [Storage getStorage].staff;
-    int managers = 0;
-    
-    for (Staff *employee in staff) {
-        if (employee.manager) {
-            managers++;
-        }
-    }
-    return managers;
-}
-
-- (Staff *)getEmployeeForIndexPath:(NSIndexPath *)indexPath {
-    int managers = [self numberOfManagers];
-    int row = indexPath.row;
-    if (indexPath.section == 1) {
-        row += managers;
-    }
-    
-    return [[Storage getStorage].staff objectAtIndex:row];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -84,6 +86,12 @@
         EmployeeViewController *vc = (EmployeeViewController *)[segue destinationViewController];
         vc.employee = (Staff *)sender;
     }
+}
+
+- (void)dealloc {
+    @try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"staff"];
+    } @catch (NSException *e) {}
 }
 
 #pragma mark - Table view data source
@@ -95,13 +103,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *staff = [Storage getStorage].staff;
-    
-    int managers = [self numberOfManagers];
     if (section == 0) {
-        return managers;
+        return managers.count;
     } else {
-        return staff.count - managers;
+        return normal.count;
     }
 }
 
@@ -110,14 +115,26 @@
     static NSString *CellIdentifier = @"basic";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Staff *employee = [self getEmployeeForIndexPath:indexPath];
+    Staff *employee;
+    if (indexPath.section == 0) {
+        employee = [managers objectAtIndex:indexPath.row];
+    } else {
+        employee = [normal objectAtIndex:indexPath.row];
+    }
     cell.textLabel.text = employee.name;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"employee" sender:[self getEmployeeForIndexPath:indexPath]];
+    Staff *employee;
+    if (indexPath.section == 0) {
+        employee = [managers objectAtIndex:indexPath.row];
+    } else {
+        employee = [normal objectAtIndex:indexPath.row];
+    }
+    
+    [self performSegueWithIdentifier:@"employee" sender:employee];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

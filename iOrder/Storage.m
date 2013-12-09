@@ -13,7 +13,13 @@
 #import "Item.h"
 #import "ItemCategory.h"
 #import "Staff.h"
-#import <MBProgressHUD/MBProgressHUD.h>
+#import "AppDelegate.h"
+
+@interface Storage () {
+    bool loadedData; // at least once....
+}
+
+@end
 
 @implementation Storage
 
@@ -37,6 +43,7 @@
 	if (self)
 	{
         [self loadData];
+        loadedData = false;
         
         [[LTHPasscodeViewController sharedUser] setDelegate:self];
 	}
@@ -74,21 +81,25 @@
 }
 
 - (void)parseEvent:(SocketIOPacket *)packet {
-    NSString *name = [packet name];
-    if ([name isEqualToString:@"get.tables"]) {
-        [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
-    } else if ([name isEqualToString:@"get.categories"]) {
-        [self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
-    } else if ([name isEqualToString:@"get.items"]) {
-        [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
-    } else if ([name isEqualToString:@"get.staff"]) {
-        [self setStaff:[self loopAndLoad:[packet args] object:[Staff class]]];
-        [[LTHPasscodeViewController sharedUser] loadStaff:staff];
-    }
-    
-    // for specific table
-    else if ([name isEqualToString:@"get.items table"]) {
-        [self forwardToTable:[packet args]];
+    @synchronized(self) {
+        loadedData = true;
+        
+        NSString *name = [packet name];
+        if ([name isEqualToString:@"get.tables"]) {
+            [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
+        } else if ([name isEqualToString:@"get.categories"]) {
+            [self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
+        } else if ([name isEqualToString:@"get.items"]) {
+            [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
+        } else if ([name isEqualToString:@"get.staff"]) {
+            [self setStaff:[self loopAndLoad:[packet args] object:[Staff class]]];
+            [[LTHPasscodeViewController sharedUser] loadStaff:staff];
+        }
+        
+        // for specific table
+        else if ([name isEqualToString:@"get.items table"]) {
+            [self forwardToTable:[packet args]];
+        }
     }
 }
 
@@ -121,6 +132,11 @@
 }
 - (void)authenticatedAsUser:(Staff *)user {
     [self setEmployee:user];
+    
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);
+    dispatch_after(time, dispatch_get_main_queue(), ^(void) {
+        [(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Logged in!" detail:[@"as " stringByAppendingString:user.name] hideAfter:1.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil];
+    });
 }
 - (void)changedPasscode:(NSString *)code {
     if (managedEmployee) {

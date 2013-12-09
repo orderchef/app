@@ -38,7 +38,6 @@
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(reloadTables:) forControlEvents:UIControlEventValueChanged];
     
-	[self setEditing:NO animated:YES];
 	[self.tableView setAllowsSelectionDuringEditing:YES];
 	
     [self reloadData];
@@ -47,6 +46,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+    [self setEditing:NO animated:YES];
+    
 	[self reloadData];
 }
 
@@ -87,6 +88,8 @@
     [super setEditing:editing animated:animated];
     
     if (![[[Storage getStorage] employee] manager]) {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        [self.navigationItem setRightBarButtonItem:nil];
         return;
     }
     

@@ -18,5 +18,6 @@
 
 @property (nonatomic, strong) SocketIO *socket;
 @property (assign) BOOL isConnected;
+@property (assign) BOOL shouldAttemptRecovery;
 
 @end

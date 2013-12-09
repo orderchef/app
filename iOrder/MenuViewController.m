@@ -11,6 +11,7 @@
 #import "ItemCategory.h"
 #import "Table.h"
 #import "Storage.h"
+#import "Staff.h"
 
 @interface MenuViewController () {
 	NSArray *categories;
@@ -27,10 +28,11 @@
 {
     [super viewDidLoad];
 	
-	[self.navigationItem.rightBarButtonItem setTarget:self];
-	[self.navigationItem.rightBarButtonItem setAction:@selector(newItem:)];
-	[self.navigationItem.leftBarButtonItem setTarget:self];
-	[self.navigationItem.leftBarButtonItem setAction:@selector(closeView:)];
+    if (![[[Storage getStorage] employee] manager]) {
+        [self.navigationItem setRightBarButtonItem:nil];
+    } else {
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"New Item" style:UIBarButtonItemStylePlain target:self action:@selector(newItem:)]];
+    }
     
     [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -58,10 +60,6 @@
 
 - (void)newItem:(id) sender {
 	[self performSegueWithIdentifier:@"newItem" sender:nil];
-}
-
-- (void)closeView:(id)sender {
-	[[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void)reloadData {
