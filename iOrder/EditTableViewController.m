@@ -79,8 +79,15 @@
 
 - (void)titleChanged:(id)sender {
 	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	[self.navigationItem setTitle:cell.textField.text];
 	[table setName:cell.textField.text];
+    
+    if (table.name.length == 0) {
+        [self.navigationItem setTitle:@"Enter a Name"];
+        [self.navigationItem setHidesBackButton:YES animated:NO];
+    } else {
+        [self.navigationItem setTitle:table.name];
+        [self.navigationItem setHidesBackButton:NO animated:YES];
+    }
 }
 
 @end

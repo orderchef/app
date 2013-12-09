@@ -12,16 +12,13 @@
 #import "Table.h"
 #import "Item.h"
 #import "ItemCategory.h"
+#import "Staff.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
-@implementation Storage {
-	NSString *documentsDirectory;
-}
+@implementation Storage
 
-@synthesize tables, items, categories;
-
-static NSString *tablesPath = @"Tables.plist";
-static NSString *itemsPath = @"Items.plist";
-static NSString *categoriesPath = @"Categories.plist";
+@synthesize tables, items, categories, staff, employee;
+@synthesize managedEmployee;
 
 + (Storage *)getStorage {
     static Storage *storage;
@@ -39,11 +36,9 @@ static NSString *categoriesPath = @"Categories.plist";
 	
 	if (self)
 	{
-		// Get the paths
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		documentsDirectory = [paths objectAtIndex:0];
-		
-		[self loadData];
+        [self loadData];
+        
+        [[LTHPasscodeViewController sharedUser] setDelegate:self];
 	}
 	
 	return self;
@@ -86,6 +81,9 @@ static NSString *categoriesPath = @"Categories.plist";
         [self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
     } else if ([name isEqualToString:@"get.items"]) {
         [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
+    } else if ([name isEqualToString:@"get.staff"]) {
+        [self setStaff:[self loopAndLoad:[packet args] object:[Staff class]]];
+        [[LTHPasscodeViewController sharedUser] loadStaff:staff];
     }
     
     // for specific table
@@ -100,6 +98,7 @@ static NSString *categoriesPath = @"Categories.plist";
     [socket sendEvent:@"get.tables" withData:nil];
     [socket sendEvent:@"get.categories" withData:nil];
     [socket sendEvent:@"get.items" withData:nil];
+    [socket sendEvent:@"get.staff" withData:nil]; 
 }
 
 - (ItemCategory *)findCategoryById:(NSString *)_id {
@@ -110,6 +109,26 @@ static NSString *categoriesPath = @"Categories.plist";
     }
     
     return nil;
+}
+
+#pragma mark - LTHPasscodeViewControllerDelegate
+
+- (void)passcodeViewControllerWasDismissed {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+- (void)maxNumberOfFailedAttemptsReached {
+    
+}
+- (void)authenticatedAsUser:(Staff *)user {
+    [self setEmployee:user];
+}
+- (void)changedPasscode:(NSString *)code {
+    if (managedEmployee) {
+        [[self managedEmployee] setCode:code];
+    } else {
+        [[self employee] setCode:code];
+        [[self employee] save];
+    }
 }
 
 @end

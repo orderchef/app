@@ -117,8 +117,9 @@
 	if (indexPath.section == 2) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

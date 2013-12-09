@@ -12,9 +12,9 @@
 #import "MenuViewController.h"
 #import "BasketItemViewController.h"
 #import "TextareaCell.h"
+#import "Staff.h"
 
 @interface BasketTableViewController () {
-    UIRefreshControl *refreshControl;
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
 }
@@ -40,7 +40,10 @@
     [self reloadData];
 	
 	[self.navigationItem setTitle:[table name]];
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
+	
+    if ([[[Storage getStorage] employee] manager]) {
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
+    }
 }
 
 - (void)dealloc {
@@ -53,7 +56,8 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"items"]) {
         [self reloadData];
-        [refreshControl endRefreshing];
+        if ([self.refreshControl isRefreshing])
+            [self.refreshControl endRefreshing];
     }
 }
 

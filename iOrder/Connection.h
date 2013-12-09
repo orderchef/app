@@ -13,6 +13,10 @@
 
 + (Connection *)getConnection;
 
+- (void)connect;
+- (void)disconnect;
+
 @property (nonatomic, strong) SocketIO *socket;
+@property (assign) BOOL isConnected;
 
 @end

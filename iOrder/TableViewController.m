@@ -14,7 +14,9 @@
 #import "Storage.h"
 #import "Connection.h"
 #import "EditTableViewController.h"
-#import <LTHPasscodeViewController.h>
+#import "LTHPasscodeViewController.h"
+#import "Staff.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @interface TableViewController () {
     NSArray *tables;
@@ -28,9 +30,10 @@
 {
     [super viewDidLoad];
     
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(toggleEdit:)]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(toggleEdit:)]];
     
     [[Storage getStorage] addObserver:self forKeyPath:@"tables" options:NSKeyValueObservingOptionNew context:nil];
+    [[Storage getStorage] addObserver:self forKeyPath:@"employee" options:NSKeyValueObservingOptionNew context:nil];
     
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(reloadTables:) forControlEvents:UIControlEventValueChanged];
@@ -47,9 +50,19 @@
 	[self reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    Storage *storage = [Storage getStorage];
+    if ([storage employee] == nil) {
+        [[LTHPasscodeViewController sharedUser] showLockscreenWithAnimation:YES];
+    }
+}
+
 - (void)dealloc {
     @try {
         [[Storage getStorage] addObserver:self forKeyPath:@"tables" options:NSKeyValueObservingOptionNew context:nil];
+        [[Storage getStorage] addObserver:self forKeyPath:@"employee" options:NSKeyValueObservingOptionNew context:nil];
     } @catch (NSException *ex) {}
 }
 
@@ -59,19 +72,31 @@
         if ([self.refreshControl isRefreshing]) {
             [self.refreshControl endRefreshing];
         }
+    } else if ([keyPath isEqualToString:@"employee"]) {
+        Storage *storage = [Storage getStorage];
+        [self setEditing:NO animated:NO];
+        
+        if (![storage employee]) {
+            // Lock
+            [[LTHPasscodeViewController sharedUser] showLockscreenWithAnimation:YES];
+        }
     }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    
+    if (![[[Storage getStorage] employee] manager]) {
+        return;
+    }
+    
 	if (editing) {
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Add Table" style:UIBarButtonItemStylePlain target:self action:@selector(addTable:)] animated:animated];
-		[self.navigationItem.rightBarButtonItem setTitle:@"Done"];
+		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTable:)] animated:animated];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(toggleEdit:)] animated:YES];
 	} else {
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Manager" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)] animated:animated];
-		[self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Manager" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)] animated:animated];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(toggleEdit:)] animated:YES];
 	}
-	
-	[super setEditing:editing animated:animated];
 }
 
 - (void)toggleEdit:(id)sender {
@@ -95,6 +120,8 @@
 	[view setAlertViewStyle:UIAlertViewStylePlainTextInput];
 	
 	[view show];
+    
+    [self setEditing:NO animated:YES];
 }
 
 - (void)openManager:(id)sender {

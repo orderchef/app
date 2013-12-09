@@ -1,15 +1,21 @@
 PODS:
-  - LTHPasscodeViewController (1.2.1)
+  - Bugsnag (3.1.0):
+    - Reachability
+  - MBProgressHUD (0.8)
+  - Reachability (3.1.1)
   - socket.IO (0.4.0.1):
     - SocketRocket (~> 0.2)
   - SocketRocket (0.3.1-beta2)
 
 DEPENDENCIES:
-  - LTHPasscodeViewController
-  - socket.IO (~> 0.4.0.1)
+  - Bugsnag
+  - MBProgressHUD
+  - socket.IO
 
 SPEC CHECKSUMS:
-  LTHPasscodeViewController: f1528991ad91f141a9b2cb48a5d0a2d225d084e4
+  Bugsnag: 7a61040b4be9fa2b51a34e87e1da2007b6640637
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   socket.IO: 88132f82db2700840686a8b0de68875eadca2009
   SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
 

@@ -14,6 +14,8 @@
 
 @synthesize socket;
 
+@synthesize isConnected;
+
 + (Connection *)getConnection {
     static Connection *connection;
     
@@ -36,39 +38,31 @@
 }
 
 - (void)connect {
+    if (socket && (socket.isConnected || socket.isConnecting)) {
+        return;
+    }
+    
     socket = [[SocketIO alloc] initWithDelegate:self];
     [socket connectToHost:@"127.0.0.1" onPort:8080];
 }
 
+- (void)disconnect {
+    [self setIsConnected:false];
+    [socket disconnect];
+}
+
 - (void)socketIODidConnect:(SocketIO *)socket {
 	NSLog(@"Connected");
+    [self setIsConnected:true];
 }
 
 - (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error {
 	NSLog(@"Disconnected %@", error);
-}
-
-- (void)socketIO:(SocketIO *)socket didReceiveJSON:(SocketIOPacket *)packet {
-	NSLog(@"Received %@", packet);
-}
-
-- (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet {
-	NSLog(@"Message %@", packet);
+    [self setIsConnected:false];
 }
 
 - (void)socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet {
-	NSLog(@"Event %@", [packet name]);
-    NSLog(@"Arguments: %@", [packet args]);
-    
     [[Storage getStorage] parseEvent:packet];
-}
-
-- (void)socketIO:(SocketIO *)socket didSendMessage:(SocketIOPacket *)packet {
-	NSLog(@"Send Message %@", packet);
-}
-
-- (void)socketIO:(SocketIO *)socket onError:(NSError *)error {
-	NSLog(@"Error %@", error);
 }
 
 @end

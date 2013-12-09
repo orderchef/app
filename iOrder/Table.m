@@ -22,6 +22,9 @@
     
     if (self) {
         name = @"";
+        notes = @"";
+        _items = [NSArray array];
+        _id = @"";
     }
     
     return self;
