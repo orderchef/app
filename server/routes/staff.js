@@ -32,4 +32,11 @@ exports.router = function (socket) {
 			staff.save();
 		});
 	})
+	
+	socket.on('remove.staff', function(data) {
+		console.log("Removing a Staff!")
+		console.log(data);
+		
+		models.Staff.findById(data._id).remove();
+	});
 }

@@ -17,5 +17,6 @@
 @property (assign) BOOL manager;
 
 - (void)save;
+- (void)remove;
 
 @end

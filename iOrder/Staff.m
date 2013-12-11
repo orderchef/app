@@ -48,4 +48,12 @@
     } @catch (NSException *e) {}
 }
 
+- (void)remove {
+	if (!_id) {
+		return;
+	}
+	
+	[[[Connection getConnection] socket] sendEvent:@"remove.staff" withData:@{@"_id": _id}];
+}
+
 @end

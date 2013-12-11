@@ -18,6 +18,7 @@
        showAnimated:(BOOL)animated
        hideAnimated:(BOOL)hideAnimated
                hide:(BOOL)doesHide
-      tapRecognizer:(UITapGestureRecognizer *)recognizer;
+      tapRecognizer:(UITapGestureRecognizer *)recognizer
+			 toView:(UIView *)view;
 
 @end

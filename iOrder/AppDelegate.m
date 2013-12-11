@@ -72,14 +72,14 @@
         }
         
         if (connected) {
-            [self showMessage:@"Connected" detail:nil hideAfter:0.5f showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil];
+            [self showMessage:@"Connected" detail:nil hideAfter:0.5f showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:nil];
         } else {
-            [self showMessage:@"Disconnected!" detail:@"Tap to reconnect" hideAfter:0.f showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:tapToReconnect];
+            [self showMessage:@"Disconnected!" detail:@"Tap to reconnect" hideAfter:0.f showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:tapToReconnect toView:nil];
         }
     }
 }
 
-- (void)showMessage:(NSString *)message detail:(NSString *)detail hideAfter:(NSTimeInterval)interval showAnimated:(BOOL)animated hideAnimated:(BOOL)hideAnimated hide:(BOOL)doesHide tapRecognizer:(UITapGestureRecognizer *)recognizer
+- (void)showMessage:(NSString *)message detail:(NSString *)detail hideAfter:(NSTimeInterval)interval showAnimated:(BOOL)animated hideAnimated:(BOOL)hideAnimated hide:(BOOL)doesHide tapRecognizer:(UITapGestureRecognizer *)recognizer toView:(UIView *)view
 {
     UIViewController *vc = [LTHPasscodeViewController sharedUser];
     bool isInLockscreen = vc.isViewLoaded && vc.view.window;
@@ -96,7 +96,12 @@
         hud = [MBProgressHUD showHUDAddedTo:vc.view animated:animated];
         hud.yOffset = 40.f;
     } else {
-        hud = [MBProgressHUD showHUDAddedTo:_window.rootViewController.view animated:animated];
+		UIView *v = _window.rootViewController.view;
+		if (view) {
+			v = view;
+		}
+		
+        hud = [MBProgressHUD showHUDAddedTo:v animated:animated];
         hud.yOffset = 100.f;
     }
     

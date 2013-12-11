@@ -11,7 +11,7 @@
 
 @class Table;
 
-@interface BasketTableViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate>
+@interface BasketTableViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) Table *table;
 

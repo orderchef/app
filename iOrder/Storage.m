@@ -135,7 +135,7 @@
     
     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);
     dispatch_after(time, dispatch_get_main_queue(), ^(void) {
-        [(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Logged in!" detail:[@"as " stringByAppendingString:user.name] hideAfter:1.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil];
+        [(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Logged in!" detail:[@"as " stringByAppendingString:user.name] hideAfter:1.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:nil];
     });
 }
 - (void)changedPasscode:(NSString *)code {

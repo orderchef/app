@@ -10,8 +10,11 @@
 #import "Staff.h"
 #import "TextFieldCell.h"
 #import "LTHPasscodeViewController.h"
+#import "AppDelegate.h"
 
-@interface EmployeeViewController ()
+@interface EmployeeViewController () {
+	BOOL save;
+}
 
 @end
 
@@ -23,16 +26,18 @@
 {
     [super viewDidLoad];
     
+	save = true;
+	
     [self.navigationItem setTitle:employee.name];
     if (employee.name.length == 0) {
         [self.navigationItem setTitle:@"Enter a Name"];
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
-    if (employee.name.length > 0) {
+    if (save && employee.name.length > 0) {
         [employee save];
     }
 }
@@ -49,7 +54,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+	if (employee._id.length > 0)
+		return 3;
+	
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -155,7 +163,10 @@
             cell.textLabel.text = @"Make Employee a Manager";
         }
     } else if (indexPath.section == 2) {
-        
+		save = false;
+        [employee remove];
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[employee.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+		[self.navigationController popViewControllerAnimated:YES];
     }
 }
 

@@ -41,6 +41,7 @@ exports.router = function (socket) {
 			if (err) throw err;
 			
 			table.items = [];
+			table.notes = "";
 			table.save();
 		})
 	})

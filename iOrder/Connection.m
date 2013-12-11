@@ -56,7 +56,7 @@
     if (!socket) {
         socket = [[SocketIO alloc] initWithDelegate:self];
     }
-    [socket connectToHost:@"172.20.10.4" onPort:8080];
+    [socket connectToHost:@"192.168.0.9" onPort:8080];
 }
 
 - (void)disconnect {

@@ -17,6 +17,7 @@
 @interface BasketTableViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
+	UIActionSheet *sheet;
 }
 
 @end
@@ -41,9 +42,9 @@
 	
 	[self.navigationItem setTitle:[table name]];
 	
-    if ([[[Storage getStorage] employee] manager]) {
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
-    }
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
+	
+	sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Print to Kitchen", @"Print to Counter", @"Clear Table", nil];
 }
 
 - (void)dealloc {
@@ -70,7 +71,7 @@
 }
 
 - (void)openMenu:(id)sender {
-	
+	[sheet showInView:self.view];
 }
 
 - (void)clear:(id)sender {
@@ -242,6 +243,20 @@
     if (keyboardIsOpen) {
         [self dismissKeyboard:nil];
     }
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	switch (buttonIndex) {
+		case 0:
+		case 1:
+		case 2:
+			[self sendToKitchen:nil];
+			break;
+		case 3:
+			[self clear:nil];
+	}
 }
 
 @end
