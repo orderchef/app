@@ -28,12 +28,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+	if (section == 0) {
+		return 2;
+	}
+	
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -41,21 +45,29 @@
     static NSString *CellIdentifier = @"basic";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"Restaurant Staff";
-    } else {
-        cell.textLabel.text = @"About";
-    }
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			cell.textLabel.text = @"Items";
+		} else {
+			cell.textLabel.text = @"Staff";
+		}
+	} else if (indexPath.section == 1) {
+		cell.textLabel.text = @"About";
+	}
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        [self performSegueWithIdentifier:@"Staff" sender:nil];
-    } else {
-        [self performSegueWithIdentifier:@"about" sender:nil];
-    }
+    if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"Items" sender:nil];
+		} else {
+			[self performSegueWithIdentifier:@"Staff" sender:nil];
+		}
+	} else if (indexPath.section == 1) {
+		[self performSegueWithIdentifier:@"about" sender:nil];
+	}
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

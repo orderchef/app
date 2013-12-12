@@ -69,20 +69,28 @@
 }
 
 - (void)saveItem:(id)sender {
-    if (!category) {
-        [[[UIAlertView alloc] initWithTitle:@"Select a category!" message:@"Please select a category before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-        return;
-    }
-    
     Storage *storage = [Storage getStorage];
     Item *item = [[Item alloc] init];
     
-    [item setName:name.text];
-    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    [item setPrice:[formatter numberFromString:price.text]];
-    
+	NSNumber *p = [formatter numberFromString:price.text];
+	
+	if (!category) {
+        [[[UIAlertView alloc] initWithTitle:@"Select a category!" message:@"Please select a category before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+    }
+	if (name.text.length == 0) {
+		[[[UIAlertView alloc] initWithTitle:@"Enter a name!" message:@"Please enter a name before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+	}
+	if (p.floatValue < 0.f || price.text.length == 0) {
+		[[[UIAlertView alloc] initWithTitle:@"Invalid Price!" message:@"Please enter a valid price before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+        return;
+	}
+	
+    [item setName:name.text];
+    [item setPrice:p];
     [item setCategory:category];
     
     [item save];
@@ -159,7 +167,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return nil;
+            return @"Item Details";
         case 1:
             return @"Item Category";
     }
