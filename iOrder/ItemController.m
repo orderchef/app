@@ -19,11 +19,15 @@
     ItemCategory *category;
     UITextField *name;
     UITextField *price;
+	
+	BOOL save;
 }
 
 @end
 
 @implementation ItemController
+
+@synthesize item;
 
 - (void)viewDidLoad
 {
@@ -36,7 +40,17 @@
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(reloadCategories:) forControlEvents:UIControlEventValueChanged];
     
+	save = true;
+	
     [self reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	if (save && item.name.length > 0) {
+        [item save];
+    }
 }
 
 - (void)dealloc {

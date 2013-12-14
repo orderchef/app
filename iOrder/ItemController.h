@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Item;
+
 @interface ItemController : UITableViewController <UIAlertViewDelegate>
+
+@property (nonatomic, weak) Item *item;
 
 @end
