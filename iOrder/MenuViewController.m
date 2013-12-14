@@ -28,10 +28,10 @@
 {
     [super viewDidLoad];
 	
-    if (![[[Storage getStorage] employee] manager]) {
-        [self.navigationItem setRightBarButtonItem:nil];
+    if ([[[Storage getStorage] employee] manager] && !table) {
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"New Item" style:UIBarButtonItemStylePlain target:self action:@selector(newItem:)]];
     } else {
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"New Item" style:UIBarButtonItemStylePlain target:self action:@selector(newItem:)]];
+		[self.navigationItem setRightBarButtonItem:nil];
     }
     
     [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
@@ -41,6 +41,12 @@
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
     
+	if (!table) {
+		[self.navigationItem setTitle:@"Items"];
+	} else {
+		[self.navigationItem setTitle:@"Add to Basket"];
+	}
+	
     [self reloadData];
 }
 
@@ -59,7 +65,7 @@
 }
 
 - (void)newItem:(id) sender {
-	[self performSegueWithIdentifier:@"newItem" sender:nil];
+	[self performSegueWithIdentifier:@"Item" sender:nil];
 }
 
 - (void)reloadData {
@@ -100,6 +106,12 @@
     }
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Item"]) {
+		
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -130,10 +142,16 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    [table addItem:item];
-    
-    [self.navigationController popViewControllerAnimated:YES];
+	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	
+	if (table) {
+		[table addItem:item];
+		[self.navigationController popViewControllerAnimated:YES];
+		
+		return;
+	}
+	
+	[self performSegueWithIdentifier:@"Item" sender:item];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {

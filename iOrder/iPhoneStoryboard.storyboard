@@ -75,6 +75,7 @@
                     <connections>
                         <segue destination="BMV-Zh-JZi" kind="push" identifier="Staff" id="rXB-Qy-xqR"/>
                         <segue destination="1AP-aY-d8S" kind="push" identifier="about" id="hZ0-xN-HrA"/>
+                        <segue destination="IMB-4C-WAk" kind="push" identifier="Items" id="WC3-Bi-NKW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3cQ-z2-Fzb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -443,32 +444,17 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM"/>
                     <connections>
-                        <segue destination="4WQ-tZ-HpA" kind="modal" identifier="newItem" id="bCr-09-rBi"/>
+                        <segue destination="q2f-Rk-SwJ" kind="push" identifier="Item" id="Uja-aI-zFx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrC-K2-dtt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1424" y="-598"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Ftb-kd-xaO">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="4WQ-tZ-HpA" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TiK-hD-8tN">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="q2f-Rk-SwJ" kind="relationship" relationship="rootViewController" id="N6W-3y-xHo"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JlY-6j-LfK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1870" y="-598"/>
-        </scene>
-        <!--Category View Controller - New Item-->
+        <!--Item Controller - {{ Item }}-->
         <scene sceneID="1BI-NX-jlf">
             <objects>
-                <tableViewController id="q2f-Rk-SwJ" customClass="CategoryViewController" sceneMemberID="viewController">
+                <tableViewController id="q2f-Rk-SwJ" customClass="ItemController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="YBG-Dz-l8z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -516,14 +502,13 @@
                             <outlet property="delegate" destination="q2f-Rk-SwJ" id="dpa-cP-cFT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Item" id="Cmk-ra-OzG">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="kBn-6B-niI"/>
+                    <navigationItem key="navigationItem" title="{{ Item }}" id="Cmk-ra-OzG">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="QM2-tR-zk6"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JZC-Nc-kcx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2278" y="-598"/>
+            <point key="canvasLocation" x="1870" y="-598"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Yyi-R3-7Vk">
@@ -546,4 +531,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="WC3-Bi-NKW"/>
+    </inferredMetricsTieBreakers>
 </document>

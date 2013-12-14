@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "CategoryViewController.h"
+#import "ItemController.h"
 #import "TextFieldCell.h"
 #import "Item.h"
 #import "AppDelegate.h"
@@ -14,7 +14,7 @@
 #import "Storage.h"
 #import "Connection.h"
 
-@interface CategoryViewController () {
+@interface ItemController () {
     NSArray *categories;
     ItemCategory *category;
     UITextField *name;
@@ -23,14 +23,12 @@
 
 @end
 
-@implementation CategoryViewController
+@implementation ItemController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-	[self.navigationItem.leftBarButtonItem setTarget:self];
-	[self.navigationItem.leftBarButtonItem setAction:@selector(closeView:)];
 	[self.navigationItem.rightBarButtonItem setTarget:self];
 	[self.navigationItem.rightBarButtonItem setAction:@selector(saveItem:)];
     
@@ -62,10 +60,6 @@
     categories = [[Storage getStorage] categories];
     
     [self.tableView reloadData];
-}
-
-- (void)closeView:(id)sender {
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)saveItem:(id)sender {
