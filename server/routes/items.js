@@ -6,7 +6,9 @@ exports.router = function (socket) {
 	socket.on('get.items', function(data) {
 		console.log("Listing Items")
 		
-		models.Item.find({}, function(err, items) {
+		models.Item.find({
+			disabled: false
+		}, function(err, items) {
 			if (err) throw err;
 			
 			console.log(items);
@@ -41,13 +43,33 @@ exports.router = function (socket) {
 	socket.on('create.item', function(data) {
 		console.log("Creating item ")
 		console.log(data);
-		try {
-			data.category = mongoose.Types.ObjectId(data.category)
-		} catch (e) {
-			data.category = null;
-		} finally {
-			var item = new models.Item(data)
+		
+		models.Item.findById(data._id, function(err, item) {
+			try {
+				data.category = mongoose.Types.ObjectId(data.category)
+			} catch (e) {
+				data.category = null;
+			} finally {
+				if (err || !item) {
+					item = new models.Item();
+				}
+				
+				item.update(data);
+				item.save();
+			}
+		});
+	})
+	
+	socket.on('delete.item', function(data) {
+		console.log("Deleting item");
+		
+		models.Item.findById(data._id, function(err, item) {
+			if (err || !item) {
+				return;
+			}
+			
+			item.disabled = true;
 			item.save();
-		}
+		})
 	})
 }

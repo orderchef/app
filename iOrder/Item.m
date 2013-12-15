@@ -23,8 +23,9 @@
     self = [super init];
     
     if (self) {
+		_id = @"";
         name = @"";
-        price = 0;
+        price = [NSNumber numberWithFloat:0.f];
         category = nil;
         table = nil;
     }
@@ -44,11 +45,20 @@
 - (void)save {
     Connection *c = [Connection getConnection];
     SocketIO *socket = [c socket];
-    [socket sendEvent:@"create.item" withData:@{@"name": name, @"price": price, @"category": category._id}];
+    [socket sendEvent:@"create.item" withData:@{
+												@"_id": _id,
+												@"name": name,
+												@"price": price,
+												@"category": category._id
+												}];
 }
 
 - (void)saveCategory:(ItemCategory *)theCategory {
     [[[Connection getConnection] socket] sendEvent:@"set.item category" withData:@{@"item": _id, @"category": theCategory._id }];
+}
+
+- (void)deleteItem {
+	[[[Connection getConnection] socket] sendEvent:@"delete.item" withData:@{@"_id": _id }];
 }
 
 @end

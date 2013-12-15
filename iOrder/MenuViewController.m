@@ -12,10 +12,12 @@
 #import "Table.h"
 #import "Storage.h"
 #import "Staff.h"
+#import "ItemController.h"
 
 @interface MenuViewController () {
 	NSArray *categories;
     NSArray *titles;
+	Item *newItem;
 }
 
 @end
@@ -65,7 +67,8 @@
 }
 
 - (void)newItem:(id) sender {
-	[self performSegueWithIdentifier:@"Item" sender:nil];
+	newItem = [[Item alloc] init];
+	[self performSegueWithIdentifier:@"Item" sender:newItem];
 }
 
 - (void)reloadData {
@@ -108,7 +111,8 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"Item"]) {
-		
+		ItemController *vc = (ItemController *)[segue destinationViewController];
+		vc.item = (Item *)sender;
 	}
 }
 

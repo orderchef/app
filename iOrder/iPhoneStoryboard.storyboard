@@ -502,9 +502,7 @@
                             <outlet property="delegate" destination="q2f-Rk-SwJ" id="dpa-cP-cFT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="{{ Item }}" id="Cmk-ra-OzG">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="QM2-tR-zk6"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="{{ Item }}" id="Cmk-ra-OzG"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JZC-Nc-kcx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

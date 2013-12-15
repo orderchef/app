@@ -44,7 +44,7 @@
 	
 	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
 	
-	sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Print to Kitchen", @"Print to Counter", @"Clear Table", nil];
+	sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Checkout Table (clear items)", nil];
 }
 
 - (void)dealloc {
@@ -250,8 +250,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	switch (buttonIndex) {
 		case 0:
-		case 1:
-		case 2:
 			[self sendToKitchen:nil];
 			break;
 		case 3:

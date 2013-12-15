@@ -32,9 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	[self.navigationItem.rightBarButtonItem setTarget:self];
-	[self.navigationItem.rightBarButtonItem setAction:@selector(saveItem:)];
     
     [[Storage getStorage] addObserver:self forKeyPath:@"categories" options:NSKeyValueObservingOptionNew context:nil];
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
@@ -42,13 +39,21 @@
     
 	save = true;
 	
+	[self.navigationItem setTitle:item.name];
+    if (item.name.length == 0) {
+        [self.navigationItem setTitle:@"Enter a Name"];
+    }
+	if (item._id.length == 0) {
+		[self.navigationItem setTitle:@"New Item"];
+	}
+	
     [self reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
-	if (save && item.name.length > 0) {
+	if (save && item.name.length > 0 && category != nil && item.price != nil) {
         [item save];
     }
 }
@@ -76,49 +81,71 @@
     [self.tableView reloadData];
 }
 
-- (void)saveItem:(id)sender {
-    Storage *storage = [Storage getStorage];
-    Item *item = [[Item alloc] init];
+- (void)nameChanged:(id)sender {
+	[item setName:name.text];
     
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    if (item.name.length == 0) {
+        [self.navigationItem setTitle:@"Enter a Name"];
+        //Check if is new item...
+        if (item._id.length > 0) {
+            [self.navigationItem setHidesBackButton:YES animated:NO];
+        } else {
+			self.navigationItem.title = @"New Item";
+		}
+    } else {
+        [self.navigationItem setTitle:item.name];
+        if (price.text.length > 0) {
+			[self.navigationItem setHidesBackButton:NO animated:YES];
+		} else {
+			[self.navigationItem setHidesBackButton:YES animated:YES];
+		}
+    }
+}
+
+- (void)priceChanged:(id)sender {
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	NSNumber *p = [formatter numberFromString:price.text];
 	
-	if (!category) {
-        [[[UIAlertView alloc] initWithTitle:@"Select a category!" message:@"Please select a category before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-        return;
+	[item setPrice:p];
+    
+    if (p.floatValue < 0.f || price.text.length == 0) {
+        [self.navigationItem setTitle:@"Enter a Price"];
+		
+        if (item._id.length > 0) {
+            [self.navigationItem setHidesBackButton:YES animated:NO];
+        }
+    } else {
+        [self.navigationItem setTitle:item.name];
+        
+		if (name.text.length > 0) {
+			[self.navigationItem setHidesBackButton:NO animated:YES];
+		} else {
+			[self.navigationItem setHidesBackButton:YES animated:YES];
+		}
     }
-	if (name.text.length == 0) {
-		[[[UIAlertView alloc] initWithTitle:@"Enter a name!" message:@"Please enter a name before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-        return;
-	}
-	if (p.floatValue < 0.f || price.text.length == 0) {
-		[[[UIAlertView alloc] initWithTitle:@"Invalid Price!" message:@"Please enter a valid price before saving.." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
-        return;
-	}
-	
-    [item setName:name.text];
-    [item setPrice:p];
-    [item setCategory:category];
-    
-    [item save];
-    [[storage items] addObject:item];
-    
-    [storage loadData];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if (item._id.length > 0) {
+		return 3;
+	}
+	
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 2 : [categories count] + 1;
+	if (section == 0) {
+		return 2;
+	} if (section == 1) {
+		return [categories count]+1;
+	}
+	
+	return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,16 +163,20 @@
                 [cell.textField setPlaceholder:@"Item Name"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
                 name = cell.textField;
+				[name setText:item.name];
+				[name addTarget:self action:@selector(nameChanged:) forControlEvents:UIControlEventEditingChanged];
                 break;
             case 1:
                 [cell.textField setPlaceholder:@"Item Price"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDecimalPad];
                 price = cell.textField;
+				[price setText:[NSString stringWithFormat:@"%.2f", [item.price floatValue]]];
+				[price addTarget:self action:@selector(priceChanged:) forControlEvents:UIControlEventEditingChanged];
                 break;
         }
         
         return cell;
-    } else {
+    } else if (indexPath.section == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"category"];
         
         if (indexPath.row >= [categories count]) {
@@ -155,7 +186,15 @@
         }
         
         return cell;
-    }
+    } else {
+		// Delete
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"category"];
+        
+		cell.textLabel.text = @"Delete Item";
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		
+		return cell;
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -168,8 +207,14 @@
             [alertView show];
         } else {
             category = [categories objectAtIndex:indexPath.row];
+			item.category = category;
         }
-    }
+    } else if (indexPath.section == 2) {
+		save = false;
+        [item deleteItem];
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -188,6 +233,7 @@
     
     if (buttonIndex == 1) {
         category = [[ItemCategory alloc] init];
+		item.category = category;
 		[category setName:[[alertView textFieldAtIndex:0] text]];
 		
         [category save];

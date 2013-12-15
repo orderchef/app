@@ -21,5 +21,6 @@
 
 - (void)save;
 - (void)saveCategory:(ItemCategory *)theCategory;
+- (void)deleteItem;
 
 @end
