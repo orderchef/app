@@ -252,7 +252,7 @@
 		case 0:
 			[self sendToKitchen:nil];
 			break;
-		case 3:
+		case 1:
 			[self clear:nil];
 	}
 }

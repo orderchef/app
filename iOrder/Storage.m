@@ -14,6 +14,7 @@
 #import "ItemCategory.h"
 #import "Staff.h"
 #import "AppDelegate.h"
+#import "Report.h"
 
 @interface Storage () {
     bool loadedData; // at least once....
@@ -23,7 +24,7 @@
 
 @implementation Storage
 
-@synthesize tables, items, categories, staff, employee;
+@synthesize tables, items, categories, staff, employee, reports;
 @synthesize managedEmployee;
 
 + (Storage *)getStorage {
@@ -94,7 +95,9 @@
         } else if ([name isEqualToString:@"get.staff"]) {
             [self setStaff:[self loopAndLoad:[packet args] object:[Staff class]]];
             [[LTHPasscodeViewController sharedUser] loadStaff:staff];
-        }
+        } else if ([name isEqualToString:@"get.reports"]) {
+			[self setReports:[self loopAndLoad:[packet args] object:[Report class]]];
+		}
         
         // for specific table
         else if ([name isEqualToString:@"get.items table"]) {
@@ -106,10 +109,10 @@
 - (void)loadData {
     SocketIO *socket = [[Connection getConnection] socket];
     
+	[socket sendEvent:@"get.staff" withData:nil];
     [socket sendEvent:@"get.tables" withData:nil];
     [socket sendEvent:@"get.categories" withData:nil];
     [socket sendEvent:@"get.items" withData:nil];
-    [socket sendEvent:@"get.staff" withData:nil]; 
 }
 
 - (ItemCategory *)findCategoryById:(NSString *)_id {

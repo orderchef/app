@@ -23,6 +23,8 @@
 		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
 		4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TableViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
+		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
+		4F8B98C4185E28E7001354CA /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C3185E28E7001354CA /* Report.m */; };
 		4FA097A3184F55CE00398DD4 /* BasketItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* BasketItemViewController.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
@@ -89,6 +91,10 @@
 		4F5BE44C181DD255007EF69F /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
+		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
+		4F8B98C0185E279C001354CA /* ReportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportsViewController.m; sourceTree = "<group>"; };
+		4F8B98C2185E28E7001354CA /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
+		4F8B98C3185E28E7001354CA /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* BasketItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketItemViewController.h; sourceTree = "<group>"; };
 		4FA097A2184F55CE00398DD4 /* BasketItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketItemViewController.m; sourceTree = "<group>"; };
 		4FD59E5618211E870077A70E /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
@@ -168,6 +174,8 @@
 				4F3628BF1856025B00971505 /* StaffViewController.m */,
 				4F3628C11856063D00971505 /* EmployeeViewController.h */,
 				4F3628C21856063D00971505 /* EmployeeViewController.m */,
+				4F8B98BF185E279C001354CA /* ReportsViewController.h */,
+				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
 			);
 			name = "Manager VCs";
 			sourceTree = "<group>";
@@ -305,6 +313,8 @@
 				4F3A5D721820846800201B8C /* Item.m */,
 				4F3628B81855E31C00971505 /* Staff.h */,
 				4F3628B91855E31C00971505 /* Staff.m */,
+				4F8B98C2185E28E7001354CA /* Report.h */,
+				4F8B98C3185E28E7001354CA /* Report.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -474,10 +484,12 @@
 				4FA097A3184F55CE00398DD4 /* BasketItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
+				4F8B98C4185E28E7001354CA /* Report.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
 				4F33E524181E673000E4FDD9 /* ItemController.m in Sources */,
 				4F3628B71855E0F900971505 /* SFHFKeychainUtils.m in Sources */,
 				4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */,
+				4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */,
 				4FD59E5818211E870077A70E /* Connection.m in Sources */,
 				4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */,
 				4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */,

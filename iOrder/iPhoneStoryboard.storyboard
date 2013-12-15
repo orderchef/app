@@ -76,6 +76,7 @@
                         <segue destination="BMV-Zh-JZi" kind="push" identifier="Staff" id="rXB-Qy-xqR"/>
                         <segue destination="1AP-aY-d8S" kind="push" identifier="about" id="hZ0-xN-HrA"/>
                         <segue destination="IMB-4C-WAk" kind="push" identifier="Items" id="WC3-Bi-NKW"/>
+                        <segue destination="LiX-ld-c6v" kind="push" identifier="Reports" id="erh-hl-uGe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3cQ-z2-Fzb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -275,6 +276,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uau-DY-52J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1424" y="183"/>
+        </scene>
+        <!--Reports View Controller - Reports-->
+        <scene sceneID="GqG-1D-S9p">
+            <objects>
+                <tableViewController id="LiX-ld-c6v" customClass="ReportsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ih0-bR-IkB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Report" textLabel="rH5-gx-jQD" style="IBUITableViewCellStyleDefault" id="gQW-Wt-Q3x">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gQW-Wt-Q3x" id="p0z-a1-Nxa">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rH5-gx-jQD">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="LiX-ld-c6v" id="vbc-wh-kQU"/>
+                            <outlet property="delegate" destination="LiX-ld-c6v" id="ylf-a6-yNT"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Reports" id="Qvy-e8-I60"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ElT-7N-Kjk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="899" y="-1974"/>
         </scene>
         <!--Table View Controller - About-->
         <scene sceneID="Xa6-GQ-D9a">

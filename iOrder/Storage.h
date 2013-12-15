@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) NSMutableArray *staff;
+@property (nonatomic, strong) NSArray *reports;
 @property (nonatomic, strong) Staff *employee;
 @property (nonatomic, weak) Staff *managedEmployee;
 

@@ -34,7 +34,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 2;
+		return 3;
 	}
 	
     return 1;
@@ -48,8 +48,10 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Items";
-		} else {
+		} else if (indexPath.row == 1) {
 			cell.textLabel.text = @"Staff";
+		} else if (indexPath.row == 2) {
+			cell.textLabel.text = @"Reports";
 		}
 	} else if (indexPath.section == 1) {
 		cell.textLabel.text = @"About";
@@ -62,8 +64,10 @@
     if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			[self performSegueWithIdentifier:@"Items" sender:nil];
-		} else {
+		} else if (indexPath.row == 1) {
 			[self performSegueWithIdentifier:@"Staff" sender:nil];
+		} else if (indexPath.row == 2) {
+			[self performSegueWithIdentifier:@"Reports" sender:nil];
 		}
 	} else if (indexPath.section == 1) {
 		[self performSegueWithIdentifier:@"about" sender:nil];

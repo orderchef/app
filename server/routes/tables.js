@@ -37,12 +37,16 @@ exports.router = function (socket) {
 		
 		var table = mongoose.Types.ObjectId(data.table);
 		
-		models.Table.findById(table, function(err, table) {
+		models.Table.findById(table).populate('items.item').exec(function(err, table) {
 			if (err) throw err;
 			
-			table.items = [];
-			table.notes = "";
-			table.save();
+			models.Report.getTodaysReport(function(report) {
+				report.addTable(table);
+				
+				table.items = [];
+				table.notes = "";
+				table.save();
+			});
 		})
 	})
 	socket.on('remove.table', function(data) {
