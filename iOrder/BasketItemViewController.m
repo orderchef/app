@@ -142,7 +142,7 @@
 	if (section == 1) {
 		if (!quantityStepper) {
 			quantityStepper = [[UIStepper alloc] init];
-			[quantityStepper setMinimumValue:1.f];
+			[quantityStepper setMinimumValue:0.f];
 			[quantityStepper setStepValue:1.f];
 			[quantityStepper setValue:[[item objectForKey:@"quantity"] floatValue]];
 			[quantityStepper addObserver:self forKeyPath:@"value" options:NSKeyValueObservingOptionNew context:nil];
