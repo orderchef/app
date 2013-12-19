@@ -13,11 +13,26 @@
 #import "Storage.h"
 #import "Staff.h"
 #import "ItemController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MenuViewController () {
 	NSArray *categories;
     NSArray *titles;
+	NSString *searchText;
 	Item *newItem;
+	
+	CGPoint kNavbarDefaultPosition;
+	CGPoint kNavbarMinimalPosition;
+	CGPoint kTableDefaultPosition;
+	CGPoint kTableMinimalPosition;
+	CGFloat kTableDefaultHeight;
+	CGFloat kTableMaximumHeight;
+	
+	bool isNavbarHidden;
+	bool isOverlayHidden;
+	
+	UIView *blackOverlay;
+	UITapGestureRecognizer *tapRecognizer;
 }
 
 @end
@@ -30,12 +45,29 @@
 {
     [super viewDidLoad];
 	
+	isNavbarHidden = false;
+	isOverlayHidden = true;
+	
+	kNavbarDefaultPosition = self.navigationController.navigationBar.layer.position;
+	kNavbarMinimalPosition = CGPointMake(kNavbarDefaultPosition.x, kNavbarDefaultPosition.y - self.searchBar.frame.size.height);
+	kTableDefaultPosition = self.tableView.layer.position;
+	kTableMinimalPosition = CGPointMake(kTableDefaultPosition.x, kTableDefaultPosition.y - self.searchBar.frame.size.height);
+	kTableDefaultHeight = self.tableView.frame.size.height;
+	kTableMaximumHeight = self.tableView.frame.size.height + 44.f;
+	
+	blackOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 44.f, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+	tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resetSearchBar:)];
+	[tapRecognizer setCancelsTouchesInView:YES];
+	[blackOverlay addGestureRecognizer:tapRecognizer];
+	
     if ([[[Storage getStorage] employee] manager] && !table) {
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"New Item" style:UIBarButtonItemStylePlain target:self action:@selector(newItem:)]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItem:)]];
     } else {
 		[self.navigationItem setRightBarButtonItem:nil];
     }
     
+	searchText = @"";
+	
     [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -49,7 +81,18 @@
 		[self.navigationItem setTitle:@"Add to Basket"];
 	}
 	
+	self.searchBar.delegate = self;
+	self.navigationController.delegate = self;
+	
     [self reloadData];
+}
+
+- (void)setTitle {
+	if (!table) {
+		[self.navigationItem setTitle:@"Items"];
+	} else {
+		[self.navigationItem setTitle:@"Add to Basket"];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,7 +119,14 @@
     
     NSMutableDictionary *secs = [[NSMutableDictionary alloc] init];
     
-    NSArray *items = [storage items];
+    NSArray *items;
+	if (searchText.length > 0) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@", searchText];
+		items = [[storage items] filteredArrayUsingPredicate:predicate];
+	} else {
+		items = [storage items];
+	}
+	
     for (Item *i in items) {
         ItemCategory *category = i.category;
         
@@ -116,6 +166,110 @@
 	}
 }
 
+- (void)resetSearchBar:(id)sender {
+	[self.searchBar resignFirstResponder];
+	[self hideOverlay];
+}
+
+- (void)hideNavbar {
+	if (isNavbarHidden == true) {
+		return;
+	}
+	
+	isNavbarHidden = true;
+	CABasicAnimation *navAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+	CABasicAnimation *tabAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+	
+	navAnimation.duration = 0.08f;
+	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	navAnimation.fillMode = kCAFillModeForwards;
+	
+	tabAnimation.duration = 0.08f;
+	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	tabAnimation.fillMode = kCAFillModeForwards;
+	
+	CALayer *navLayer = self.navigationController.navigationBar.layer;
+	CALayer *tabLayer = self.tableView.layer;
+	
+	navAnimation.fromValue = [NSValue valueWithCGPoint:kNavbarDefaultPosition];
+	tabAnimation.fromValue = [NSValue valueWithCGPoint:kTableDefaultPosition];
+	navAnimation.toValue = [NSValue valueWithCGPoint:kNavbarMinimalPosition];
+	tabAnimation.toValue = [NSValue valueWithCGPoint:kTableMinimalPosition];
+	
+	navLayer.position = kNavbarMinimalPosition;
+	tabLayer.position = kTableMinimalPosition;
+	
+	[navLayer addAnimation:navAnimation forKey:@"position"];
+	[tabLayer addAnimation:tabAnimation forKey:@"position"];
+	
+	[self.navigationItem setHidesBackButton:YES animated:YES];
+	[self.navigationItem setTitle:@""];
+}
+
+- (void)showNavbar {
+	if (isNavbarHidden == false) {
+		return;
+	}
+	
+	isNavbarHidden = false;
+	[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, kTableDefaultHeight)];
+	
+	CABasicAnimation *navAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+	CABasicAnimation *tabAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+	
+	navAnimation.duration = 0.08f;
+	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	navAnimation.fillMode = kCAFillModeForwards;
+	
+	tabAnimation.duration = 0.08f;
+	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	tabAnimation.fillMode = kCAFillModeForwards;
+	
+	CALayer *navLayer = self.navigationController.navigationBar.layer;
+	CALayer *tabLayer = self.tableView.layer;
+	
+	navAnimation.fromValue = [NSValue valueWithCGPoint:kNavbarMinimalPosition];
+	tabAnimation.fromValue = [NSValue valueWithCGPoint:kTableMinimalPosition];
+	navAnimation.toValue = [NSValue valueWithCGPoint:kNavbarDefaultPosition];
+	tabAnimation.toValue = [NSValue valueWithCGPoint:kTableDefaultPosition];
+	
+	navLayer.position = kNavbarDefaultPosition;
+	tabLayer.position = kTableDefaultPosition;
+	
+	[navLayer addAnimation:navAnimation forKey:@"position"];
+	[tabLayer addAnimation:tabAnimation forKey:@"position"];
+	
+	[self.navigationItem setHidesBackButton:NO animated:YES];
+	[self setTitle];
+}
+
+- (void)showOverlay {
+	if (isOverlayHidden == false) {
+		return;
+	}
+	
+	isOverlayHidden = false;
+	[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.0f]];
+	self.tableView.scrollEnabled = NO;
+	[self.view addSubview:blackOverlay];
+	[UIView animateWithDuration:0.1f animations:^(void) {
+		[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.7f]];
+	}];
+}
+
+- (void)hideOverlay {
+	if (isOverlayHidden == true) {
+		return;
+	}
+	
+	isOverlayHidden = true;
+	self.tableView.scrollEnabled = YES;
+	[UIView animateWithDuration:0.1f animations:^(void) {
+		[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.0f]];
+		[blackOverlay removeFromSuperview];
+	}];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -131,7 +285,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"menu";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.text = item.name;
@@ -146,6 +300,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self.searchBar resignFirstResponder];
+	[self hideOverlay];
+	[self showNavbar];
+	
 	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (table) {
@@ -171,6 +329,54 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [titles objectAtIndex:section];
+}
+
+#pragma mark - Search Delegate
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[searchBar setText:@""];
+	[searchBar resignFirstResponder];
+	[self.searchBar setShowsCancelButton:NO animated:YES];
+	
+	[self searchBar:searchBar textDidChange:@""];
+	
+	[self showNavbar];
+	[self hideOverlay];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)aSearchText {
+	searchText = aSearchText;
+	[self reloadData];
+	
+	if (searchText.length > 0) {
+		[self.searchBar setShowsSearchResultsButton:YES];
+		[self hideOverlay];
+	} else {
+		[self.searchBar setShowsSearchResultsButton:NO];
+		[self showOverlay];
+	}
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, kTableDefaultHeight)];
+	[self hideNavbar];
+	[self.searchBar setShowsCancelButton:YES animated:YES];
+	
+	[self showOverlay];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+	if (searchText.length == 0) {
+		[self showNavbar];
+		[self.searchBar setShowsCancelButton:NO animated:YES];
+	}
+	
+	[self hideOverlay];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	[searchBar resignFirstResponder];
+	[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, kTableMaximumHeight)];
 }
 
 @end

@@ -10,8 +10,9 @@
 
 @class Table;
 
-@interface MenuViewController : UITableViewController
+@interface MenuViewController : UITableViewController <UISearchBarDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) Table *table;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end

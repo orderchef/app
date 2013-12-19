@@ -21,6 +21,7 @@
 		4F3A5D701820846800201B8C /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6F1820846800201B8C /* Table.m */; };
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
 		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
+		4F450870186388B900C1F374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45086F186388B900C1F374 /* QuartzCore.framework */; };
 		4F5BE44D181DD255007EF69F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TableViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
@@ -87,6 +88,7 @@
 		4F3A5D721820846800201B8C /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		4F3A5D77182085F100201B8C /* Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Storage.h; sourceTree = "<group>"; };
 		4F3A5D78182085F100201B8C /* Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Storage.m; sourceTree = "<group>"; };
+		4F45086F186388B900C1F374 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4F5BE44B181DD255007EF69F /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		4F5BE44C181DD255007EF69F /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F450870186388B900C1F374 /* QuartzCore.framework in Frameworks */,
 				4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */,
 				4FF0F3A1181DC6DE00447906 /* CoreGraphics.framework in Frameworks */,
 				4FF0F3A5181DC6DE00447906 /* CoreData.framework in Frameworks */,
@@ -244,6 +247,7 @@
 		4FF0F39D181DC6DE00447906 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F45086F186388B900C1F374 /* QuartzCore.framework */,
 				4FD59E59182128FF0077A70E /* libPods.a */,
 				4FF0F39E181DC6DE00447906 /* Foundation.framework */,
 				4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */,

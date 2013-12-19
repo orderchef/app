@@ -22,6 +22,7 @@
 - (void)loadItems;
 - (void)loadItems:(NSArray *)items;
 - (void)addItem:(Item *)item;
+- (void)removeItem:(Item *)item;
 - (void)clearTable;
 - (void)sendToKitchen;
 - (void)deleteTable;

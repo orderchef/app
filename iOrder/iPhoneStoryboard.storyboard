@@ -265,6 +265,23 @@
                                     <outlet property="textField" destination="z0P-CH-V1z" id="8eu-HK-KWT"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="button" textLabel="QCT-cd-E50" style="IBUITableViewCellStyleDefault" id="UcI-dG-gnm">
+                                <rect key="frame" x="0.0" y="263" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UcI-dG-gnm" id="2J3-oO-602">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QCT-cd-E50">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="thd-Ne-pdW" id="3WY-km-2G6"/>
@@ -450,9 +467,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search for Item" id="j0t-of-hqA">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu" textLabel="gGC-oP-xzn" detailTextLabel="1af-q6-CJp" style="IBUITableViewCellStyleValue1" id="lg6-4y-A28">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lg6-4y-A28" id="mR4-Uq-WN3">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -483,10 +505,28 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM"/>
                     <connections>
+                        <outlet property="searchBar" destination="j0t-of-hqA" id="jL2-6M-LgL"/>
+                        <outlet property="searchDisplayController" destination="Mip-kC-g29" id="lTD-1V-Pwg"/>
                         <segue destination="q2f-Rk-SwJ" kind="push" identifier="Item" id="Uja-aI-zFx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrC-K2-dtt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="7Zn-C6-Mdb">
+                    <connections>
+                        <outlet property="delegate" destination="IMB-4C-WAk" id="3xm-bs-NGv"/>
+                        <outlet property="searchContentsController" destination="IMB-4C-WAk" id="KP8-F6-dgw"/>
+                        <outlet property="searchResultsDataSource" destination="IMB-4C-WAk" id="3hD-4f-RMw"/>
+                        <outlet property="searchResultsDelegate" destination="IMB-4C-WAk" id="syh-sI-sgE"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="Mip-kC-g29">
+                    <connections>
+                        <outlet property="delegate" destination="IMB-4C-WAk" id="wHr-Vf-iN6"/>
+                        <outlet property="searchContentsController" destination="IMB-4C-WAk" id="y2v-DE-3fn"/>
+                        <outlet property="searchResultsDataSource" destination="IMB-4C-WAk" id="x2f-ZT-dPF"/>
+                        <outlet property="searchResultsDelegate" destination="IMB-4C-WAk" id="vgU-Ya-GUk"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1424" y="-598"/>
         </scene>
@@ -569,6 +609,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="WC3-Bi-NKW"/>
+        <segue reference="JES-Xa-qbr"/>
     </inferredMetricsTieBreakers>
 </document>

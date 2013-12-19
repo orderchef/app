@@ -112,6 +112,7 @@ Ordered Items:\n" + orderedString;
 				if (item.item.equals(itemID)) {
 					found = true;
 					it = item;
+					break;
 				}
 			}
 			
@@ -123,6 +124,30 @@ Ordered Items:\n" + orderedString;
 					quantity: 1
 				}
 				table.items.push(it);
+			}
+			
+			table.save();
+		})
+	})
+	
+	socket.on('remove.table item', function(data) {
+		console.log("Removing Item from Table")
+		
+		var table = mongoose.Types.ObjectId(data.table);
+		var itemID = mongoose.Types.ObjectId(data.item);
+		
+		models.Table.findById(table, function(err, table) {
+			var found = false;
+			var it = null;
+			
+			for (var i = 0; i < table.items.length; i++) {
+				var item = table.items[i];
+				
+				if (item.item.equals(itemID)) {
+					table.items.splice(i, 1);
+					
+					break;
+				}
 			}
 			
 			table.save();

@@ -9,6 +9,7 @@
 #import "BasketItemViewController.h"
 #import "Item.h"
 #import "Table.h"
+#import "AppDelegate.h"
 
 @interface BasketItemViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
@@ -44,7 +45,7 @@
 
 - (void)saveItem {
 	TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-	int index = [[table items] indexOfObject:item];
+	int index = (int)[[table items] indexOfObject:item];
 	
 	NSMutableDictionary *dict = [item mutableCopy];
 	[dict setObject:[cell.textField text] forKey:@"notes"];
@@ -63,7 +64,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -75,6 +76,9 @@
 		return 0;
 	}
 	if (section == 2) {
+		return 1;
+	}
+	if (section == 3) {
 		return 1;
 	}
 	
@@ -108,6 +112,11 @@
         [[(TextareaCell *)cell textField] setText:[item objectForKey:@"notes"]];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
+	} else if (indexPath.section == 3) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"button"];
+		
+		cell.textLabel.text = @"Remove from Basket";
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	
 	return cell;
@@ -117,12 +126,18 @@
 	if (indexPath.section == 2) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
+	} else if (indexPath.section == 3) {
+		Item *it = [item objectForKey:@"item"];
+		[table removeItem:it];
+		
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:it.name detail:@"Removed from Basket" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+		[self.navigationController popViewControllerAnimated:YES];
 	}
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 2) {
         return 100.f;
     }
@@ -142,7 +157,7 @@
 	if (section == 1) {
 		if (!quantityStepper) {
 			quantityStepper = [[UIStepper alloc] init];
-			[quantityStepper setMinimumValue:0.f];
+			[quantityStepper setMinimumValue:1.f];
 			[quantityStepper setStepValue:1.f];
 			[quantityStepper setValue:[[item objectForKey:@"quantity"] floatValue]];
 			[quantityStepper addObserver:self forKeyPath:@"value" options:NSKeyValueObservingOptionNew context:nil];
@@ -163,7 +178,7 @@
 	return nil;
 }
 
-- (float)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 1) {
 		return 29.f;
 	}
@@ -183,7 +198,7 @@
 #pragma mark - TextfieldDelegate methods
 
 - (void)dismissKeyboard:(id)sender {
-    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
     [[cell textField] resignFirstResponder];
 }
 
