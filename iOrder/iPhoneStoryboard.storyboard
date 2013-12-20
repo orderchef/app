@@ -467,7 +467,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search for Item" id="j0t-of-hqA">
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search for Items" id="ZTR-XD-WW0">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -505,7 +505,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Add to Basket" id="GAs-4B-OCM"/>
                     <connections>
-                        <outlet property="searchBar" destination="j0t-of-hqA" id="jL2-6M-LgL"/>
+                        <outlet property="searchBar" destination="ZTR-XD-WW0" id="U6d-Jn-xa1"/>
                         <outlet property="searchDisplayController" destination="Mip-kC-g29" id="lTD-1V-Pwg"/>
                         <segue destination="q2f-Rk-SwJ" kind="push" identifier="Item" id="Uja-aI-zFx"/>
                     </connections>

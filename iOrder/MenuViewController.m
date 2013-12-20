@@ -68,8 +68,6 @@
     
 	searchText = @"";
 	
-    [[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
-    
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
@@ -82,7 +80,6 @@
 	}
 	
 	self.searchBar.delegate = self;
-	self.navigationController.delegate = self;
 	
     [self reloadData];
 }
@@ -96,10 +93,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
     [self reloadData];
+	[[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)dealloc {
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
     @try {
         [[Storage getStorage] removeObserver:self forKeyPath:@"items"];
     } @catch (NSException *exception) {}
@@ -203,6 +205,7 @@
 	[tabLayer addAnimation:tabAnimation forKey:@"position"];
 	
 	[self.navigationItem setHidesBackButton:YES animated:YES];
+	[self.navigationItem setRightBarButtonItem:Nil animated:YES];
 	[self.navigationItem setTitle:@""];
 }
 
@@ -240,6 +243,9 @@
 	[tabLayer addAnimation:tabAnimation forKey:@"position"];
 	
 	[self.navigationItem setHidesBackButton:NO animated:YES];
+	if ([[[Storage getStorage] employee] manager] && !table) {
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItem:)]];
+	}
 	[self setTitle];
 }
 

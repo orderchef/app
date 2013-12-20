@@ -14,13 +14,13 @@
 @synthesize delegate;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    if ([delegate respondsToSelector:@selector(textFieldDidBeginEditing)]) {
+    if (delegate && [delegate respondsToSelector:@selector(textFieldDidBeginEditing)]) {
         [delegate textFieldDidBeginEditing];
     }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([delegate respondsToSelector:@selector(textFieldDidEndEditing)]) {
+    if (delegate && [delegate respondsToSelector:@selector(textFieldDidEndEditing)]) {
         [delegate textFieldDidEndEditing];
     }
 }

@@ -32,7 +32,6 @@
 	
     keyboardIsOpen = false;
     
-    [table addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
     [table loadItems];
     
 	[self setRefreshControl:[[UIRefreshControl alloc] init]];
@@ -47,9 +46,17 @@
 	sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Checkout Table (clear items)", nil];
 }
 
-- (void)dealloc {
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[table addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
     @try {
-        [table removeObserver:self forKeyPath:@"items"];
+        [table removeObserver:self forKeyPath:@"items" context:nil];
     }
     @catch (NSException *exception) {}
 }
