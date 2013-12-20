@@ -11,6 +11,7 @@
 #import "Connection.h"
 #import "Report.h"
 #import "AppDelegate.h"
+#import "ReportViewController.h"
 
 @interface ReportsViewController () {
 	NSDictionary *sections;
@@ -73,6 +74,13 @@
 	sections = [_sections copy];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Report"]) {
+		ReportViewController *vc = (ReportViewController *)[segue destinationViewController];
+		vc.report = (Report *)sender;
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -110,10 +118,7 @@
 	NSArray *keys = [sections allKeys];
 	Report *report = [[sections objectForKey:[keys objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
 	
-	[report print];
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Printed" detail:@"Report has been sent to print" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
-	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[self performSegueWithIdentifier:@"Report" sender:report];
 }
 
 @end
