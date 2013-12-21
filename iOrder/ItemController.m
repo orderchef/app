@@ -13,9 +13,9 @@
 #import "ItemCategory.h"
 #import "Storage.h"
 #import "Connection.h"
+#import "CategoriesViewController.h"
 
 @interface ItemController () {
-    NSArray *categories;
     ItemCategory *category;
     UITextField *name;
     UITextField *price;
@@ -33,10 +33,6 @@
 {
     [super viewDidLoad];
     
-    [[Storage getStorage] addObserver:self forKeyPath:@"categories" options:NSKeyValueObservingOptionNew context:nil];
-    [self setRefreshControl:[[UIRefreshControl alloc] init]];
-    [self.refreshControl addTarget:self action:@selector(reloadCategories:) forControlEvents:UIControlEventValueChanged];
-    
 	save = true;
 	
 	[self.navigationItem setTitle:item.name];
@@ -50,34 +46,21 @@
     [self reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
-	if (save && item.name.length > 0 && category != nil && item.price != nil) {
+	if (save && item.name.length > 0 && item.category != nil && item.price != nil) {
         [item save];
     }
 }
 
-- (void)dealloc {
-    @try {
-        [[Storage getStorage] removeObserver:self forKeyPath:@"categories"];
-    } @catch (NSException *exception) {}
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"categories"]) {
-        [self reloadData];
-        [self.refreshControl endRefreshing];
-    }
-}
-
-- (void)reloadCategories:(id)sender {
-    [[Storage getStorage] loadData];
-}
-
 - (void)reloadData {
-    categories = [[Storage getStorage] categories];
-    
     [self.tableView reloadData];
 }
 
@@ -126,6 +109,13 @@
     }
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Categories"]) {
+		CategoriesViewController *vc = (CategoriesViewController *)[segue destinationViewController];
+		vc.item = item;
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -142,7 +132,7 @@
 	if (section == 0) {
 		return 2;
 	} if (section == 1) {
-		return [categories count]+1;
+		return 1;
 	}
 	
 	return 1;
@@ -160,14 +150,14 @@
         
         switch (indexPath.row) {
             case 0:
-                [cell.textField setPlaceholder:@"Item Name"];
+                [cell.textField setPlaceholder:@"Item Name (required)"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
                 name = cell.textField;
 				[name setText:item.name];
 				[name addTarget:self action:@selector(nameChanged:) forControlEvents:UIControlEventEditingChanged];
                 break;
             case 1:
-                [cell.textField setPlaceholder:@"Item Price"];
+                [cell.textField setPlaceholder:@"Item Price (required)"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDecimalPad];
                 price = cell.textField;
 				float _price = [item.price floatValue];
@@ -184,19 +174,20 @@
     } else if (indexPath.section == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"category"];
         
-        if (indexPath.row >= [categories count]) {
-            cell.textLabel.text = @"Create Category...";
-        } else {
-            cell.textLabel.text = [[categories objectAtIndex:indexPath.row] name];
-        }
+		if (item.category)
+			cell.textLabel.text = item.category.name;
+		else
+			cell.textLabel.text = @"Choose Category";
         
         return cell;
     } else {
 		// Delete
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"category"];
         
-		cell.textLabel.text = @"Delete Item";
+		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
+		cell.textLabel.text = @"\uf014 Delete Item";
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		return cell;
 	}
@@ -205,15 +196,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         // category section
-        if (indexPath.row >= [categories count]) {
-            // Create a category..
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Create Category" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Create", nil];
-            [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
-            [alertView show];
-        } else {
-            category = [categories objectAtIndex:indexPath.row];
-			item.category = category;
-        }
+        [self performSegueWithIdentifier:@"Categories" sender:nil];
     } else if (indexPath.section == 2) {
 		save = false;
         [item deleteItem];

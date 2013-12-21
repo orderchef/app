@@ -8,6 +8,7 @@
 
 #import "ManagerViewController.h"
 #import "TablesViewController.h"
+#import <FontAwesome-iOS/NSString+FontAwesome.h>
 
 @interface ManagerViewController ()
 
@@ -29,13 +30,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 4;
+		return 2;
+	} else if (section == 1) {
+		return 3;
 	}
 	
     return 1;
@@ -46,18 +49,23 @@
     static NSString *CellIdentifier = @"basic";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+	cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
 	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			cell.textLabel.text = [[NSString awesomeIcon:FaBarChartO] stringByAppendingString:@" Reports"];
+		} else if (indexPath.row == 1) {
+			cell.textLabel.text = [[NSString awesomeIcon:FaUsers] stringByAppendingString:@" Staff"];
+		}
+	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Items";
 		} else if (indexPath.row == 1) {
-			cell.textLabel.text = @"Staff";
-		} else if (indexPath.row == 2) {
-			cell.textLabel.text = @"Reports";
-		} else if (indexPath.row == 3) {
 			cell.textLabel.text = @"Tables";
+		} else if (indexPath.row == 2) {
+			cell.textLabel.text = @"Item Categories";
 		}
-	} else if (indexPath.section == 1) {
-		cell.textLabel.text = @"About";
+	} else if (indexPath.section == 2) {
+		cell.textLabel.text = @"\uf05a About";
 	}
     
     return cell;
@@ -66,15 +74,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
-			[self performSegueWithIdentifier:@"Items" sender:nil];
+			[self performSegueWithIdentifier:@"Reports" sender:nil];
 		} else if (indexPath.row == 1) {
 			[self performSegueWithIdentifier:@"Staff" sender:nil];
-		} else if (indexPath.row == 2) {
-			[self performSegueWithIdentifier:@"Reports" sender:nil];
-		} else if (indexPath.row == 3) {
-			[self performSegueWithIdentifier:@"Tables" sender:nil];
 		}
 	} else if (indexPath.section == 1) {
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"Items" sender:nil];
+		} else if (indexPath.row == 1) {
+			[self performSegueWithIdentifier:@"Tables" sender:nil];
+		} else if (indexPath.row == 2) {
+			[self performSegueWithIdentifier:@"Categories" sender:nil];
+		}
+	} else if (indexPath.section == 2) {
 		[self performSegueWithIdentifier:@"about" sender:nil];
 	}
     

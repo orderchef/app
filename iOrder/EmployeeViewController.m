@@ -11,6 +11,7 @@
 #import "TextFieldCell.h"
 #import "LTHPasscodeViewController.h"
 #import "AppDelegate.h"
+#import <FontAwesome-iOS/NSString+FontAwesome.h>
 
 @interface EmployeeViewController () {
 	BOOL save;
@@ -45,6 +46,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+	// Used to set passcode lock to the managedEmployee and not the employee currently logged in..
     [[Storage getStorage] setManagedEmployee:employee];
     //TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     //[[cell textField] becomeFirstResponder];
@@ -92,10 +94,11 @@
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         
         if (indexPath.section == 1 && indexPath.row == 0) {
+			cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
             if (employee.code.length == 0) {
-                cell.textLabel.text = @"Set Login Code";
+                cell.textLabel.text = @"\uf084 Set Login Code";
             } else {
-                cell.textLabel.text = @"Change Login Code";
+                cell.textLabel.text = @"\uf084 Change Login Code";
             }
         } else if (indexPath.section == 1 && indexPath.row == 1) {
             if (employee.manager) {

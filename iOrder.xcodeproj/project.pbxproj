@@ -31,6 +31,9 @@
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
 		4FD59E5D182573860077A70E /* BasketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5C182573860077A70E /* BasketTableViewController.m */; };
+		4FD9392F1865CFBA00A2042F /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9392E1865CFBA00A2042F /* CategoryViewController.m */; };
+		4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD939311865D06800A2042F /* CategoriesViewController.m */; };
+		4FD939381865F69300A2042F /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FD939371865F69300A2042F /* fontawesome-webfont.ttf */; };
 		4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEE0511852022F009AEB5B /* TableViewController.m */; };
 		4FF0F39F181DC6DE00447906 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F39E181DC6DE00447906 /* Foundation.framework */; };
 		4FF0F3A1181DC6DE00447906 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */; };
@@ -107,6 +110,11 @@
 		4FD59E59182128FF0077A70E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		4FD59E5B182573860077A70E /* BasketTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketTableViewController.h; sourceTree = "<group>"; };
 		4FD59E5C182573860077A70E /* BasketTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketTableViewController.m; sourceTree = "<group>"; };
+		4FD9392D1865CFBA00A2042F /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
+		4FD9392E1865CFBA00A2042F /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
+		4FD939301865D06800A2042F /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
+		4FD939311865D06800A2042F /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
+		4FD939371865F69300A2042F /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		4FDEE0501852022F009AEB5B /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		4FDEE0511852022F009AEB5B /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		4FF0F39B181DC6DE00447906 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,6 +192,12 @@
 				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
 				4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */,
 				4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */,
+				4F33E522181E673000E4FDD9 /* ItemController.h */,
+				4F33E523181E673000E4FDD9 /* ItemController.m */,
+				4FD939301865D06800A2042F /* CategoriesViewController.h */,
+				4FD939311865D06800A2042F /* CategoriesViewController.m */,
+				4FD9392D1865CFBA00A2042F /* CategoryViewController.h */,
+				4FD9392E1865CFBA00A2042F /* CategoryViewController.m */,
 			);
 			name = "Manager VCs";
 			sourceTree = "<group>";
@@ -201,8 +215,6 @@
 				4FA097A2184F55CE00398DD4 /* BasketItemViewController.m */,
 				4F33E51F181E672B00E4FDD9 /* MenuViewController.h */,
 				4F33E520181E672B00E4FDD9 /* MenuViewController.m */,
-				4F33E522181E673000E4FDD9 /* ItemController.h */,
-				4F33E523181E673000E4FDD9 /* ItemController.m */,
 			);
 			name = VCs;
 			sourceTree = "<group>";
@@ -267,6 +279,7 @@
 		4FF0F3A6181DC6DE00447906 /* iOrder */ = {
 			isa = PBXGroup;
 			children = (
+				4FD939371865F69300A2042F /* fontawesome-webfont.ttf */,
 				4FF0F3AF181DC6DE00447906 /* AppDelegate.h */,
 				4FF0F3B0181DC6DE00447906 /* AppDelegate.m */,
 				4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */,
@@ -410,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF0F3AB181DC6DE00447906 /* InfoPlist.strings in Resources */,
+				4FD939381865F69300A2042F /* fontawesome-webfont.ttf in Resources */,
 				4FF0F3B6181DC6DE00447906 /* Images.xcassets in Resources */,
 				4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */,
 			);
@@ -485,6 +499,7 @@
 				4F3628BA1855E31C00971505 /* Staff.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
+				4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */,
 				4F3A5D701820846800201B8C /* Table.m in Sources */,
 				4F3628C01856025B00971505 /* StaffViewController.m in Sources */,
 				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
@@ -500,6 +515,7 @@
 				4F3628B71855E0F900971505 /* SFHFKeychainUtils.m in Sources */,
 				4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */,
 				4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */,
+				4FD9392F1865CFBA00A2042F /* CategoryViewController.m in Sources */,
 				4FD59E5818211E870077A70E /* Connection.m in Sources */,
 				4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */,
 				4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */,
