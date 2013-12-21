@@ -84,6 +84,7 @@
 - (void)clear:(id)sender {
     [table clearTable];
     [table setItems:@[]];
+	[table setNotes:@""];
     [self reloadData];
 }
 - (void)sendToKitchen:(id)sender {

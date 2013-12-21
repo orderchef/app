@@ -29,7 +29,9 @@
 	
 	[self.tableView setAllowsSelectionDuringEditing:YES];
 	
-	[self setEditing:NO animated:NO];
+	if (!item) {
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategory:)] animated:YES];
+	}
 	
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(reloadCategories:) forControlEvents:UIControlEventValueChanged];
@@ -57,22 +59,6 @@
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     }
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
-	
-	if (editing) {
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategory:)] animated:YES];
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(toggleEdit:)] animated:YES];
-	} else {
-		if (!item) {
-			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategory:)] animated:YES];
-			return;
-		}
-		[self.navigationItem setLeftBarButtonItem:nil animated:YES];
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(toggleEdit:)] animated:YES];
-	}
 }
 
 - (void)addCategory:(id)sender {
@@ -138,7 +124,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	ItemCategory *category = [[[Storage getStorage] categories] objectAtIndex:indexPath.row];
 	
-	if (!self.editing && item) {
+	if (item) {
 		item.category = category;
 		if (selectedCategory) {
 			UITableViewCell *cell = [tableView cellForRowAtIndexPath:selectedCategory];
@@ -150,12 +136,12 @@
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 		
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[self.navigationController popViewControllerAnimated:YES];
 		
 		return;
 	}
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	[self setEditing:NO animated:YES];
 	
 	[self performSegueWithIdentifier:@"Category" sender:category];
 }
