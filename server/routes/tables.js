@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
+	, async = require('async')
 
 exports.router = function (socket) {
 	socket.on('get.tables', function(data) {
@@ -104,7 +105,9 @@ Ordered Items:\n" + orderedString;
 		models.Table.findById(table, function(err, table) {
 			var found = false;
 			var it = null;
+			
 			console.log(table.items)
+			
 			for (var i = 0; i < table.items.length; i++) {
 				var item = table.items[i];
 				console.log(item)

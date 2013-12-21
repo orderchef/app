@@ -102,7 +102,7 @@
     if (section == 1) {
         return [[table items] count];
     }
-    if (section == 3) {
+    if (section == 2) {
         return 0;
     }
     
@@ -124,7 +124,8 @@
     }
     
     if (indexPath.section == 0) {
-        cell.textLabel.text = @"Order more items";
+		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
+        cell.textLabel.text = @"\uf07a Order more items";
         cell.detailTextLabel.text = @"";
     } else if (indexPath.section == 1) {
         NSDictionary *item = [[table items] objectAtIndex:indexPath.row];
@@ -138,7 +139,7 @@
         }
         
         cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", total];
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 3) {
         // notes
         [[(TextareaCell *)cell textField] setText:table.notes];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
@@ -153,7 +154,7 @@
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
     } else if (indexPath.section == 1) {
         [self performSegueWithIdentifier:@"openBasketItem" sender:indexPath];
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 3) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
 	}
@@ -177,7 +178,7 @@
     switch (section) {
         case 1:
             return @"Items in Basket";
-        case 2:
+        case 3:
             return @"Notes for Order";
         default:
             return @"";
@@ -186,21 +187,30 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (section == 3) {
+    if (section == 2) {
         float total = 0.f;
         for (NSDictionary *item in [table items]) {
             Item *it = [item objectForKey:@"item"];
             total += [[item objectForKey:@"quantity"] intValue] * [it.price floatValue];
         }
         
-        return [@"Total £" stringByAppendingFormat:@"%.2f", total];
+        return [@"---- Total £" stringByAppendingFormat:@"%.2f ----", total];
     }
     
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
+	if (section == 2 && [view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+		UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
+		v.textLabel.textAlignment = NSTextAlignmentCenter;
+		v.textLabel.textColor = [UIColor blackColor];
+		v.textLabel.font = [UIFont systemFontOfSize:16.f];
+	}
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
+    if (indexPath.section == 3) {
         return 100.f;
     }
     
@@ -210,13 +220,13 @@
 #pragma mark - TextfieldDelegate methods
 
 - (void)dismissKeyboard:(id)sender {
-    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     [[cell textField] resignFirstResponder];
 }
 
 - (void)textFieldDidBeginEditing {
     //[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  - 216 + self.toolbar.frame.size.height)];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
     dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     dismissKeyboardGesture.cancelsTouchesInView = YES;
@@ -231,7 +241,7 @@
     
     keyboardIsOpen = false;
     
-    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     table.notes = [cell.textField text];
     [table save];
     

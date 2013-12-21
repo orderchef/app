@@ -67,6 +67,7 @@
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(toggleEdit:)] animated:YES];
 	} else {
 		if (!item) {
+			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategory:)] animated:YES];
 			return;
 		}
 		[self.navigationItem setLeftBarButtonItem:nil animated:YES];
@@ -77,6 +78,8 @@
 - (void)addCategory:(id)sender {
 	newCategory = [[ItemCategory alloc] init];
 	[self performSegueWithIdentifier:@"Category" sender:newCategory];
+	
+	[self setEditing:NO animated:NO];
 }
 
 - (void)toggleEdit:(id)sender {

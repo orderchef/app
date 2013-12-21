@@ -1,7 +1,7 @@
 PODS:
   - Bugsnag (3.1.0):
     - Reachability
-  - FontAwesome-iOS (0.0.3)
+  - FontAwesome+iOS (0.1.1)
   - MBProgressHUD (0.8)
   - Reachability (3.1.1)
   - socket.IO (0.4.0.1):
@@ -10,13 +10,13 @@ PODS:
 
 DEPENDENCIES:
   - Bugsnag
-  - FontAwesome-iOS
+  - FontAwesome+iOS
   - MBProgressHUD
   - socket.IO
 
 SPEC CHECKSUMS:
   Bugsnag: 7a61040b4be9fa2b51a34e87e1da2007b6640637
-  FontAwesome-iOS: 354da71a6e0aa07370973c42a79f55437961f611
+  FontAwesome+iOS: 243c5309e90d5788909b0f859f75ecff4a20f88f
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   socket.IO: 88132f82db2700840686a8b0de68875eadca2009

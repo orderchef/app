@@ -8,7 +8,7 @@
 
 #import "ManagerViewController.h"
 #import "TablesViewController.h"
-#import <FontAwesome-iOS/NSString+FontAwesome.h>
+#import <FontAwesome+iOS/FAImageView.h>
 
 @interface ManagerViewController ()
 
@@ -19,7 +19,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:self action:@selector(dismissView:)]];
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@" \uf00d" style:UIBarButtonItemStylePlain target:self action:@selector(dismissView:)]];
+	[self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{
+																	 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																	 } forState:UIControlStateNormal];
 }
 
 - (void)dismissView:(id)sender {
@@ -49,22 +52,25 @@
     static NSString *CellIdentifier = @"basic";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
 	if (indexPath.section == 0) {
+		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
 		if (indexPath.row == 0) {
-			cell.textLabel.text = [[NSString awesomeIcon:FaBarChartO] stringByAppendingString:@" Reports"];
+			//FaBarChartO
+			cell.textLabel.text = @"\uf080 Reports";
 		} else if (indexPath.row == 1) {
-			cell.textLabel.text = [[NSString awesomeIcon:FaUsers] stringByAppendingString:@" Staff"];
+			//FaUsers
+			cell.textLabel.text = @"\uf0c0 Staff";
 		}
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
-			cell.textLabel.text = @"Items";
-		} else if (indexPath.row == 1) {
 			cell.textLabel.text = @"Tables";
+		} else if (indexPath.row == 1) {
+			cell.textLabel.text = @"Items";
 		} else if (indexPath.row == 2) {
 			cell.textLabel.text = @"Item Categories";
 		}
 	} else if (indexPath.section == 2) {
+		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
 		cell.textLabel.text = @"\uf05a About";
 	}
     
@@ -80,9 +86,9 @@
 		}
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
-			[self performSegueWithIdentifier:@"Items" sender:nil];
-		} else if (indexPath.row == 1) {
 			[self performSegueWithIdentifier:@"Tables" sender:nil];
+		} else if (indexPath.row == 1) {
+			[self performSegueWithIdentifier:@"Items" sender:nil];
 		} else if (indexPath.row == 2) {
 			[self performSegueWithIdentifier:@"Categories" sender:nil];
 		}

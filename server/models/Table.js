@@ -36,4 +36,16 @@ scheme.methods.update = function (data) {
 	}
 }
 
+scheme.methods.sortFunction = function (a, b) {
+	if (a.item.name > b.item.name) {
+		return 1
+	}
+	if (a.item.name < b.item.name) {
+		return -1;
+	}
+	
+	return 0;
+}
+
+
 module.exports = mongoose.model("Table", scheme);

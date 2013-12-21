@@ -11,7 +11,7 @@
 #import "TextFieldCell.h"
 #import "LTHPasscodeViewController.h"
 #import "AppDelegate.h"
-#import <FontAwesome-iOS/NSString+FontAwesome.h>
+#import <FontAwesome+iOS/NSString+FontAwesome.h>
 
 @interface EmployeeViewController () {
 	BOOL save;
@@ -33,6 +33,13 @@
     if (employee.name.length == 0) {
         [self.navigationItem setTitle:@"Enter a Name"];
     }
+	
+	if (employee._id.length > 0) {
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf014 " style:UIBarButtonItemStylePlain target:self action:@selector(deleteEmployee:)];
+		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																		 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																		 } forState:UIControlStateNormal];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -52,13 +59,17 @@
     //[[cell textField] becomeFirstResponder];
 }
 
+- (void)deleteEmployee:(id)sender {
+	save = false;
+	[employee remove];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[employee.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (employee._id.length > 0)
-		return 3;
-	
 	return 2;
 }
 
@@ -70,7 +81,7 @@
         return 2;
     }
     
-    return 1;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,8 +117,6 @@
             } else {
                 cell.textLabel.text = @"Make Employee a Manager";
             }
-        } else {
-            cell.textLabel.text = @"Remove Employee";
         }
     }
     
@@ -165,11 +174,6 @@
         } else {
             cell.textLabel.text = @"Make Employee a Manager";
         }
-    } else if (indexPath.section == 2) {
-		save = false;
-        [employee remove];
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[employee.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-		[self.navigationController popViewControllerAnimated:YES];
     }
 }
 

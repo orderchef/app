@@ -40,7 +40,7 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>FontAwesome.ttf</string>
+		<string>fontawesome-webfont.ttf</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

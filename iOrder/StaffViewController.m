@@ -22,6 +22,10 @@
 
 @implementation StaffViewController
 
+static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Staff *b) {
+	return [a.name compare:b.name];
+};
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,8 +52,8 @@
         }
     }
     
-    managers = [_managers copy];
-    normal = [_normal copy];
+    managers = [_managers sortedArrayUsingComparator:staffComparator];
+    normal = [_normal sortedArrayUsingComparator:staffComparator];
     
     [self.tableView reloadData];
 }

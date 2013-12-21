@@ -20,7 +20,7 @@ exports.router = function (socket) {
 		
 		var table = mongoose.Types.ObjectId(data.table);
 		
-		models.Table.findById(table).populate('items.item').exec(function(err, table) {
+		models.Table.findById(table).populate('items.item').sort('items.item.name').exec(function(err, table) {
 			socket.emit('get.items table', {
 				table: table._id,
 				items: table.items

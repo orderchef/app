@@ -41,6 +41,11 @@
     }
 	if (item._id.length == 0) {
 		[self.navigationItem setTitle:@"New Item"];
+	} else {
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf014 " style:UIBarButtonItemStylePlain target:self action:@selector(deleteItem:)];
+		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																		 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																		 } forState:UIControlStateNormal];
 	}
 	
     [self reloadData];
@@ -116,14 +121,17 @@
 	}
 }
 
+- (void)deleteItem:(id)sender {
+	save = false;
+	[item deleteItem];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (item._id.length > 0) {
-		return 3;
-	}
-	
     return 2;
 }
 
@@ -135,7 +143,7 @@
 		return 1;
 	}
 	
-	return 1;
+	return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,29 +188,16 @@
 			cell.textLabel.text = @"Choose Category";
         
         return cell;
-    } else {
-		// Delete
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"category"];
-        
-		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
-		cell.textLabel.text = @"\uf014 Delete Item";
-		cell.textLabel.textAlignment = NSTextAlignmentCenter;
-		cell.accessoryType = UITableViewCellAccessoryNone;
-		
-		return cell;
-	}
+    }
+	
+	return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         // category section
         [self performSegueWithIdentifier:@"Categories" sender:nil];
-    } else if (indexPath.section == 2) {
-		save = false;
-        [item deleteItem];
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-		[self.navigationController popViewControllerAnimated:YES];
-	}
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

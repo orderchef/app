@@ -40,7 +40,14 @@
 	if (self.manageEnabled) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTable:)] animated:NO];
 	} else {
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Manager" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)]];
+		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@" \uf0ad" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"\uf08b" style:UIBarButtonItemStylePlain target:self action:@selector(logOut:)]];
+		
+		NSDictionary *faProperties = @{
+									   NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+									   };
+		[self.navigationItem.leftBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
+		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
 	}
 	
 	if (!self.manageEnabled) {
@@ -57,6 +64,13 @@
 	}
 	
     [self reloadData];
+}
+
+- (void)logOut:(id)sender {
+	AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	
+	[[LTHPasscodeViewController sharedUser] showLockscreenWithAnimation:NO];
+	[delegate showMessage:@"Logged Out" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,8 +124,12 @@
     [self.refreshControl beginRefreshing];
 }
 
+static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResult(Table *a, Table *b) {
+	return [a.name compare:b.name];
+};
+
 - (void)reloadData {
-    Storage *storage = [Storage getStorage];
+	Storage *storage = [Storage getStorage];
     tables = [storage tables];
     
 	NSMutableArray *_tables = [[NSMutableArray alloc] init];
@@ -127,15 +145,15 @@
 	NSMutableArray *ts = [[NSMutableArray alloc] initWithCapacity:3];
 	NSMutableArray *tits = [[NSMutableArray alloc] initWithCapacity:3];
 	if (takeaway.count > 0) {
-		[ts addObject:takeaway];
+		[ts addObject:[takeaway sortedArrayUsingComparator:compareTables]];
 		[tits addObject:@"Takeaway"];
 	}
 	if (delivery.count > 0) {
-		[ts addObject:delivery];
+		[ts addObject:[delivery sortedArrayUsingComparator:compareTables]];
 		[tits addObject:@"Delivery"];
 	}
 	if (_tables.count > 0) {
-		[ts addObject:_tables];
+		[ts addObject:[_tables sortedArrayUsingComparator:compareTables]];
 		[tits addObject:@"Tables"];
 	}
 	

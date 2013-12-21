@@ -198,6 +198,8 @@
 				4FD939311865D06800A2042F /* CategoriesViewController.m */,
 				4FD9392D1865CFBA00A2042F /* CategoryViewController.h */,
 				4FD9392E1865CFBA00A2042F /* CategoryViewController.m */,
+				4FDEE0501852022F009AEB5B /* TableViewController.h */,
+				4FDEE0511852022F009AEB5B /* TableViewController.m */,
 			);
 			name = "Manager VCs";
 			sourceTree = "<group>";
@@ -207,8 +209,6 @@
 			children = (
 				4F5BE44B181DD255007EF69F /* TablesViewController.h */,
 				4F5BE44C181DD255007EF69F /* TablesViewController.m */,
-				4FDEE0501852022F009AEB5B /* TableViewController.h */,
-				4FDEE0511852022F009AEB5B /* TableViewController.m */,
 				4FD59E5B182573860077A70E /* BasketTableViewController.h */,
 				4FD59E5C182573860077A70E /* BasketTableViewController.m */,
 				4FA097A1184F55CE00398DD4 /* BasketItemViewController.h */,

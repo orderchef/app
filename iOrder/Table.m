@@ -93,8 +93,13 @@
 								};
         [its addObject:itDict];
     }
-    
-    [self setItems:its];
+	
+	[self setItems:[its sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
+		Item *_a = (Item *)[a objectForKey:@"item"];
+		Item *_b = (Item *)[b objectForKey:@"item"];
+		
+		return [_a.name compare:_b.name];
+	}]];
 }
 
 - (void)clearTable {

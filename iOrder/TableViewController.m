@@ -34,6 +34,12 @@
 		[self.navigationItem setTitle:@"New Table"];
 	} else {
 		[self.navigationItem setTitle:table.name];
+		
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf014 " style:UIBarButtonItemStylePlain target:self action:@selector(deleteTable:)];
+		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																		 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																		 } forState:UIControlStateNormal];
+		
 	}
 }
 
@@ -51,15 +57,17 @@
 	return nil;
 }
 
+- (void)deleteTable:(id)sender {
+	// Delete
+	[table deleteTable];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[table.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
-	} else if (indexPath.section == 4) {
-		// Delete
-		[table deleteTable];
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[table.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-		[self.navigationController popViewControllerAnimated:YES];
 	}
 }
 
@@ -67,18 +75,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (table._id.length > 0) {
-		return 5;
-	}
-	
     return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 1;
-	} else if (section == 4) {
 		return 1;
 	}
 	
@@ -98,13 +100,6 @@
 		[[cell textField] setText:table.name];
 		[[cell textField] setPlaceholder:@"Table Name"];
 		[[cell textField] addTarget:self action:@selector(titleChanged:) forControlEvents:UIControlEventEditingChanged];
-		
-		return cell;
-	} else if (indexPath.section == 4) {
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"basic" forIndexPath:indexPath];
-		
-		cell.textLabel.text = @"Delete Table";
-		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		
 		return cell;
 	}

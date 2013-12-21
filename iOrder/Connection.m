@@ -9,6 +9,7 @@
 #import "Connection.h"
 #import <socket.IO/SocketIOPacket.h>
 #import "Storage.h"
+#import "AppDelegate.h"
 
 @interface Connection () {
     int lastDisconnect;
@@ -56,7 +57,7 @@
     if (!socket) {
         socket = [[SocketIO alloc] initWithDelegate:self];
     }
-    [socket connectToHost:@"127.0.0.1" onPort:8080];
+    [socket connectToHost:kMasterIP onPort:kMasterPort];
 }
 
 - (void)disconnect {

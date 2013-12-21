@@ -28,6 +28,11 @@
     [Connection getConnection];
     [Storage getStorage];
     [self customizeAppearance];
+	
+	for (NSString *name in [UIFont familyNames]) {
+		NSLog(@"Family %@", name);
+		
+	}
     
     [Bugsnag startBugsnagWithApiKey:@"c987848f96714ef34560d05ef7e53b5d"];
     

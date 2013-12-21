@@ -16,6 +16,11 @@
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;
 
+@property (assign) BOOL drink;
+@property (assign) BOOL hotFood;
+@property (assign) BOOL sushi;
+
 - (void)save;
+- (void)deleteCategory;
 
 @end

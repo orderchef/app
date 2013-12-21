@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define kMasterIP @"192.168.1.23"
+#define kMasterPort 8080
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -20,5 +23,7 @@
                hide:(BOOL)doesHide
       tapRecognizer:(UITapGestureRecognizer *)recognizer
 			 toView:(UIView *)view;
+
+- (void)lockApp;
 
 @end

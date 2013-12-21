@@ -39,6 +39,11 @@
 	quantity = [[item objectForKey:@"quantity"] intValue];
 	notes = [item objectForKey:@"notes"];
 	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf014 " style:UIBarButtonItemStylePlain target:self action:@selector(deleteItemFromTable:)];
+	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																	 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																	 } forState:UIControlStateNormal];
+	
 	keyboardIsOpen = false;
     
 }
@@ -64,7 +69,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -76,9 +81,6 @@
 		return 0;
 	}
 	if (section == 2) {
-		return 1;
-	}
-	if (section == 3) {
 		return 1;
 	}
 	
@@ -112,11 +114,6 @@
         [[(TextareaCell *)cell textField] setText:[item objectForKey:@"notes"]];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
-	} else if (indexPath.section == 3) {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"button"];
-		
-		cell.textLabel.text = @"Remove from Basket";
-		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	
 	return cell;
@@ -126,12 +123,6 @@
 	if (indexPath.section == 2) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
-	} else if (indexPath.section == 3) {
-		Item *it = [item objectForKey:@"item"];
-		[table removeItem:it];
-		
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:it.name detail:@"Removed from Basket" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-		[self.navigationController popViewControllerAnimated:YES];
 	}
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -193,6 +184,14 @@
 		
 		[self saveItem];
 	}
+}
+
+- (void)deleteItemFromTable:(id)sender {
+	Item *it = [item objectForKey:@"item"];
+	[table removeItem:it];
+	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:it.name detail:@"Removed from Basket" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - TextfieldDelegate methods

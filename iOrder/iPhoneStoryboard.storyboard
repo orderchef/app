@@ -433,7 +433,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="1SE-zm-CMX">
-                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1SE-zm-CMX" id="Hdn-i7-kKL">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -803,8 +803,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="V0g-3s-5S9"/>
-        <segue reference="JES-Xa-qbr"/>
-        <segue reference="CQ2-X5-iwu"/>
+        <segue reference="QML-Dq-TCZ"/>
+        <segue reference="vIn-OU-zy4"/>
+        <segue reference="WC3-Bi-NKW"/>
     </inferredMetricsTieBreakers>
 </document>

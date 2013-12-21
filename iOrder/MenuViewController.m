@@ -14,6 +14,7 @@
 #import "Staff.h"
 #import "ItemController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 @interface MenuViewController () {
 	NSArray *categories;
@@ -149,10 +150,17 @@
         
         [sec addObject:i];
     }
-    
-    categories = [secs allValues];
-    titles = [secs allKeys];
-    
+	
+	NSArray *sortedTitles = [[secs allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+	NSMutableArray *sortedCategories = [[NSMutableArray alloc] initWithCapacity:categories.count];
+	
+	for (NSString *key in sortedTitles) {
+		[sortedCategories addObject:[secs objectForKey:key]];
+	}
+	
+	titles = sortedTitles;
+	categories = sortedCategories;
+	
     [self.tableView reloadData];
 }
 
@@ -324,6 +332,8 @@
 	
 	if (table) {
 		[table addItem:item];
+		
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 		[self.navigationController popViewControllerAnimated:YES];
 		
 		return;
