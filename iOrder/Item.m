@@ -25,7 +25,7 @@
     if (self) {
 		_id = @"";
         name = @"";
-        price = [NSNumber numberWithFloat:0.f];
+        price = [NSNumber numberWithFloat:-1.f];
         category = nil;
         table = nil;
     }
@@ -37,7 +37,7 @@
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
     [self setPrice:[json objectForKey:@"price"]];
-    
+	
     NSString *catId = [json objectForKey:@"category"];
     category = [[Storage getStorage] findCategoryById:catId];
 }

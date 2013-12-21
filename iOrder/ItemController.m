@@ -170,7 +170,12 @@
                 [cell.textField setPlaceholder:@"Item Price"];
                 [cell.textField setKeyboardType:UIKeyboardTypeDecimalPad];
                 price = cell.textField;
-				[price setText:[NSString stringWithFormat:@"%.2f", [item.price floatValue]]];
+				float _price = [item.price floatValue];
+				if (_price >= 0.f) {
+					[price setText:[NSString stringWithFormat:@"%.2f", _price]];
+				} else {
+					[price setText:[NSString stringWithFormat:@""]];
+				}
 				[price addTarget:self action:@selector(priceChanged:) forControlEvents:UIControlEventEditingChanged];
                 break;
         }

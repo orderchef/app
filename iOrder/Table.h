@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) NSString *notes;
+@property (assign) BOOL delivery;
+@property (assign) BOOL takeaway;
 
 - (void)save;
 - (void)loadItems;

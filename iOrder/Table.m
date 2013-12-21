@@ -16,6 +16,8 @@
 @synthesize name;
 @synthesize items = _items;
 @synthesize notes;
+@synthesize delivery;
+@synthesize takeaway;
 
 - (id)init {
     self = [super init];
@@ -25,6 +27,9 @@
         notes = @"";
         _items = [NSArray array];
         _id = @"";
+		
+		delivery = false;
+		takeaway = false;
     }
     
     return self;
@@ -52,7 +57,9 @@
                                                  @"_id": __id,
                                                  @"name": name,
                                                  @"notes": notes,
-												 @"items": its
+												 @"items": its,
+												 @"delivery": [NSNumber numberWithBool:delivery],
+												 @"takeaway": [NSNumber numberWithBool:takeaway]
                                                  }];
 }
 
@@ -60,6 +67,8 @@
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
     [self setNotes:[json objectForKey:@"notes"]];
+	[self setDelivery:[[json objectForKey:@"delivery"] boolValue]];
+    [self setTakeaway:[[json objectForKey:@"takeaway"] boolValue]];
 	
 	if (notes == nil) {
 		notes = @"";

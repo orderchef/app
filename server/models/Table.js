@@ -10,12 +10,18 @@ var scheme = schema({
 		notes: { type: String, default: "" }
 	}],
 	notes: String,
-	deleted: { type: Boolean, default: false }
+	deleted: { type: Boolean, default: false },
+	
+	delivery: { type: Boolean, default: false },
+	takeaway: { type: Boolean, default: false }
 });
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
 	this.notes = data.notes;
+	
+	this.delivery = data.delivery;
+	this.takeaway = data.takeaway;
 	
 	for (var i = 0; i < data.items.length; i++) {
 		for (var x = 0; x < this.items.length; x++) {

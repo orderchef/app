@@ -7,6 +7,7 @@
 //
 
 #import "ManagerViewController.h"
+#import "TablesViewController.h"
 
 @interface ManagerViewController ()
 
@@ -34,7 +35,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 3;
+		return 4;
 	}
 	
     return 1;
@@ -52,6 +53,8 @@
 			cell.textLabel.text = @"Staff";
 		} else if (indexPath.row == 2) {
 			cell.textLabel.text = @"Reports";
+		} else if (indexPath.row == 3) {
+			cell.textLabel.text = @"Tables";
 		}
 	} else if (indexPath.section == 1) {
 		cell.textLabel.text = @"About";
@@ -68,12 +71,21 @@
 			[self performSegueWithIdentifier:@"Staff" sender:nil];
 		} else if (indexPath.row == 2) {
 			[self performSegueWithIdentifier:@"Reports" sender:nil];
+		} else if (indexPath.row == 3) {
+			[self performSegueWithIdentifier:@"Tables" sender:nil];
 		}
 	} else if (indexPath.section == 1) {
 		[self performSegueWithIdentifier:@"about" sender:nil];
 	}
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"Tables"]) {
+		TablesViewController *vc = (TablesViewController *)[segue destinationViewController];
+		vc.manageEnabled = YES;
+	}
 }
 
 @end

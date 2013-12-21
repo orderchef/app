@@ -1,13 +1,17 @@
 //
-//  TableViewController.h
+//  EditTableViewController.h
 //  iOrder
 //
-//  Created by Matej Kramny on 27/10/2013.
+//  Created by Matej Kramny on 06/12/2013.
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface TableViewController : UITableViewController <UIAlertViewDelegate>
+@class Table;
+
+@interface TableViewController : UITableViewController
+
+@property (nonatomic, weak) Table *table;
 
 @end

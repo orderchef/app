@@ -63,16 +63,27 @@
 			cell.textLabel.text = @"Items Sold";
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", report.quantity];
 		} else if (indexPath.row == 1) {
-			cell.textLabel.text = @"Total Profit";
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", report.total];
+			cell.textLabel.text = @"Total";
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", report.total];
 		}
 	} else if (indexPath.section == 1) {
 		NSDictionary *table = [report.tables objectAtIndex:indexPath.row];
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:@"table" forIndexPath:indexPath];
+		
+		cell.textLabel.text = [[table objectForKey:@"table"] objectForKey:@"name"];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d items, £%.2f", [[table objectForKey:@"itemsSold"] intValue], [[table objectForKey:@"total"] floatValue]];
 	}
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 1) {
+		return @"Tables";
+	}
+	
+	return nil;
 }
 
 @end

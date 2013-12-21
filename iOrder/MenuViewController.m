@@ -83,7 +83,7 @@
 	
     [self reloadData];
 	
-	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	self.tableView.contentOffset = CGPointMake(0,  self.searchBar.frame.size.height - self.tableView.contentOffset.y);
 }
 
 - (void)setTitle {
@@ -184,12 +184,12 @@
 	CABasicAnimation *navAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
 	CABasicAnimation *tabAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
 	
-	navAnimation.duration = 0.08f;
-	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	navAnimation.duration = 0.2f;
+	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
 	navAnimation.fillMode = kCAFillModeForwards;
 	
-	tabAnimation.duration = 0.08f;
-	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	tabAnimation.duration = 0.2f;
+	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
 	tabAnimation.fillMode = kCAFillModeForwards;
 	
 	CALayer *navLayer = self.navigationController.navigationBar.layer;
@@ -222,12 +222,12 @@
 	CABasicAnimation *navAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
 	CABasicAnimation *tabAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
 	
-	navAnimation.duration = 0.08f;
-	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	navAnimation.duration = 0.2f;
+	navAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
 	navAnimation.fillMode = kCAFillModeForwards;
 	
-	tabAnimation.duration = 0.08f;
-	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+	tabAnimation.duration = 0.2f;
+	tabAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
 	tabAnimation.fillMode = kCAFillModeForwards;
 	
 	CALayer *navLayer = self.navigationController.navigationBar.layer;
@@ -260,22 +260,30 @@
 	[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.0f]];
 	self.tableView.scrollEnabled = NO;
 	[self.view addSubview:blackOverlay];
-	[UIView animateWithDuration:0.1f animations:^(void) {
+	[UIView animateWithDuration:0.3f animations:^(void) {
 		[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.7f]];
 	}];
 }
 
-- (void)hideOverlay {
+- (void)hideOverlay:(float)afterDelay {
 	if (isOverlayHidden == true) {
 		return;
 	}
 	
 	isOverlayHidden = true;
 	self.tableView.scrollEnabled = YES;
-	[UIView animateWithDuration:0.1f animations:^(void) {
+	[UIView animateWithDuration:afterDelay animations:^(void) {
 		[blackOverlay setBackgroundColor:[UIColor colorWithWhite:0.f alpha:0.0f]];
-		[blackOverlay removeFromSuperview];
 	}];
+	
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(afterDelay * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[blackOverlay removeFromSuperview];
+	});
+}
+
+- (void)hideOverlay {
+	[self hideOverlay:0.2f];
 }
 
 #pragma mark - Table view data source
@@ -358,7 +366,7 @@
 	
 	if (searchText.length > 0) {
 		[self.searchBar setShowsSearchResultsButton:YES];
-		[self hideOverlay];
+		[self hideOverlay:0.f];
 	} else {
 		[self.searchBar setShowsSearchResultsButton:NO];
 		[self showOverlay];
