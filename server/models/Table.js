@@ -61,6 +61,9 @@ scheme.methods.printOrder = function () {
 		
 		var spaces = 31 - valueString.length - string.length;
 		orderedString += string + getSpaces(spaces) + valueString;
+		if (it.notes.trim().length > 0) {
+			orderedString += "  Notes: "+it.notes + "\n";
+		}
 		
 		total += it.quantity * it.item.price;
 	}
@@ -75,9 +78,9 @@ scheme.methods.printOrder = function () {
 " + tableName +"\n\n\
 " + date + "\
 Notes: " + table.notes + "\n\n\
-Ordered Items:\n" + orderedString + "\n\n\
+Ordered Items:\n" + orderedString + "\n\
 Total:"+getSpaces(31 - 6 - total.length)+total+"\n\
-\n\n";
+\n";
 	console.log(output);
 	
 	for (var i = 0; i < models.printers.length; i++) {
