@@ -3,5 +3,6 @@ module.exports = {
 	Item: require('./Item'),
 	Category: require('./Category'),
 	Staff: require('./Staff'),
-	Report: require('./Report')
+	Report: require('./Report'),
+	printers: []
 }

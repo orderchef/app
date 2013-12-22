@@ -7,6 +7,7 @@ var categories = require('./categories')
 	, staff = require('./staff')
 	, tables = require('./tables')
 	, reports = require('./reports')
+	, printer = require('./printer')
 
 exports.router = function (socket) {
 	categories.router(socket);
@@ -14,4 +15,5 @@ exports.router = function (socket) {
 	staff.router(socket);
 	tables.router(socket);
 	reports.router(socket);
+	printer.router(socket);
 }

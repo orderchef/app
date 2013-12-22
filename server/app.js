@@ -3,6 +3,7 @@ var mongoose = require('mongoose')
 	, models = require('./models')
 	, spawn = require('child_process').spawn
 	, routes = require('./routes')
+	, zerorpc = require('zerorpc')
 
 mongoose.connect("mongodb://127.0.0.1/iorder", {
 	auto_reconnect: true,

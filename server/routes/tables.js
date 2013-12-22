@@ -1,6 +1,5 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
-	, spawn = require('child_process').spawn
 	, async = require('async')
 
 exports.router = function (socket) {
@@ -83,17 +82,11 @@ New Order for Table: -"+ table.name +"\n\
 Time of order:\n" + date + "\n\n\
 Ordered Items:\n" + orderedString;
 			
-			var proc = spawn('python', ['print.py']);
-			proc.stdout.on('data', function (data) {
-				console.log("Out ~>")
-				console.log(data.toString());
-			})
-			proc.stderr.on('data', function(data) {
-				console.log("Err ~>")
-				console.log(data.toString());
-			})
-			proc.stdin.write(output, 'utf-8');
-			proc.stdin.end();
+			for (var i = 0; i < models.printers.length; i++) {
+				models.printers[i].socket.emit('print', {
+					data: output
+				});
+			}
 		})
 	})
 	socket.on('add.table item', function(data) {
