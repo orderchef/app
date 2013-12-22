@@ -1,4 +1,7 @@
-#from escpos import *
+#!/usr/bin/python
+# coding=UTF8
+
+from escpos import *
 import logging
 from socketIO_client import SocketIO, BaseNamespace
 import sys
@@ -6,12 +9,15 @@ import socket
 
 logging.basicConfig(level=logging.ERROR)
 
+serverIP = "192.168.1.23"
+serverPort = 8080
+
 printerName = "Receipt Printer"
 ip = socket.gethostbyname(socket.gethostname())
 
 print ip
 
-#p = printer.Serial("/dev/ttyAMA0", 19200, 8, 0)
+p = printer.Usb(0x4348, 0x5584, 0, 0x82, 0x01)
 
 class PrintNamespace(BaseNamespace):
     def on_connect(self):
@@ -25,5 +31,5 @@ class PrintNamespace(BaseNamespace):
         for line in data:
             p.text(data)
 
-sock = SocketIO('127.0.0.1', 8080, PrintNamespace)
+sock = SocketIO(serverIP, serverPort, PrintNamespace)
 sock.wait()

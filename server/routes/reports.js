@@ -40,17 +40,11 @@ Total Paid: £" + report.total + "\n\
 --------------------\n";
 			console.log(output);
 			
-			var proc = spawn('python', ['print.py']);
-			proc.stdout.on('data', function (data) {
-				console.log("Out ~>")
-				console.log(data.toString());
-			})
-			proc.stderr.on('data', function(data) {
-				console.log("Err ~>")
-				console.log(data.toString());
-			})
-			proc.stdin.write(output, 'utf-8');
-			proc.stdin.end();
+			for (var i = 0; i < models.printers.length; i++) {
+				models.printers[i].socket.emit('print', {
+					data: output
+				});
+			}
 		})
 	})
 }

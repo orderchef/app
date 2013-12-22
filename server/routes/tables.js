@@ -73,14 +73,19 @@ exports.router = function (socket) {
 			var date = "" + d.getHours() + ":" + d.getMinutes() + "hrs and " + d.getSeconds() + " seconds"
 			var orderedString = "";
 			
+			var total = 0;
 			for (var i = 0; i < table.items.length; i++) {
-				orderedString += " -- "+table.items[i].quantity+" x "+table.items[i].item.name+"\n";
+				var it = table.items[i];
+				orderedString += " -- "+it.quantity+" x "+it.item.name+"\n";
+				total += it.quantity * it.item.price;
 			}
 			
 			var output = "--------------------\n\
 New Order for Table: -"+ table.name +"\n\
-Time of order:\n" + date + "\n\n\
-Ordered Items:\n" + orderedString;
+Time of order:\n" + date + "\n\
+Notes: " + table.notes + "\n\n\
+Ordered Items:\n" + orderedString + "\n\n\
+Total: £"+total+"\n";
 			
 			for (var i = 0; i < models.printers.length; i++) {
 				models.printers[i].socket.emit('print', {
