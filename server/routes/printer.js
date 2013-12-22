@@ -11,7 +11,9 @@ exports.router = function (socket) {
 		var printer = {
 			socket: socket,
 			name: data.name,
-			ip: data.ip
+			ip: data.ip,
+			prices: data.prices,
+			category: data.category
 		}
 		
 		var found = false;

@@ -12,6 +12,7 @@
 #import "Report.h"
 #import "AppDelegate.h"
 #import "ReportViewController.h"
+#import "AppDelegate.h"
 
 @interface ReportsViewController () {
 	NSDictionary *sections;
@@ -33,6 +34,10 @@
 	[super viewWillAppear:animated];
 	
 	[[Storage getStorage] addObserver:self forKeyPath:@"reports" options:NSKeyValueObservingOptionNew context:nil];
+	if (sections == nil) {
+		[self reload:nil];
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Loading..." detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -45,6 +50,8 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if ([keyPath isEqualToString:@"reports"]) {
+		if ([Storage getStorage].reports == nil) return;
+		
 		[self doSections];
 		
 		[self.tableView reloadData];
@@ -80,6 +87,7 @@
 	}
 	
 	sections = [_sections copy];
+	[Storage getStorage].reports = nil;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
