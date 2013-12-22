@@ -24,7 +24,7 @@ class PrintNamespace(BaseNamespace):
         print 'I LOVES HIM!'
         sock.emit('register', { 'ip': ip, 'name': printerName })
     
-    def print_data(*args):
+    def print_data(self, *args):
         print 'printing ', args
         
         data = args.data.split('\n')

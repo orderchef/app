@@ -11,12 +11,19 @@ exports.router = function (socket) {
 			
 			var rs = [];
 			for (var i = 0; i < reports.length; i++) {
+				var r = reports[i];
 				rs.push({
-					created: reports[i].created.getTime() / 1000,
-					tables: reports[i].tables,
-					total: reports[i].total,
-					quantity: reports[i].quantity,
-					_id: reports[i]._id
+					created: r.created.getTime() / 1000,
+					delivery: r.delivery,
+					takeaway: r.takeaway,
+					
+					name: r.name,
+					notes: r.notes,
+					
+					items: r.items,
+					
+					total: r.total,
+					quantity: r.quantity
 				})
 			}
 			
@@ -41,7 +48,7 @@ Total Paid: £" + report.total + "\n\
 			console.log(output);
 			
 			for (var i = 0; i < models.printers.length; i++) {
-				models.printers[i].socket.emit('print', {
+				models.printers[i].socket.emit('print_data', {
 					data: output
 				});
 			}

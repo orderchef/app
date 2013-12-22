@@ -11,7 +11,6 @@
   "dependencies": {
 	  "socket.io": "latest",
 	  "mongoose": "latest",
-	  "zerorpc": "latest",
 	  "async": "latest"
   }
 }

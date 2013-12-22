@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 	, schema = mongoose.Schema
-	, ObjectId = schema.ObjectId;
+	, ObjectId = schema.ObjectId
+	, async = require('async')
 
 var scheme = schema({
 	name: String,
@@ -15,6 +16,21 @@ var scheme = schema({
 	delivery: { type: Boolean, default: false },
 	takeaway: { type: Boolean, default: false }
 });
+
+scheme.statics.getTable = function (id, cb) {
+	module.exports.findById(id)
+		.populate('items.item')
+		.exec(function(err, table) {
+		if (err) { cb(err, null); return; }
+		
+		async.each(table.items, function(item, cb) {
+			item.item.populate('category', cb)
+		}, function(err) {
+			cb(err, table);
+		})
+	})
+}
+
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
@@ -47,5 +63,9 @@ scheme.methods.sortFunction = function (a, b) {
 	return 0;
 }
 
+scheme.methods.resetTable = function () {
+	this.items = [];
+	this.notes = "";
+}
 
 module.exports = mongoose.model("Table", scheme);

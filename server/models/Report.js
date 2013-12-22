@@ -4,20 +4,53 @@ var mongoose = require('mongoose')
 
 var scheme = schema({
 	created: { type: Date, default: Date.now },
-	tables: [{
-		table: {
-			name: String,
-			t: {
-				type: ObjectId,
-				ref: 'Table'
-			}
-		},
-		itemsSold: Number,
-		total: Number
+	
+	delivery: { type: Boolean, default: false },
+	takeaway: { type: Boolean, default: false },
+	
+	name: String,
+	notes: String,
+	
+	items: [{
+		name: String,
+		category: String,
+		price: Number,
+		quantity: Number,
+		notes: { type: String, default: "" }
 	}],
+	
 	total: Number,
 	quantity: Number
 });
+
+scheme.statics.addOrder = function (table) {
+	var r = new module.exports({
+		delivery: table.delivery,
+		takeaway: table.takeaway,
+		
+		name: table.name,
+		notes: table.notes,
+		
+		total: 0,
+		quantity: 0
+	})
+	
+	for (var i = 0; i < table.items.length; i++) {
+		var it = table.items[i];
+		r.items.push({
+			quantity: it.quantity,
+			notes: it.notes,
+			name: it.item.name,
+			category: it.item.category.name,
+			price: it.item.price
+		})
+		
+		r.total += it.item.price * it.quantity;
+		r.quantity += it.quantity;
+	}
+	
+	return r;
+}
 
 scheme.statics.getTodaysReport = function (cb) {
 	var today = new Date();
@@ -37,57 +70,6 @@ scheme.statics.getTodaysReport = function (cb) {
 		
 		cb(report);
 	})
-}
-
-scheme.methods.addTable = function (table) {
-	var it = -1;
-	var tab = null;
-	
-	for (var i = 0; i < this.tables.length; i++) {
-		var t = this.tables[i];
-		
-		if (t.table.t.equals(table._id)) {
-			it = i;
-			tab = this.tables[it]; 
-			break;
-		}
-	}
-	
-	if (it == -1) {
-		tab = {};
-	}
-	
-	tab.table = {
-		name: table.name,
-		t: table._id
-	}
-	
-	if (typeof tab.itemsSold === "undefined") {
-		tab.itemsSold = 0;
-		tab.total = 0;
-	}
-	
-	for (var i = 0; i < table.items.length; i++) {
-		tab.itemsSold += table.items[i].quantity;
-		tab.total += (table.items[i].quantity * table.items[i].item.price);
-	}
-	console.log(tab);
-	
-	if (it == -1) {
-		this.tables.push(tab);
-	}
-	
-	var total = 0;
-	var quantity = 0;
-	for (var i = 0; i < this.tables.length; i++) {
-		console.log(this.tables[i])
-		total += this.tables[i].total;
-		quantity += this.tables[i].itemsSold;
-	}
-	this.total = total;
-	this.quantity = quantity;
-	
-	this.save();
 }
 
 module.exports = mongoose.model("Report", scheme);

@@ -12,6 +12,6 @@
 
 @interface ReportViewController : UITableViewController
 
-@property (nonatomic, weak) Report *report;
+@property (nonatomic, weak) NSMutableArray *reports;
 
 @end

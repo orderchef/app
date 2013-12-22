@@ -13,11 +13,13 @@
 #import "BasketItemViewController.h"
 #import "TextareaCell.h"
 #import "Staff.h"
+#import "AppDelegate.h"
 
 @interface BasketTableViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
 	UIActionSheet *sheet;
+	UIBarButtonItem *printItem;
 }
 
 @end
@@ -41,9 +43,12 @@
 	
 	[self.navigationItem setTitle:[table name]];
 	
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openMenu:)]];
+	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(clear:)];
+	[printItem setTitleTextAttributes:@{
+										 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+										 } forState:UIControlStateNormal];
 	
-	sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Checkout Table (clear items)", nil];
+	//sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Done" destructiveButtonTitle:nil otherButtonTitles:@"Print Order", @"Checkout Table (clear items)", nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,6 +80,12 @@
 
 - (void)reloadData {
 	[self.tableView reloadData];
+	
+	if (table.items.count > 0) {
+		[self.navigationItem setRightBarButtonItem:printItem animated:true];
+	} else {
+		[self.navigationItem setRightBarButtonItem:nil animated:true];
+	}
 }
 
 - (void)openMenu:(id)sender {
@@ -85,7 +96,8 @@
     [table clearTable];
     [table setItems:@[]];
 	[table setNotes:@""];
-    [self reloadData];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[table.name stringByAppendingString:@" Printing.."] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self reloadData];
 }
 - (void)sendToKitchen:(id)sender {
     [table sendToKitchen];
