@@ -4,5 +4,11 @@ module.exports = {
 	Category: require('./Category'),
 	Staff: require('./Staff'),
 	Report: require('./Report'),
-	printers: []
+	printers: [{
+			socket: {},
+			name: "",
+			ip: "",
+			prices: false,
+			category: ""
+		}]
 }

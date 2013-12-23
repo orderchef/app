@@ -38,13 +38,18 @@ exports.router = function (socket) {
 		var table = mongoose.Types.ObjectId(data.table);
 		
 		models.Table.getTable(table, function(err, table) {
+			for (var i = 0; i < models.printers.length; i++) {
+				console.log(models.printers[i])
+				table.printOrder(models.printers[i]);
+			}
+			
 			table.printOrder()
 			
 			var r = models.Report.addOrder(table);
 			r.save()
 	
-			table.resetTable()
-			table.save();
+			//table.resetTable()
+			//table.save();
 		})
 	})
 	socket.on('remove.table', function(data) {
@@ -67,7 +72,10 @@ exports.router = function (socket) {
 		models.Table.getTable(table, function(err, table) {
 			if (err) throw err;
 			
-			table.printOrder();
+			for (var i = 0; i < models.printers.length; i++) {
+				console.log(models.printers[i])
+				table.printOrder(models.printers[i]);
+			}
 		})
 	})
 	socket.on('add.table item', function(data) {
