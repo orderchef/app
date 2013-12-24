@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class Table;
+@class Order;
 
 @interface MenuViewController : UITableViewController <UISearchBarDelegate, UINavigationControllerDelegate>
 
-@property (nonatomic, strong) Table *table;
+@property (nonatomic, weak) Table *table;
+@property (nonatomic , weak) Order *activeOrder;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end

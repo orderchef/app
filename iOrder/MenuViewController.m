@@ -15,6 +15,7 @@
 #import "ItemController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "Order.h"
 
 @interface MenuViewController () {
 	NSArray *categories;
@@ -41,6 +42,7 @@
 @implementation MenuViewController
 
 @synthesize table;
+@synthesize activeOrder;
 
 - (void)viewDidLoad
 {
@@ -331,7 +333,7 @@
 	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (table) {
-		[table addItem:item];
+		[activeOrder addItem:item];
 		
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 		[self.navigationController popViewControllerAnimated:YES];

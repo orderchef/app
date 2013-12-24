@@ -10,6 +10,7 @@
 #import "Item.h"
 #import "Table.h"
 #import "AppDelegate.h"
+#import "OrderGroup.h"
 
 @interface BasketItemViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
@@ -49,8 +50,9 @@
 }
 
 - (void)saveItem {
+	/*
 	TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-	int index = (int)[[table items] indexOfObject:item];
+	int index = (int)[[table.group items] indexOfObject:item];
 	
 	NSMutableDictionary *dict = [item mutableCopy];
 	[dict setObject:[cell.textField text] forKey:@"notes"];
@@ -62,7 +64,7 @@
 	
 	// refresh
 	item = [[table items] objectAtIndex:index];
-	[table save];
+	[table save];*/
 	
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -188,7 +190,7 @@
 
 - (void)deleteItemFromTable:(id)sender {
 	Item *it = [item objectForKey:@"item"];
-	[table removeItem:it];
+	//[table removeItem:it];
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:it.name detail:@"Removed from Basket" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 	[self.navigationController popViewControllerAnimated:YES];

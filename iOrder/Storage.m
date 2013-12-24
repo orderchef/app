@@ -15,6 +15,7 @@
 #import "Employee.h"
 #import "AppDelegate.h"
 #import "Report.h"
+#import "OrderGroup.h"
 
 @interface Storage () {
     bool loadedData; // at least once....
@@ -69,13 +70,12 @@
     return arr;
 }
 
-- (void)forwardToTable:(NSArray *)args {
-    NSDictionary *obj = [args objectAtIndex:0];
-    NSString *_id = [obj objectForKey:@"table"];
+- (void)forwardGroupToTable:(OrderGroup *)group {
+    NSString *_id = [group table]._id;
     
     for (Table *table in tables) {
         if ([[table _id] isEqualToString:_id]) {
-            [table loadItems:[obj objectForKey:@"items"]];
+            [table setGroup:group];
             break;
         }
     }
@@ -100,8 +100,10 @@
 		}
         
         // for specific table
-        else if ([name isEqualToString:@"get.items table"]) {
-            [self forwardToTable:[packet args]];
+        else if ([name isEqualToString:@"get.group active"]) {
+			OrderGroup *group = [[self loopAndLoad:packet.args object:[OrderGroup class]] objectAtIndex:0];
+			NSLog(@"%@", group);
+            [self forwardGroupToTable:group];
         }
     }
 }

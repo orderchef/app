@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F283A491869CE48001E4223 /* OrderGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A481869CE48001E4223 /* OrderGroup.m */; };
+		4F283A4C1869CE51001E4223 /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A4B1869CE51001E4223 /* Order.m */; };
 		4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E520181E672B00E4FDD9 /* MenuViewController.m */; };
 		4F33E524181E673000E4FDD9 /* ItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E523181E673000E4FDD9 /* ItemController.m */; };
 		4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F345AD7184E83D000A98BEB /* TextareaCell.m */; };
@@ -64,6 +66,10 @@
 
 /* Begin PBXFileReference section */
 		1A19FE12E07E48C9ACF0FF81 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		4F283A471869CE48001E4223 /* OrderGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderGroup.h; sourceTree = "<group>"; };
+		4F283A481869CE48001E4223 /* OrderGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderGroup.m; sourceTree = "<group>"; };
+		4F283A4A1869CE51001E4223 /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
+		4F283A4B1869CE51001E4223 /* Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Order.m; sourceTree = "<group>"; };
 		4F33E51F181E672B00E4FDD9 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		4F33E520181E672B00E4FDD9 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		4F33E522181E673000E4FDD9 /* ItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemController.h; sourceTree = "<group>"; };
@@ -117,21 +123,21 @@
 		4FD939371865F69300A2042F /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		4FDEE0501852022F009AEB5B /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		4FDEE0511852022F009AEB5B /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
-		4FF0F39B181DC6DE00447906 /* iOrder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOrder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FF0F39B181DC6DE00447906 /* OrderChef.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OrderChef.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF0F39E181DC6DE00447906 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4FF0F3A0181DC6DE00447906 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4FF0F3A2181DC6DE00447906 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4FF0F3A4181DC6DE00447906 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		4FF0F3A8181DC6DE00447906 /* iOrder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOrder-Info.plist"; sourceTree = "<group>"; };
+		4FF0F3A8181DC6DE00447906 /* OrderChef-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OrderChef-Info.plist"; sourceTree = "<group>"; };
 		4FF0F3AA181DC6DE00447906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FF0F3AC181DC6DE00447906 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4FF0F3AE181DC6DE00447906 /* iOrder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOrder-Prefix.pch"; sourceTree = "<group>"; };
+		4FF0F3AE181DC6DE00447906 /* OrderChef-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OrderChef-Prefix.pch"; sourceTree = "<group>"; };
 		4FF0F3AF181DC6DE00447906 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4FF0F3B0181DC6DE00447906 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4FF0F3B5181DC6DE00447906 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4FF0F3BB181DC6DE00447906 /* iOrderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOrderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FF0F3BB181DC6DE00447906 /* OrderChefTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrderChefTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF0F3BC181DC6DE00447906 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		4FF0F3C5181DC6DE00447906 /* iOrderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOrderTests-Info.plist"; sourceTree = "<group>"; };
+		4FF0F3C5181DC6DE00447906 /* OrderChefTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OrderChefTests-Info.plist"; sourceTree = "<group>"; };
 		4FF0F3C7181DC6DE00447906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FF0F3C9181DC6DE00447906 /* iOrderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOrderTests.m; sourceTree = "<group>"; };
 		4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
@@ -244,7 +250,7 @@
 		4FF0F392181DC6DE00447906 = {
 			isa = PBXGroup;
 			children = (
-				4FF0F3A6181DC6DE00447906 /* iOrder */,
+				4FF0F3A6181DC6DE00447906 /* OrderChef */,
 				4FF0F3C3181DC6DE00447906 /* iOrderTests */,
 				4FF0F39D181DC6DE00447906 /* Frameworks */,
 				4FF0F39C181DC6DE00447906 /* Products */,
@@ -255,8 +261,8 @@
 		4FF0F39C181DC6DE00447906 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4FF0F39B181DC6DE00447906 /* iOrder.app */,
-				4FF0F3BB181DC6DE00447906 /* iOrderTests.xctest */,
+				4FF0F39B181DC6DE00447906 /* OrderChef.app */,
+				4FF0F3BB181DC6DE00447906 /* OrderChefTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -276,7 +282,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4FF0F3A6181DC6DE00447906 /* iOrder */ = {
+		4FF0F3A6181DC6DE00447906 /* OrderChef */ = {
 			isa = PBXGroup;
 			children = (
 				4FD939371865F69300A2042F /* fontawesome-webfont.ttf */,
@@ -292,16 +298,17 @@
 				4F3628A51855DF2B00971505 /* Passcode */,
 				4FF0F3A7181DC6DE00447906 /* Supporting Files */,
 			);
+			name = OrderChef;
 			path = iOrder;
 			sourceTree = "<group>";
 		};
 		4FF0F3A7181DC6DE00447906 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4FF0F3A8181DC6DE00447906 /* iOrder-Info.plist */,
+				4FF0F3A8181DC6DE00447906 /* OrderChef-Info.plist */,
 				4FF0F3A9181DC6DE00447906 /* InfoPlist.strings */,
 				4FF0F3AC181DC6DE00447906 /* main.m */,
-				4FF0F3AE181DC6DE00447906 /* iOrder-Prefix.pch */,
+				4FF0F3AE181DC6DE00447906 /* OrderChef-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -318,7 +325,7 @@
 		4FF0F3C4181DC6DE00447906 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4FF0F3C5181DC6DE00447906 /* iOrderTests-Info.plist */,
+				4FF0F3C5181DC6DE00447906 /* OrderChefTests-Info.plist */,
 				4FF0F3C6181DC6DE00447906 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -331,6 +338,10 @@
 				4F3A5D6C1820846800201B8C /* ItemCategory.m */,
 				4F3A5D6E1820846800201B8C /* Table.h */,
 				4F3A5D6F1820846800201B8C /* Table.m */,
+				4F283A471869CE48001E4223 /* OrderGroup.h */,
+				4F283A481869CE48001E4223 /* OrderGroup.m */,
+				4F283A4A1869CE51001E4223 /* Order.h */,
+				4F283A4B1869CE51001E4223 /* Order.m */,
 				4F3A5D711820846800201B8C /* Item.h */,
 				4F3A5D721820846800201B8C /* Item.m */,
 				4F3628B81855E31C00971505 /* Employee.h */,
@@ -344,9 +355,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4FF0F39A181DC6DE00447906 /* iOrder */ = {
+		4FF0F39A181DC6DE00447906 /* OrderChef */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FF0F3CD181DC6DE00447906 /* Build configuration list for PBXNativeTarget "iOrder" */;
+			buildConfigurationList = 4FF0F3CD181DC6DE00447906 /* Build configuration list for PBXNativeTarget "OrderChef" */;
 			buildPhases = (
 				2BAE9472F6FF4A3494E099C0 /* Check Pods Manifest.lock */,
 				4FF0F397181DC6DE00447906 /* Sources */,
@@ -359,14 +370,14 @@
 			);
 			dependencies = (
 			);
-			name = iOrder;
+			name = OrderChef;
 			productName = iOrder;
-			productReference = 4FF0F39B181DC6DE00447906 /* iOrder.app */;
+			productReference = 4FF0F39B181DC6DE00447906 /* OrderChef.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4FF0F3BA181DC6DE00447906 /* iOrderTests */ = {
+		4FF0F3BA181DC6DE00447906 /* OrderChefTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FF0F3D0181DC6DE00447906 /* Build configuration list for PBXNativeTarget "iOrderTests" */;
+			buildConfigurationList = 4FF0F3D0181DC6DE00447906 /* Build configuration list for PBXNativeTarget "OrderChefTests" */;
 			buildPhases = (
 				4FF0F3B7181DC6DE00447906 /* Sources */,
 				4FF0F3B8181DC6DE00447906 /* Frameworks */,
@@ -377,9 +388,9 @@
 			dependencies = (
 				4FF0F3C2181DC6DE00447906 /* PBXTargetDependency */,
 			);
-			name = iOrderTests;
+			name = OrderChefTests;
 			productName = iOrderTests;
-			productReference = 4FF0F3BB181DC6DE00447906 /* iOrderTests.xctest */;
+			productReference = 4FF0F3BB181DC6DE00447906 /* OrderChefTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -399,7 +410,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4FF0F396181DC6DE00447906 /* Build configuration list for PBXProject "iOrder" */;
+			buildConfigurationList = 4FF0F396181DC6DE00447906 /* Build configuration list for PBXProject "OrderChef" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -411,8 +422,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4FF0F39A181DC6DE00447906 /* iOrder */,
-				4FF0F3BA181DC6DE00447906 /* iOrderTests */,
+				4FF0F39A181DC6DE00447906 /* OrderChef */,
+				4FF0F3BA181DC6DE00447906 /* OrderChefTests */,
 			);
 		};
 /* End PBXProject section */
@@ -508,6 +519,8 @@
 				4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */,
 				4FA097A3184F55CE00398DD4 /* BasketItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
+				4F283A491869CE48001E4223 /* OrderGroup.m in Sources */,
+				4F283A4C1869CE51001E4223 /* Order.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4F8B98C4185E28E7001354CA /* Report.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
@@ -535,7 +548,7 @@
 /* Begin PBXTargetDependency section */
 		4FF0F3C2181DC6DE00447906 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4FF0F39A181DC6DE00447906 /* iOrder */;
+			target = 4FF0F39A181DC6DE00447906 /* OrderChef */;
 			targetProxy = 4FF0F3C1181DC6DE00447906 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -642,9 +655,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOrder/iOrder-Prefix.pch";
-				INFOPLIST_FILE = "iOrder/iOrder-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "iOrder/OrderChef-Prefix.pch";
+				INFOPLIST_FILE = "iOrder/OrderChef-Info.plist";
+				PRODUCT_NAME = OrderChef;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -657,9 +670,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOrder/iOrder-Prefix.pch";
-				INFOPLIST_FILE = "iOrder/iOrder-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "iOrder/OrderChef-Prefix.pch";
+				INFOPLIST_FILE = "iOrder/OrderChef-Info.plist";
+				PRODUCT_NAME = OrderChef;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -680,8 +693,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "iOrderTests/iOrderTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "iOrderTests/OrderChefTests-Info.plist";
+				PRODUCT_NAME = OrderChefTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -699,8 +712,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOrder/iOrder-Prefix.pch";
-				INFOPLIST_FILE = "iOrderTests/iOrderTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "iOrderTests/OrderChefTests-Info.plist";
+				PRODUCT_NAME = OrderChefTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -709,7 +722,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4FF0F396181DC6DE00447906 /* Build configuration list for PBXProject "iOrder" */ = {
+		4FF0F396181DC6DE00447906 /* Build configuration list for PBXProject "OrderChef" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FF0F3CB181DC6DE00447906 /* Debug */,
@@ -718,7 +731,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4FF0F3CD181DC6DE00447906 /* Build configuration list for PBXNativeTarget "iOrder" */ = {
+		4FF0F3CD181DC6DE00447906 /* Build configuration list for PBXNativeTarget "OrderChef" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FF0F3CE181DC6DE00447906 /* Debug */,
@@ -727,7 +740,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4FF0F3D0181DC6DE00447906 /* Build configuration list for PBXNativeTarget "iOrderTests" */ = {
+		4FF0F3D0181DC6DE00447906 /* Build configuration list for PBXNativeTarget "OrderChefTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FF0F3D1181DC6DE00447906 /* Debug */,

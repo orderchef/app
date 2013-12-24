@@ -10,21 +10,18 @@
 #import "Storage.h"
 
 @class Item;
+@class OrderGroup;
 
 @interface Table : NSObject <NetworkLoadingProtocol>
 
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSArray *items;
-@property (nonatomic, strong) NSString *notes;
 @property (assign) BOOL delivery;
 @property (assign) BOOL takeaway;
+@property (nonatomic, strong) OrderGroup *group;
 
 - (void)save;
 - (void)loadItems;
-- (void)loadItems:(NSArray *)items;
-- (void)addItem:(Item *)item;
-- (void)removeItem:(Item *)item;
 - (void)clearTable;
 - (void)sendToKitchen;
 - (void)deleteTable;

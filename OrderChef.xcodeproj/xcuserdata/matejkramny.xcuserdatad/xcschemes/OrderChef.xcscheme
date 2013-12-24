@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4FF0F39A181DC6DE00447906"
-               BuildableName = "iOrder.app"
-               BlueprintName = "iOrder"
-               ReferencedContainer = "container:iOrder.xcodeproj">
+               BuildableName = "OrderChef.app"
+               BlueprintName = "OrderChef"
+               ReferencedContainer = "container:OrderChef.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4FF0F3BA181DC6DE00447906"
-               BuildableName = "iOrderTests.xctest"
-               BlueprintName = "iOrderTests"
-               ReferencedContainer = "container:iOrder.xcodeproj">
+               BuildableName = "OrderChefTests.xctest"
+               BlueprintName = "OrderChefTests"
+               ReferencedContainer = "container:OrderChef.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,15 +43,15 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4FF0F39A181DC6DE00447906"
-            BuildableName = "iOrder.app"
-            BlueprintName = "iOrder"
-            ReferencedContainer = "container:iOrder.xcodeproj">
+            BuildableName = "OrderChef.app"
+            BlueprintName = "OrderChef"
+            ReferencedContainer = "container:OrderChef.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
@@ -62,22 +62,12 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4FF0F39A181DC6DE00447906"
-            BuildableName = "iOrder.app"
-            BlueprintName = "iOrder"
-            ReferencedContainer = "container:iOrder.xcodeproj">
+            BuildableName = "OrderChef.app"
+            BlueprintName = "OrderChef"
+            ReferencedContainer = "container:OrderChef.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
-         <AdditionalOption
-            key = "OBJC_PRINT_EXCEPTIONS"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
@@ -90,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4FF0F39A181DC6DE00447906"
-            BuildableName = "iOrder.app"
-            BlueprintName = "iOrder"
-            ReferencedContainer = "container:iOrder.xcodeproj">
+            BuildableName = "OrderChef.app"
+            BlueprintName = "OrderChef"
+            ReferencedContainer = "container:OrderChef.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
