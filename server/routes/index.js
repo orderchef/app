@@ -2,18 +2,18 @@ var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
 
-var categories = require('./categories')
-	, items = require('./items')
-	, staff = require('./staff')
-	, tables = require('./tables')
-	, reports = require('./reports')
-	, printer = require('./printer')
+var routes = [];
 
-exports.router = function (socket) {
-	categories.router(socket);
-	items.router(socket);
-	staff.router(socket);
-	tables.router(socket);
-	reports.router(socket);
-	printer.router(socket);
+routes.push(require('./categories'));
+routes.push(require('./items'));
+routes.push(require('./staff'));
+routes.push(require('./tables'));
+routes.push(require('./reports'));
+routes.push(require('./printer'));
+routes.push(require('./orders'));
+
+exports.router = function (s) {
+	for (i in routes) {
+		routes[i].router(s)
+	}
 }

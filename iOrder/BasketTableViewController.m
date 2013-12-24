@@ -43,7 +43,7 @@
 	
 	[self.navigationItem setTitle:[table name]];
 	
-	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(clear:)];
+	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
 	[printItem setTitleTextAttributes:@{
 										 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 										 } forState:UIControlStateNormal];
@@ -99,7 +99,7 @@
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[table.name stringByAppendingString:@" Printing.."] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 	[self reloadData];
 }
-- (void)sendToKitchen:(id)sender {
+- (void)printOrder:(id)sender {
     [table sendToKitchen];
 }
 

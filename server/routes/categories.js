@@ -16,9 +16,8 @@ exports.router = function (socket) {
 		})
 	});
 	
-	socket.on('create.category', function(data) {
-		console.log("Creating category ")
-		console.log(data);
+	socket.on('save.category', function(data) {
+		console.log("Saving category ")
 		
 		models.Category.findById(data._id, function(err, category) {
 			if (err || !category) {

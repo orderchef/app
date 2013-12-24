@@ -16,14 +16,7 @@ function getSpaces (spaces) {
 
 var scheme = schema({
 	name: String,
-	items: [{
-		item: { type: ObjectId, ref: 'Item' },
-		quantity: Number,
-		notes: { type: String, default: "" }
-	}],
-	notes: String,
 	deleted: { type: Boolean, default: false },
-	
 	delivery: { type: Boolean, default: false },
 	takeaway: { type: Boolean, default: false }
 });

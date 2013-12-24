@@ -6,7 +6,7 @@ exports.router = function (socket) {
 	socket.on('get.staff', function(data) {
 		console.log("Listing Staff")
 		
-		models.Staff.find({}).sort('-manager').exec(function(err, staff) {
+		models.Employee.find({}).sort('-manager').exec(function(err, staff) {
 			if (err) throw err;
 			
 			console.log(staff);
@@ -14,29 +14,33 @@ exports.router = function (socket) {
 		})
 	});
 	
-	socket.on('create.staff', function(data) {
-		console.log("Creating Staff ")
-		console.log(data);
+	socket.on('save.employee', function(data) {
+		console.log("Saving an Employee")
 		
-		models.Staff.findById(data._id, function(err, staff) {
-			if (staff) {
-				staff.update(data);
+		models.Employee.findById(data._id, function(err, employee) {
+			if (employee) {
+				employee.update(data);
 			} else {
-				staff = new models.Staff({
+				employee = new models.Employee({
 					name: data.name,
 					code: data.code,
 					manager: data.manager
 				});
 			}
 			
-			staff.save();
+			employee.save();
 		});
 	})
 	
-	socket.on('remove.staff', function(data) {
-		console.log("Removing a Staff!")
-		console.log(data);
+	socket.on('remove.employee', function(data) {
+		console.log("Removing an Employee!")
 		
-		models.Staff.findById(data._id).remove();
+		models.Staff.findById(data._id, function(err, employee) {
+			if (err || !employee) {
+				return;
+			}
+			
+			employee.remove();
+		})
 	});
 }

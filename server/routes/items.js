@@ -15,18 +15,6 @@ exports.router = function (socket) {
 			socket.emit('get.items', items)
 		})
 	});
-	socket.on('get.items table', function(data) {
-		console.log("Listing Items for Table")
-		
-		var table = mongoose.Types.ObjectId(data.table);
-		
-		models.Table.findById(table).populate('items.item').sort('items.item.name').exec(function(err, table) {
-			socket.emit('get.items table', {
-				table: table._id,
-				items: table.items
-			})
-		})
-	})
 	
 	socket.on('set.item category', function(data) {
 		console.log("Setting category to item");
@@ -40,9 +28,8 @@ exports.router = function (socket) {
 		})
 	})
 	
-	socket.on('create.item', function(data) {
-		console.log("Creating item ")
-		console.log(data);
+	socket.on('save.item', function(data) {
+		console.log("Saving item ")
 		
 		models.Item.findById(data._id, function(err, item) {
 			try {

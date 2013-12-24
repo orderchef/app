@@ -14,11 +14,16 @@ scheme.methods.update = function (data) {
 	this.manager = data.manager;
 }
 
-module.exports = mongoose.model("Staff", scheme);
+module.exports = mongoose.model("Employee", scheme);
 
-/*
-new module.exports({
-	name: "Matej",
-	code: "1111",
-	manager: true
-}).save()*/
+module.exports.findOne({
+	name: "OrderChef Admin"
+}, function(err, admin) {
+	if (err || !admin) return;
+	
+	new module.exports({
+		name: "OrderChef Admin",
+		code: "1111",
+		manager: true
+	}).save();
+})
