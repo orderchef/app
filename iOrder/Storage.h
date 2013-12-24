@@ -27,8 +27,8 @@
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) NSMutableArray *staff;
 @property (nonatomic, strong) NSArray *reports;
-@property (nonatomic, strong) Staff *employee;
-@property (nonatomic, weak) Staff *managedEmployee;
+@property (nonatomic, strong) Employee *employee;
+@property (nonatomic, weak) Employee *managedEmployee;
 
 - (void)loadData;
 

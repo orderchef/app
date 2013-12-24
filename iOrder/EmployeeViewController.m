@@ -7,7 +7,7 @@
 //
 
 #import "EmployeeViewController.h"
-#import "Staff.h"
+#import "Employee.h"
 #import "TextFieldCell.h"
 #import "LTHPasscodeViewController.h"
 #import "AppDelegate.h"

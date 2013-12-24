@@ -12,7 +12,7 @@
 #import "Table.h"
 #import "Item.h"
 #import "ItemCategory.h"
-#import "Staff.h"
+#import "Employee.h"
 #import "AppDelegate.h"
 #import "Report.h"
 
@@ -93,7 +93,7 @@
         } else if ([name isEqualToString:@"get.items"]) {
             [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
         } else if ([name isEqualToString:@"get.staff"]) {
-            [self setStaff:[self loopAndLoad:[packet args] object:[Staff class]]];
+            [self setStaff:[self loopAndLoad:[packet args] object:[Employee class]]];
             [[LTHPasscodeViewController sharedUser] loadStaff:staff];
         } else if ([name isEqualToString:@"get.reports"]) {
 			[self setReports:[self loopAndLoad:[packet args] object:[Report class]]];
@@ -133,7 +133,7 @@
 - (void)maxNumberOfFailedAttemptsReached {
     
 }
-- (void)authenticatedAsUser:(Staff *)user {
+- (void)authenticatedAsUser:(Employee *)user {
     [self setEmployee:user];
     
     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);

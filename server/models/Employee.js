@@ -19,11 +19,14 @@ module.exports = mongoose.model("Employee", scheme);
 module.exports.findOne({
 	name: "OrderChef Admin"
 }, function(err, admin) {
-	if (err || !admin) return;
+	if (err || admin) return;
 	
-	new module.exports({
+	console.log("Creating admin");
+	
+	admin = new module.exports({
 		name: "OrderChef Admin",
 		code: "1111",
 		manager: true
-	}).save();
+	})
+	admin.save()
 })

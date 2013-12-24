@@ -12,7 +12,7 @@
 #import "MenuViewController.h"
 #import "BasketItemViewController.h"
 #import "TextareaCell.h"
-#import "Staff.h"
+#import "Employee.h"
 #import "AppDelegate.h"
 
 @interface BasketTableViewController () {
@@ -280,7 +280,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	switch (buttonIndex) {
 		case 0:
-			[self sendToKitchen:nil];
+			[self printOrder:nil];
 			break;
 		case 1:
 			[self clear:nil];

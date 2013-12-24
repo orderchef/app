@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Storage.h"
 
-@interface Staff : NSObject <NetworkLoadingProtocol>
+@interface Employee : NSObject <NetworkLoadingProtocol>
 
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;

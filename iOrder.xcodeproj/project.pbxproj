@@ -13,7 +13,7 @@
 		4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628B01855E0F900971505 /* LTHNavigationViewController.m */; };
 		4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628B21855E0F900971505 /* LTHPasscodeViewController.m */; };
 		4F3628B71855E0F900971505 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628B41855E0F900971505 /* SFHFKeychainUtils.m */; };
-		4F3628BA1855E31C00971505 /* Staff.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628B91855E31C00971505 /* Staff.m */; };
+		4F3628BA1855E31C00971505 /* Employee.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628B91855E31C00971505 /* Employee.m */; };
 		4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628BC1855FF7700971505 /* ManagerViewController.m */; };
 		4F3628C01856025B00971505 /* StaffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628BF1856025B00971505 /* StaffViewController.m */; };
 		4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3628C21856063D00971505 /* EmployeeViewController.m */; };
@@ -76,8 +76,8 @@
 		4F3628B21855E0F900971505 /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LTHPasscodeViewController.m; path = LTHPasscodeViewController/LTHPasscodeViewController.m; sourceTree = "<group>"; };
 		4F3628B31855E0F900971505 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = LTHPasscodeViewController/SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		4F3628B41855E0F900971505 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = LTHPasscodeViewController/SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		4F3628B81855E31C00971505 /* Staff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Staff.h; sourceTree = "<group>"; };
-		4F3628B91855E31C00971505 /* Staff.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Staff.m; sourceTree = "<group>"; };
+		4F3628B81855E31C00971505 /* Employee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Employee.h; sourceTree = "<group>"; };
+		4F3628B91855E31C00971505 /* Employee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Employee.m; sourceTree = "<group>"; };
 		4F3628BB1855FF7700971505 /* ManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagerViewController.h; sourceTree = "<group>"; };
 		4F3628BC1855FF7700971505 /* ManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManagerViewController.m; sourceTree = "<group>"; };
 		4F3628BE1856025B00971505 /* StaffViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffViewController.h; sourceTree = "<group>"; };
@@ -333,8 +333,8 @@
 				4F3A5D6F1820846800201B8C /* Table.m */,
 				4F3A5D711820846800201B8C /* Item.h */,
 				4F3A5D721820846800201B8C /* Item.m */,
-				4F3628B81855E31C00971505 /* Staff.h */,
-				4F3628B91855E31C00971505 /* Staff.m */,
+				4F3628B81855E31C00971505 /* Employee.h */,
+				4F3628B91855E31C00971505 /* Employee.m */,
 				4F8B98C2185E28E7001354CA /* Report.h */,
 				4F8B98C3185E28E7001354CA /* Report.m */,
 			);
@@ -496,7 +496,7 @@
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
-				4F3628BA1855E31C00971505 /* Staff.m in Sources */,
+				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
 				4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */,

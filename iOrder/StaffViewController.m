@@ -9,11 +9,11 @@
 #import "StaffViewController.h"
 #import "Storage.h"
 #import "Connection.h"
-#import "Staff.h"
+#import "Employee.h"
 #import "EmployeeViewController.h"
 
 @interface StaffViewController () {
-    Staff *newEmployee;
+    Employee *newEmployee;
     NSArray *managers;
     NSArray *normal;
 }
@@ -22,7 +22,7 @@
 
 @implementation StaffViewController
 
-static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Staff *b) {
+static NSComparisonResult (^staffComparator)(Employee *, Employee *) = ^(Employee *a, Employee *b) {
 	return [a.name compare:b.name];
 };
 
@@ -44,7 +44,7 @@ static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Sta
     
     NSArray *staff = [Storage getStorage].staff;
     
-    for (Staff *employee in staff) {
+    for (Employee *employee in staff) {
         if (employee.manager) {
             [_managers addObject:employee];
         } else {
@@ -74,7 +74,7 @@ static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Sta
 }
 
 - (void)addEmployee:(id)sender {
-    newEmployee = [[Staff alloc] init];
+    newEmployee = [[Employee alloc] init];
     [self performSegueWithIdentifier:@"employee" sender:newEmployee];
 }
 
@@ -88,7 +88,7 @@ static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Sta
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"employee"]) {
         EmployeeViewController *vc = (EmployeeViewController *)[segue destinationViewController];
-        vc.employee = (Staff *)sender;
+        vc.employee = (Employee *)sender;
     }
 }
 
@@ -119,7 +119,7 @@ static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Sta
     static NSString *CellIdentifier = @"basic";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Staff *employee;
+    Employee *employee;
     if (indexPath.section == 0) {
         employee = [managers objectAtIndex:indexPath.row];
     } else {
@@ -131,7 +131,7 @@ static NSComparisonResult (^staffComparator)(Staff *, Staff *) = ^(Staff *a, Sta
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Staff *employee;
+    Employee *employee;
     if (indexPath.section == 0) {
         employee = [managers objectAtIndex:indexPath.row];
     } else {

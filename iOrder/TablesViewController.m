@@ -15,7 +15,7 @@
 #import "Connection.h"
 #import "TableViewController.h"
 #import "LTHPasscodeViewController.h"
-#import "Staff.h"
+#import "Employee.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @interface TablesViewController () {

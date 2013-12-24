@@ -53,7 +53,7 @@
 						 }];
 	}
 	
-    [socket sendEvent:@"create.table" withData:@{
+    [socket sendEvent:@"save.table" withData:@{
                                                  @"_id": __id,
                                                  @"name": name,
                                                  @"notes": notes,
@@ -76,7 +76,9 @@
 }
 
 - (void)loadItems {
-    [[[Connection getConnection] socket] sendEvent:@"get.items table" withData:@{ @"table": _id }];
+    [[[Connection getConnection] socket] sendEvent:@"get.group active" withData:@{
+																				  @"table": _id
+																				  }];
 }
 
 - (void)loadItems:(NSArray *)items {

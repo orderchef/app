@@ -45,7 +45,7 @@
 - (void)save {
     Connection *c = [Connection getConnection];
     SocketIO *socket = [c socket];
-    [socket sendEvent:@"create.item" withData:@{
+    [socket sendEvent:@"save.item" withData:@{
 												@"_id": _id,
 												@"name": name,
 												@"price": price,

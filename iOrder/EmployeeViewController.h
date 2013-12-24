@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class Staff;
+@class Employee;
 
 @interface EmployeeViewController : UITableViewController <UIScrollViewDelegate>
 
-@property (nonatomic, weak) Staff *employee;
+@property (nonatomic, weak) Employee *employee;
 
 @end

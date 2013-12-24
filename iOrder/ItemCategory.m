@@ -41,7 +41,7 @@
 - (void)save {
     Connection *c = [Connection getConnection];
     SocketIO *socket = [c socket];
-    [socket sendEvent:@"create.category" withData:@{
+    [socket sendEvent:@"save.category" withData:@{
 													@"name": name,
 													@"_id": _id,
 													@"sushi": [NSNumber numberWithBool:sushi],

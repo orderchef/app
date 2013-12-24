@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "Staff.h"
+#import "Employee.h"
 #import "Connection.h"
 
-@implementation Staff
+@implementation Employee
 
 @synthesize code, _id, name, manager;
 
@@ -38,7 +38,7 @@
     SocketIO *socket = [c socket];
     
     @try {
-        [socket sendEvent:@"create.staff" withData:@{
+        [socket sendEvent:@"save.employee" withData:@{
                                                      @"name": name,
                                                      @"code": code,
                                                      @"_id": _id,
@@ -53,7 +53,7 @@
 		return;
 	}
 	
-	[[[Connection getConnection] socket] sendEvent:@"remove.staff" withData:@{@"_id": _id}];
+	[[[Connection getConnection] socket] sendEvent:@"remove.employee" withData:@{@"_id": _id}];
 }
 
 @end

@@ -11,7 +11,7 @@
 #import "ItemCategory.h"
 #import "Table.h"
 #import "Storage.h"
-#import "Staff.h"
+#import "Employee.h"
 #import "ItemController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
