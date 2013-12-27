@@ -2,7 +2,6 @@ var mongoose = require('mongoose')
 	, schema = mongoose.Schema
 	, ObjectId = schema.ObjectId
 	, async = require('async')
-	, models = require('./')
 
 function getSpaces (spaces) {
 	var spacer = "";
@@ -106,18 +105,6 @@ scheme.methods.update = function (data) {
 	
 	this.delivery = data.delivery;
 	this.takeaway = data.takeaway;
-	
-	for (var i = 0; i < data.items.length; i++) {
-		for (var x = 0; x < this.items.length; x++) {
-			if (data.items[i]._id == this.items[x]._id.toString()) {
-				this.items[x].notes = data.items[i].notes;
-				this.items[x].quantity = data.items[i].quantity;
-				this.items[x].save()
-				
-				break;
-			}
-		}
-	}
 }
 
 scheme.methods.sortFunction = function (a, b) {
@@ -137,9 +124,3 @@ scheme.methods.resetTable = function () {
 }
 
 module.exports = mongoose.model("Table", scheme);
-
-setTimeout(function() {
-	if (!models.printers) {
-		models = require('./')
-	}
-}, 500)

@@ -10,6 +10,7 @@
 #import "Storage.h"
 #import "Item.h"
 #import "Connection.h"
+#import "OrderGroup.h"
 
 @implementation Order
 
@@ -57,13 +58,39 @@
 		NSMutableDictionary *md = [[NSMutableDictionary alloc] initWithDictionary:it];
 		[md setObject:i forKey:@"item"];
 		
-		[_items addObject:i];
+		[_items addObject:md];
 	}
 	items = _items;
 }
 
+- (void)save {
+	NSMutableArray *_items = [[NSMutableArray alloc] init];
+	for (NSDictionary *item in items) {
+		[_items addObject:@{
+						   @"item": [(Item *)[item objectForKey:@"item"] _id],
+						   @"quantity": [item objectForKey:@"quantity"],
+						   @"notes": [item objectForKey:@"notes"]
+						   }];
+	}
+	
+	[[Connection getConnection].socket sendEvent:@"save.order" withData:@{
+																		 @"_id": _id,
+																		 @"printed": [NSNumber numberWithBool:printed],
+																		 @"printedAt": [NSNumber numberWithInt:[printedAt timeIntervalSince1970]],
+																		 @"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
+																		 @"notes": notes,
+																		 @"items": _items
+																		 } andAcknowledge:^(NSString *data) {
+																			 _id = data;
+																			 [group save];
+																		 }];
+}
+
 - (void)addItem:(Item *)item {
-	[[Connection getConnection].socket sendEvent:@"add.order item" withData:@{@"order": _id, @"item": item._id}];
+	[[Connection getConnection].socket sendEvent:@"add.order item" withData:@{
+																			  @"order": _id,
+																			  @"item": item._id
+																			  }];
 }
 
 @end

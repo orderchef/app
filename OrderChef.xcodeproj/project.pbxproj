@@ -32,7 +32,7 @@
 		4FA097A3184F55CE00398DD4 /* BasketItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* BasketItemViewController.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
-		4FD59E5D182573860077A70E /* BasketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5C182573860077A70E /* BasketTableViewController.m */; };
+		4FD59E5D182573860077A70E /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5C182573860077A70E /* OrderViewController.m */; };
 		4FD9392F1865CFBA00A2042F /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD9392E1865CFBA00A2042F /* CategoryViewController.m */; };
 		4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD939311865D06800A2042F /* CategoriesViewController.m */; };
 		4FD939381865F69300A2042F /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FD939371865F69300A2042F /* fontawesome-webfont.ttf */; };
@@ -52,6 +52,7 @@
 		4FF0F3C8181DC6DE00447906 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3C6181DC6DE00447906 /* InfoPlist.strings */; };
 		4FF0F3CA181DC6DE00447906 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0F3C9181DC6DE00447906 /* iOrderTests.m */; };
 		4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */; };
+		4FF29311186D991000795167 /* OrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29310186D991000795167 /* OrdersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,8 +115,8 @@
 		4FD59E5618211E870077A70E /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		4FD59E5718211E870077A70E /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
 		4FD59E59182128FF0077A70E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
-		4FD59E5B182573860077A70E /* BasketTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketTableViewController.h; sourceTree = "<group>"; };
-		4FD59E5C182573860077A70E /* BasketTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketTableViewController.m; sourceTree = "<group>"; };
+		4FD59E5B182573860077A70E /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
+		4FD59E5C182573860077A70E /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		4FD9392D1865CFBA00A2042F /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
 		4FD9392E1865CFBA00A2042F /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
 		4FD939301865D06800A2042F /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
@@ -141,6 +142,8 @@
 		4FF0F3C7181DC6DE00447906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FF0F3C9181DC6DE00447906 /* iOrderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOrderTests.m; sourceTree = "<group>"; };
 		4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
+		4FF2930F186D991000795167 /* OrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersViewController.h; sourceTree = "<group>"; };
+		4FF29310186D991000795167 /* OrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersViewController.m; sourceTree = "<group>"; };
 		9E20786A05CA4C89B4B6DCAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -215,8 +218,10 @@
 			children = (
 				4F5BE44B181DD255007EF69F /* TablesViewController.h */,
 				4F5BE44C181DD255007EF69F /* TablesViewController.m */,
-				4FD59E5B182573860077A70E /* BasketTableViewController.h */,
-				4FD59E5C182573860077A70E /* BasketTableViewController.m */,
+				4FF2930F186D991000795167 /* OrdersViewController.h */,
+				4FF29310186D991000795167 /* OrdersViewController.m */,
+				4FD59E5B182573860077A70E /* OrderViewController.h */,
+				4FD59E5C182573860077A70E /* OrderViewController.m */,
 				4FA097A1184F55CE00398DD4 /* BasketItemViewController.h */,
 				4FA097A2184F55CE00398DD4 /* BasketItemViewController.m */,
 				4F33E51F181E672B00E4FDD9 /* MenuViewController.h */,
@@ -510,12 +515,13 @@
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
+				4FF29311186D991000795167 /* OrdersViewController.m in Sources */,
 				4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */,
 				4F3A5D701820846800201B8C /* Table.m in Sources */,
 				4F3628C01856025B00971505 /* StaffViewController.m in Sources */,
 				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
 				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
-				4FD59E5D182573860077A70E /* BasketTableViewController.m in Sources */,
+				4FD59E5D182573860077A70E /* OrderViewController.m in Sources */,
 				4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */,
 				4FA097A3184F55CE00398DD4 /* BasketItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,

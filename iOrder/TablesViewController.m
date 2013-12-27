@@ -9,7 +9,8 @@
 #import "TablesViewController.h"
 #import "AppDelegate.h"
 #import "Table.h"
-#import "BasketTableViewController.h"
+#import "OrdersViewController.h"
+#import "OrderViewController.h"
 #import "MenuViewController.h"
 #import "Storage.h"
 #import "Connection.h"
@@ -174,7 +175,7 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([[segue identifier] isEqualToString:@"openBasket"]) {
-		BasketTableViewController *vc = (BasketTableViewController *)[segue destinationViewController];
+		OrdersViewController *vc = (OrdersViewController *)[segue destinationViewController];
 		vc.table = (Table *)sender;
 	} else if ([[segue identifier] isEqualToString:@"openMenu"]) {
 		MenuViewController *vc = (MenuViewController *)[segue.destinationViewController topViewController];

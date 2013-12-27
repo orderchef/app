@@ -12,9 +12,9 @@
 @class Table;
 @class Order;
 
-@interface BasketTableViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate, UIActionSheetDelegate>
+@interface OrderViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) Table *table;
-@property (nonatomic, weak) Order *activeOrder;
+@property (nonatomic, weak) Order *order;
 
 @end

@@ -29,4 +29,22 @@ var scheme = schema({
 	}
 })
 
+scheme.methods.update = function (data) {
+	this.notes = data.notes;
+	this.created = data.created;
+	this.printed = data.printed;
+	this.printedAt = data.printedAt;
+	this.items = [];
+	
+	for (var i = 0; i < data.items.length; i++) {
+		var it = data.items[i];
+		
+		this.items.push({
+			item: mongoose.Types.ObjectId(it.item),
+			quantity: it.quantity,
+			notes: it.notes
+		});
+	}
+}
+
 module.exports = mongoose.model("Order", scheme);

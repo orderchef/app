@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "BasketTableViewController.h"
+#import "OrderViewController.h"
 #import "Table.h"
 #import "Item.h"
 #import "MenuViewController.h"
@@ -17,7 +17,7 @@
 #import "OrderGroup.h"
 #import "Order.h"
 
-@interface BasketTableViewController () {
+@interface OrderViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
 	UIActionSheet *sheet;
@@ -26,10 +26,10 @@
 
 @end
 
-@implementation BasketTableViewController
+@implementation OrderViewController
 
 @synthesize table;
-@synthesize activeOrder;
+@synthesize order;
 
 - (void)viewDidLoad
 {
@@ -82,14 +82,6 @@
 - (void)reloadData {
 	[self.tableView reloadData];
 	
-	if (!activeOrder) {
-		if (table.group.orders.count == 0) {
-			[table.group setOrders:@[[[Order alloc] init]]];
-		}
-		
-		activeOrder = [table.group.orders objectAtIndex:0];
-	}
-	
 	/*
 	if (table.items.count > 0) {
 		[self.navigationItem setRightBarButtonItem:printItem animated:true];
@@ -117,13 +109,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[activeOrder items] count] > 0 ? 4 : 1;
+    return [[order items] count] > 0 ? 4 : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return [[activeOrder items] count];
+        return [[order items] count];
     }
     if (section == 2) {
         return 0;
@@ -151,7 +143,7 @@
         cell.textLabel.text = @"\uf07a Order more items";
         cell.detailTextLabel.text = @"";
     } else if (indexPath.section == 1) {
-        NSDictionary *item = [[activeOrder items] objectAtIndex:indexPath.row];
+        NSDictionary *item = [[order items] objectAtIndex:indexPath.row];
         Item *it = [item objectForKey:@"item"];
         int quantity = [[item objectForKey:@"quantity"] intValue];
         float total = quantity * [it.price floatValue];
@@ -164,7 +156,7 @@
         cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", total];
     } else if (indexPath.section == 3) {
         // notes
-        //[[(TextareaCell *)cell textField] setText:table.notes];
+        [[(TextareaCell *)cell textField] setText:order.notes];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
     }
@@ -189,10 +181,10 @@
     if ([[segue identifier] isEqualToString:@"openMenu"]) {
         MenuViewController *vc = (MenuViewController *)segue.destinationViewController;
 		vc.table = table;
-		vc.activeOrder = activeOrder;
+		vc.activeOrder = order;
     } else if ([[segue identifier] isEqualToString:@"openBasketItem"]) {
 		BasketItemViewController *vc = (BasketItemViewController *)segue.destinationViewController;
-		NSDictionary *item = [[table.group orders] objectAtIndex:((NSIndexPath *)sender).row];
+		NSDictionary *item = [[order items] objectAtIndex:((NSIndexPath *)sender).row];
 		vc.item = item;
 		vc.table = table;
 	}
@@ -213,7 +205,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 2) {
         float total = 0.f;
-        for (NSDictionary *item in [activeOrder items]) {
+        for (NSDictionary *item in [order items]) {
             Item *it = [item objectForKey:@"item"];
             total += [[item objectForKey:@"quantity"] intValue] * [it.price floatValue];
         }
@@ -249,7 +241,6 @@
 }
 
 - (void)textFieldDidBeginEditing {
-    //[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  - 216 + self.toolbar.frame.size.height)];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
     dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -266,9 +257,8 @@
     keyboardIsOpen = false;
     
     TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-	activeOrder.notes = [cell.textField text];
-#warning TODO activeOrder save
-    //[activeOrder save];
+	order.notes = [cell.textField text];
+    [order save];
     
     @try {
         [self.tableView removeGestureRecognizer:dismissKeyboardGesture];

@@ -11,6 +11,7 @@
 
 @class Table;
 @class Item;
+@class OrderGroup;
 
 @interface Order : NSObject <NetworkLoadingProtocol>
 
@@ -23,6 +24,7 @@
 
 @property (nonatomic, weak) OrderGroup *group;
 
+- (void)save;
 - (void)addItem:(Item *)item;
 
 @end

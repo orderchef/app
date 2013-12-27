@@ -156,12 +156,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LmA-Rt-sYH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="899" y="779"/>
+            <point key="canvasLocation" x="944" y="771"/>
         </scene>
-        <!--Basket Table View Controller - {{ Table Name }}-->
+        <!--Orders View Controller - {{ Table Name }}-->
         <scene sceneID="tfD-KP-ri5">
             <objects>
-                <tableViewController id="NPr-S5-9oa" customClass="BasketTableViewController" sceneMemberID="viewController">
+                <tableViewController id="NPr-S5-9oa" customClass="OrdersViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="mJV-ha-hhb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -221,13 +221,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="{{ Table Name }}" id="AGW-bQ-9wo"/>
                     <connections>
-                        <segue destination="IMB-4C-WAk" kind="push" identifier="openMenu" id="JES-Xa-qbr"/>
-                        <segue destination="thd-Ne-pdW" kind="push" identifier="openBasketItem" id="JUL-Vl-hDn"/>
+                        <segue destination="G8d-bh-FFK" kind="push" identifier="order" id="JuI-B5-JxF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HAm-Ud-6hN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="899" y="87"/>
+            <point key="canvasLocation" x="944" y="87"/>
         </scene>
         <!--Basket Item View Controller - {{ Item Name }}-->
         <scene sceneID="teP-CY-f9d">
@@ -311,7 +310,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uau-DY-52J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1424" y="87"/>
+            <point key="canvasLocation" x="1870" y="87"/>
         </scene>
         <!--Reports View Controller - Reports-->
         <scene sceneID="GqG-1D-S9p">
@@ -433,7 +432,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="1SE-zm-CMX">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1SE-zm-CMX" id="Hdn-i7-kKL">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -786,6 +785,7 @@
             <objects>
                 <navigationController definesPresentationContext="YES" id="UZZ-t0-Anu" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OWI-aJ-TGz">
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -796,6 +796,77 @@
             </objects>
             <point key="canvasLocation" x="-90" y="87"/>
         </scene>
+        <!--Order View Controller - {{ Order Name }}-->
+        <scene sceneID="Uya-i5-Qxa">
+            <objects>
+                <tableViewController id="G8d-bh-FFK" customClass="OrderViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="qRK-Jw-0nD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="basket" textLabel="xfl-Fh-7xk" detailTextLabel="0qA-F5-ZOG" style="IBUITableViewCellStyleValue1" id="qfx-ps-Rhe">
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qfx-ps-Rhe" id="U5F-s6-ZKM">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xfl-Fh-7xk">
+                                            <rect key="frame" x="15" y="11" width="33" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0qA-F5-ZOG">
+                                            <rect key="frame" x="241" y="11" width="44" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="notes" rowHeight="100" id="Waa-PY-auP" customClass="TextareaCell">
+                                <rect key="frame" x="0.0" y="163" width="320" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Waa-PY-auP" id="EoM-ZE-Zdc">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zkJ-AI-9oq">
+                                            <rect key="frame" x="10" y="0.0" width="300" height="99"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
+                                        </textView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="zkJ-AI-9oq" id="cGk-xZ-hKO"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="G8d-bh-FFK" id="zPb-uY-jIO"/>
+                            <outlet property="delegate" destination="G8d-bh-FFK" id="KJi-QK-1fl"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="{{ Order Name }}" id="UvY-cH-yul"/>
+                    <connections>
+                        <segue destination="thd-Ne-pdW" kind="push" identifier="openBasketItem" id="Mm5-dP-YGg"/>
+                        <segue destination="IMB-4C-WAk" kind="push" identifier="openMenu" id="VdY-LJ-2Mo"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kLq-Sm-PvG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1424" y="87"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -803,8 +874,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="QML-Dq-TCZ"/>
         <segue reference="vIn-OU-zy4"/>
-        <segue reference="WC3-Bi-NKW"/>
+        <segue reference="V0g-3s-5S9"/>
+        <segue reference="VdY-LJ-2Mo"/>
     </inferredMetricsTieBreakers>
 </document>

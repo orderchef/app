@@ -10,6 +10,7 @@
 #import "Storage.h"
 #import "Table.h"
 #import "Order.h"
+#import "Connection.h"
 
 @implementation OrderGroup
 
@@ -55,6 +56,27 @@
 			break;
 		}
 	}
+}
+
+- (void)save {
+	NSString *tid = @"";
+	if (self.table) {
+		tid = table._id;
+	}
+	
+	NSMutableArray *orderIds = [[NSMutableArray alloc] init];
+	for (Order *o in orders) {
+		[orderIds addObject:o._id];
+	}
+	
+	[[[Connection getConnection] socket] sendEvent:@"save.group" withData:@{
+																			@"_id": _id,
+																			@"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
+																			@"cleared": [NSNumber numberWithBool:cleared],
+																			@"clearedAt": [NSNumber numberWithInt:[clearedAt timeIntervalSince1970]],
+																			@"table": tid,
+																			@"orders": orderIds
+																			}];
 }
 
 @end
