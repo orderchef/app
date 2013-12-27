@@ -101,10 +101,27 @@
         
         // for specific table
         else if ([name isEqualToString:@"get.group active"]) {
-			OrderGroup *group = [[self loopAndLoad:packet.args object:[OrderGroup class]] objectAtIndex:0];
-			NSLog(@"%@", group);
-            [self forwardGroupToTable:group];
+			for (NSDictionary *x in [packet.args objectAtIndex:0]) {
+				NSString *gid = [x objectForKey:@"_id"];
+				Table *found = nil;
+				for (Table *t in tables) {
+					if ([t.group._id isEqualToString:gid] || [t._id isEqualToString:[x objectForKey:@"table"]]) {
+						found = t;
+						break;
+					}
+				}
+				
+				if (!found.group) {
+					found.group = [[OrderGroup alloc] init];
+				}
+				[found.group loadFromJSON:x];
+				
+				[found setGroup:found.group];
+			}
         }
+		else if ([name isEqualToString:@"get.order"]) {
+			
+		}
     }
 }
 

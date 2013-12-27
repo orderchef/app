@@ -60,7 +60,7 @@
 		
 		[_items addObject:md];
 	}
-	items = _items;
+	[self setItems:_items];
 }
 
 - (void)save {

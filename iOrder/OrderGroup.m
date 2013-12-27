@@ -40,7 +40,19 @@
 	
 	NSMutableArray *_orders = [[NSMutableArray alloc] init];
 	for (NSDictionary *o in [json objectForKey:@"orders"]) {
-		Order *order = [[Order alloc] init];
+		NSString *oid = [o objectForKey:@"_id"];
+		Order *order;
+		for (Order *_order in orders) {
+			if ([_order._id isEqualToString:oid]) {
+				order = _order;
+				break;
+			}
+		}
+		
+		if (!order) {
+			order = [[Order alloc] init];
+		}
+		
 		order.group = self;
 		[order loadFromJSON:o];
 		
@@ -56,6 +68,10 @@
 			break;
 		}
 	}
+}
+
+- (void)getOrders {
+	[[[Connection getConnection] socket] sendEvent:@"get.group active" withData:@{@"_id": _id}];
 }
 
 - (void)save {

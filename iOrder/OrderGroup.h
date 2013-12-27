@@ -22,5 +22,6 @@
 @property (nonatomic, strong) Table *table;
 
 - (void)save;
+- (void)getOrders;
 
 @end

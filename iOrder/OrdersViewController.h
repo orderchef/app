@@ -14,6 +14,5 @@
 @interface OrdersViewController : UITableViewController
 
 @property (nonatomic, weak) Table *table;
-@property (nonatomic, weak) Order *activeOrder;
 
 @end

@@ -25,7 +25,6 @@
 @implementation OrdersViewController
 
 @synthesize table;
-@synthesize activeOrder;
 
 - (void)viewDidLoad
 {
@@ -36,6 +35,7 @@
 	[self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshOrders:) forControlEvents:UIControlEventValueChanged];
     
+	[self refreshOrders:nil];
     [self reloadData];
 }
 

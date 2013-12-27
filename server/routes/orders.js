@@ -4,30 +4,37 @@ var mongoose = require('mongoose')
 
 exports.router = function (socket) {
 	socket.on('get.group active', function(data) {
-		var table = mongoose.Types.ObjectId(data.table);
-		
 		console.log("Getting an active group")
 		
-		models.OrderGroup.findOne({
-			table: table,
+		var query = {
 			cleared: false
-		}).populate('orders')
-		.exec(function(err, order) {
+		}
+		
+		if (data._id) {
+			query._id = mongoose.Types.ObjectId(data._id);
+		} else {
+			query.table = mongoose.Types.ObjectId(data.table);
+		}
+		
+		models.OrderGroup.find(query).populate('orders')
+		.exec(function(err, orders) {
 			if (err) {
 				throw err;
 				return;
 			}
 			
-			if (!order) {
+			if (!orders || orders.length == 0) {
 				console.log("Creating a group for an empty table")
 				order = new models.OrderGroup({
 					table: table,
 					cleared: false
 				});
-				order.save()
+				order.save();
+				
+				orders.push(order)
 			}
 			
-			socket.emit('get.group active', [order])
+			socket.emit('get.group active', orders);
 		})
 	})
 	

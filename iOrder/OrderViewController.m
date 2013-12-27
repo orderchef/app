@@ -37,7 +37,7 @@
 	
     keyboardIsOpen = false;
     
-    [table loadItems];
+    //[table loadItems];
     
 	[self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
@@ -55,20 +55,20 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	[order addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
     @try {
-        [table removeObserver:self forKeyPath:@"group" context:nil];
+        [order removeObserver:self forKeyPath:@"items" context:nil];
     }
     @catch (NSException *exception) {}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"group"]) {
+    if ([keyPath isEqualToString:@"items"]) {
         [self reloadData];
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
@@ -76,7 +76,7 @@
 }
 
 - (void)refreshBasket:(id)sender {
-    [self.table loadItems];
+    [self.order.group getOrders];
 }
 
 - (void)reloadData {
