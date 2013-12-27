@@ -55,10 +55,8 @@
 }
 
 - (void)customizeAppearance {
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 	[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f]];
-	//[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.398f green:0.798f blue:0.802f alpha:1.f]];
 	[[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }

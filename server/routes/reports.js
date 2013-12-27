@@ -9,26 +9,7 @@ exports.router = function (socket) {
 		models.Report.find({}).sort('-created').exec(function(err, reports) {
 			if (err) throw err;
 			
-			var rs = [];
-			for (var i = 0; i < reports.length; i++) {
-				var r = reports[i];
-				rs.push({
-					created: r.created.getTime() / 1000,
-					delivery: r.delivery,
-					takeaway: r.takeaway,
-					
-					name: r.name,
-					notes: r.notes,
-					
-					items: r.items,
-					
-					total: r.total,
-					quantity: r.quantity
-				})
-			}
-			
-			console.log(rs);
-			socket.emit('get.reports', rs)
+			socket.emit('get.reports', reports)
 		})
 	});
 	

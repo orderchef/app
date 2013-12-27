@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kMasterIP @"localhost"
+#define kMasterIP @"192.168.0.56"
 #define kMasterPort 8080
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

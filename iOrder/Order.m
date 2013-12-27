@@ -36,6 +36,7 @@
 
 - (void)loadFromJSON:(NSDictionary *)json {
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_UK_POSIX"]];
 	[dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
 	
 	_id = [json objectForKey:@"_id"];

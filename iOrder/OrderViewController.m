@@ -175,6 +175,9 @@
     } else if (indexPath.section == 3) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
+		
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+		return;
 	}
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -206,6 +209,9 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 0 && order.printed) {
+		return [@"This order was printed at " stringByAppendingString:[order.printedAt description]];
+	}
     if (section == 2) {
         float total = 0.f;
         for (NSDictionary *item in [order items]) {
