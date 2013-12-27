@@ -10,10 +10,12 @@
 #import "TextareaCell.h"
 
 @class Table;
+@class Order;
 
-@interface BasketItemViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate>
+@interface OrderItemViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) NSDictionary *item;
 @property (nonatomic, weak) Table *table;
+@property (nonatomic, weak) Order *order;
 
 @end

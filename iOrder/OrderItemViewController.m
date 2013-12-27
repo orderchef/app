@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "BasketItemViewController.h"
+#import "OrderItemViewController.h"
 #import "Item.h"
 #import "Table.h"
 #import "AppDelegate.h"
 #import "OrderGroup.h"
+#import "Order.h"
 
-@interface BasketItemViewController () {
+@interface OrderItemViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
     bool keyboardIsOpen;
 	
@@ -25,10 +26,11 @@
 
 @end
 
-@implementation BasketItemViewController
+@implementation OrderItemViewController
 
 @synthesize item;
 @synthesize table;
+@synthesize order;
 
 - (void)viewDidLoad
 {
@@ -50,21 +52,20 @@
 }
 
 - (void)saveItem {
-	/*
 	TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-	int index = (int)[[table.group items] indexOfObject:item];
+	int index = (int)[[order items] indexOfObject:item];
 	
 	NSMutableDictionary *dict = [item mutableCopy];
 	[dict setObject:[cell.textField text] forKey:@"notes"];
 	[dict setObject:[NSNumber numberWithInteger:quantity] forKey:@"quantity"];
 	
-	NSMutableArray *its = [[table items] mutableCopy];
+	NSMutableArray *its = [[order items] mutableCopy];
 	[its replaceObjectAtIndex:index withObject:[dict copy]];
-	[table setItems:[its copy]];
+	[order setItems:[its copy]];
 	
 	// refresh
-	item = [[table items] objectAtIndex:index];
-	[table save];*/
+	item = [[order items] objectAtIndex:index];
+	[order save];
 	
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 }

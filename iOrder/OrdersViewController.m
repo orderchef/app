@@ -10,7 +10,7 @@
 #import "Table.h"
 #import "Item.h"
 #import "MenuViewController.h"
-#import "BasketItemViewController.h"
+#import "OrderItemViewController.h"
 #import "TextareaCell.h"
 #import "Employee.h"
 #import "AppDelegate.h"
@@ -44,6 +44,7 @@
 		OrderViewController *vc = (OrderViewController *)[segue destinationViewController];
 		vc.order = (Order *)sender;
 		vc.table = table;
+		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", (int)[self.tableView indexPathForSelectedRow].row+1];
 	}
 }
 
@@ -58,6 +59,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+	[self.tableView reloadData];
 	[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
 }
 
@@ -105,12 +107,21 @@
     
 	if (indexPath.section == 0) {
 		Order *o = [table.group.orders objectAtIndex:indexPath.row];
-		cell.textLabel.text = [o.created description];
+		cell.textLabel.text = [NSString stringWithFormat:@"#%d", ((int)indexPath.row)+1];
+		float total = 0;
+		int totalq = 0;
+		for (NSDictionary *item in o.items) {
+			int q = [[item objectForKey:@"quantity"] intValue];
+			float p = [[(Item *)[item objectForKey:@"item"] price] floatValue];
+			total += q * p;
+			totalq += q;
+		}
+		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d items, £%.2f", totalq, total];
 	} else {
 		cell.textLabel.text = @"Create New Order";
+		cell.detailTextLabel.text = nil;
 	}
-	
-	cell.detailTextLabel.text = nil;
     
     return cell;
 }
