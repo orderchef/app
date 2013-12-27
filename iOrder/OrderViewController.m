@@ -22,6 +22,7 @@
     bool keyboardIsOpen;
 	UIActionSheet *sheet;
 	UIBarButtonItem *printItem;
+	bool confirmedReprint;
 }
 
 @end
@@ -36,20 +37,19 @@
     [super viewDidLoad];
 	
     keyboardIsOpen = false;
-    
-    //[table loadItems];
+    confirmedReprint = false;
+	
+	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
+	[printItem setTitleTextAttributes:@{
+										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+										} forState:UIControlStateNormal];
     
 	[self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
     
     [self reloadData];
 	
-	[self.navigationItem setTitle:[table name]];
-	
-	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
-	[printItem setTitleTextAttributes:@{
-										 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
-										 } forState:UIControlStateNormal];
+	[self.navigationItem setTitle:[order.created description]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -82,27 +82,30 @@
 - (void)reloadData {
 	[self.tableView reloadData];
 	
-	/*
-	if (table.items.count > 0) {
+	if (order.items.count > 0) {
 		[self.navigationItem setRightBarButtonItem:printItem animated:true];
 	} else {
 		[self.navigationItem setRightBarButtonItem:nil animated:true];
-	}*/
+	}
 }
 
 - (void)openMenu:(id)sender {
 	[sheet showInView:self.view];
 }
 
-- (void)clear:(id)sender {
-    /*[table clearTable];
-    [table setItems:@[]];
-	[table setNotes:@""];
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[table.name stringByAppendingString:@" Printing.."] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];*/
-	[self reloadData];
-}
 - (void)printOrder:(id)sender {
-    [table sendToKitchen];
+	if (order.printed && !confirmedReprint) {
+		if (!sheet) {
+			sheet = [[UIActionSheet alloc] initWithTitle:[@"Order was printed at " stringByAppendingString:[order.created description]] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Print Again", nil];
+		}
+		
+		[sheet showInView:self.view];
+		return;
+	}
+	
+    [order print];
+	
+	confirmedReprint = false;
 }
 
 #pragma mark - Table view data source
@@ -282,10 +285,9 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	switch (buttonIndex) {
 		case 0:
+			confirmedReprint = true;
 			[self printOrder:nil];
 			break;
-		case 1:
-			[self clear:nil];
 	}
 }
 

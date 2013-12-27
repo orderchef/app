@@ -5,16 +5,15 @@ var mongoose = require('mongoose')
 var scheme = schema({
 	name: String,
 	drink: { type: Boolean, default: false },
-	hotFood: { type: Boolean, default: false },
-	sushi: { type: Boolean, default: false },
-	deleted: { type: Boolean, default: false }
+	printers: [String]
 });
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
-	this.drink = data.drink;
-	this.hotFood = data.hotFood;
-	this.sushi = data.sushi;
+	this.printers = [];
+	for (var i = 0; i < data.printers.length; i++) {
+		this.printers.push(data.printers[i]);
+	}
 }
 
 module.exports = mongoose.model("Category", scheme);

@@ -35,7 +35,7 @@ exports.router = function (socket) {
 	socket.on('remove.employee', function(data) {
 		console.log("Removing an Employee!")
 		
-		models.Staff.findById(data._id, function(err, employee) {
+		models.Employee.findById(data._id, function(err, employee) {
 			if (err || !employee) {
 				return;
 			}

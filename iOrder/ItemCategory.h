@@ -16,9 +16,7 @@
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;
 
-@property (assign) BOOL drink;
-@property (assign) BOOL hotFood;
-@property (assign) BOOL sushi;
+@property (nonatomic, strong) NSArray *printers; // Prints to the printers labelled in this array..
 
 - (void)save;
 - (void)deleteCategory;

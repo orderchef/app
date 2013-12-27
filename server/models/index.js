@@ -11,10 +11,10 @@ module.exports = {
 
 if (process.env.NODE_ENV != 'production') {
 	module.exports.printers.push({
-		socket: {},
-		name: "",
-		ip: "",
-		prices: false,
-		category: ""
+		socket: { emit: function() {} },
+		name: "Virtual Printer",
+		ip: "127.0.0.1",
+		prices: true,
+		characters: 40 //31
 	})
 }

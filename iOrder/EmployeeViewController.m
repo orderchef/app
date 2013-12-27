@@ -50,6 +50,13 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	if (!save) save = !save;
+	[self.tableView reloadData];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -158,6 +165,7 @@
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
+		save = false;
         [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController:self];
     } else if (indexPath.section == 1 && indexPath.row == 1) {
         if ([employee._id isEqualToString:[Storage getStorage].employee._id]) {

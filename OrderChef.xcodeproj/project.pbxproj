@@ -53,6 +53,7 @@
 		4FF0F3CA181DC6DE00447906 /* iOrderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0F3C9181DC6DE00447906 /* iOrderTests.m */; };
 		4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */; };
 		4FF29311186D991000795167 /* OrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29310186D991000795167 /* OrdersViewController.m */; };
+		4FF29314186DB90000795167 /* PrintersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29313186DB90000795167 /* PrintersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,8 @@
 		4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
 		4FF2930F186D991000795167 /* OrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersViewController.h; sourceTree = "<group>"; };
 		4FF29310186D991000795167 /* OrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersViewController.m; sourceTree = "<group>"; };
+		4FF29312186DB90000795167 /* PrintersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintersViewController.h; sourceTree = "<group>"; };
+		4FF29313186DB90000795167 /* PrintersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintersViewController.m; sourceTree = "<group>"; };
 		9E20786A05CA4C89B4B6DCAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -209,6 +212,8 @@
 				4FD9392E1865CFBA00A2042F /* CategoryViewController.m */,
 				4FDEE0501852022F009AEB5B /* TableViewController.h */,
 				4FDEE0511852022F009AEB5B /* TableViewController.m */,
+				4FF29312186DB90000795167 /* PrintersViewController.h */,
+				4FF29313186DB90000795167 /* PrintersViewController.m */,
 			);
 			name = "Manager VCs";
 			sourceTree = "<group>";
@@ -513,6 +518,7 @@
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
+				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
 				4FF29311186D991000795167 /* OrdersViewController.m in Sources */,

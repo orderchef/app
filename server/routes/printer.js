@@ -29,4 +29,10 @@ exports.router = function (socket) {
 			models.printers.push(printer)
 		}
 	})
+	
+	socket.on('get.printers', function(data, cb) {
+		console.log("Sending back printers..");
+		
+		cb(models.printers);
+	})
 }

@@ -33,10 +33,13 @@
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+	
 	_id = [json objectForKey:@"_id"];
-	created = [NSDate dateWithTimeIntervalSince1970:[[json objectForKey:@"created"] intValue]];
+	created = [dateFormat dateFromString:[json objectForKey:@"created"]];
 	cleared = [[json objectForKey:@"cleared"] boolValue];
-	clearedAt = [NSDate dateWithTimeIntervalSince1970:[[json objectForKey:@"clearedAt"] intValue]];
+	clearedAt = [dateFormat dateFromString:[json objectForKey:@"clearedAt"]];
 	
 	NSMutableArray *_orders = [[NSMutableArray alloc] init];
 	for (NSDictionary *o in [json objectForKey:@"orders"]) {

@@ -26,5 +26,6 @@
 
 - (void)save;
 - (void)addItem:(Item *)item;
+- (void)print;
 
 @end

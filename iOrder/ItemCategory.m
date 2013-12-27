@@ -14,7 +14,7 @@
 
 @synthesize name;
 @synthesize _id;
-@synthesize drink, sushi, hotFood;
+@synthesize printers;
 
 - (id)init {
     self = [super init];
@@ -22,9 +22,7 @@
     if (self) {
 		_id = @"";
         name = @"";
-		drink = false;
-		sushi = false;
-		hotFood = false;
+		printers = [NSArray array];
     }
     
     return self;
@@ -33,9 +31,7 @@
 - (void)loadFromJSON:(NSDictionary *)json {
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
-	[self setDrink:[[json objectForKey:@"drink"] boolValue]];
-	[self setHotFood:[[json objectForKey:@"hotFood"] boolValue]];
-	[self setSushi:[[json objectForKey:@"sushi"] boolValue]];
+	[self setPrinters:[json objectForKey:@"printers"]];
 }
 
 - (void)save {
@@ -44,9 +40,7 @@
     [socket sendEvent:@"save.category" withData:@{
 													@"name": name,
 													@"_id": _id,
-													@"sushi": [NSNumber numberWithBool:sushi],
-													@"drink": [NSNumber numberWithBool:drink],
-													@"hotFood": [NSNumber numberWithBool:hotFood]
+													@"printers": printers
 													}];
 }
 

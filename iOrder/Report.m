@@ -32,8 +32,11 @@
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+	
     [self set_id:[json objectForKey:@"_id"]];
-	[self setCreated:[[NSDate alloc] initWithTimeIntervalSince1970:[[json objectForKey:@"created"] intValue]]];
+	[self setCreated:[dateFormat dateFromString:[json objectForKey:@"created"]]];
     [self setItems:[json objectForKey:@"items"]];
 	[self setTotal:[[json objectForKey:@"total"] floatValue]];
 	[self setQuantity:[[json objectForKey:@"quantity"] intValue]];

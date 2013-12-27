@@ -11,6 +11,8 @@
 #import "Item.h"
 #import "Connection.h"
 #import "OrderGroup.h"
+#import "Table.h"
+#import "Employee.h"
 
 @implementation Order
 
@@ -26,17 +28,20 @@
 		printed = false;
 		printedAt = [NSDate date];
 		notes = @"";
-		created = [NSDate date];
+		created = [[NSDate alloc] init];
 	}
 	
 	return self;
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+	
 	_id = [json objectForKey:@"_id"];
 	printed = [[json objectForKey:@"printed"] boolValue];
-	printedAt = [NSDate dateWithTimeIntervalSince1970:[[json objectForKey:@"printedAt"] intValue]];
-	created = [NSDate dateWithTimeIntervalSince1970:[[json objectForKey:@"created"] intValue]];
+	printedAt = [dateFormat dateFromString:[json objectForKey:@"printedAt"]];
+	created = [dateFormat dateFromString:[json objectForKey:@"created"]];
 	notes = [json objectForKey:@"notes"];
 	
 	NSMutableArray *_items = [[NSMutableArray alloc] init];
@@ -91,6 +96,16 @@
 																			  @"order": _id,
 																			  @"item": item._id
 																			  }];
+}
+
+- (void)print {
+	printed = true;
+	printedAt = [[NSDate alloc] init];
+	[[Connection getConnection].socket sendEvent:@"print.order" withData:@{
+																		   @"order": _id,
+																		   @"table": group.table.name,
+																		   @"employee": [Storage getStorage].employee.name
+																		   }];
 }
 
 @end

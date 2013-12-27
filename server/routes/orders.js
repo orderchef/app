@@ -54,7 +54,9 @@ exports.router = function (socket) {
 		console.log("Saving order")
 		
 		if (!data._id || data._id.length == 0) {
-			order = new models.Order();
+			order = new models.Order({
+				created: Date.now()
+			});
 			order.update(data)
 			order.save()
 			
@@ -104,5 +106,31 @@ exports.router = function (socket) {
 			
 			order.save();
 		})
+	})
+	
+	socket.on('print.order', function(data) {
+		console.log("Printing order ;)")
+		
+		var order = mongoose.Types.ObjectId(data.order);
+		
+		models.Order.findById(order).populate('items.item').exec(function(err, order) {
+			if (err || !order) {
+				return;
+			}
+			
+			order.printed = true;
+			order.printedAt = Date.now();
+			order.save();
+			
+			async.each(order.items, function(item, cb) {
+				item.item.populate('category', cb)
+			}, function(err) {
+				if (err) throw err;
+				
+				for (var i = 0; i < models.printers.length; i++) {
+					order.print(models.printers[i], data);
+				}
+			});
+		});
 	})
 }
