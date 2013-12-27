@@ -23,6 +23,7 @@
     NSArray *tables;
 	Table *newTable;
 	NSArray *titles;
+	UIBarButtonItem *managerButton;
 }
 
 @end
@@ -41,13 +42,15 @@
 	if (self.manageEnabled) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addTable:)] animated:NO];
 	} else {
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@" \uf0ad" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)]];
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"\uf08b" style:UIBarButtonItemStylePlain target:self action:@selector(logOut:)]];
 		
 		NSDictionary *faProperties = @{
 									   NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 									   };
-		[self.navigationItem.leftBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
+		
+		managerButton = [[UIBarButtonItem alloc] initWithTitle:@" \uf0ad" style:UIBarButtonItemStylePlain target:self action:@selector(openManager:)];
+		[managerButton setTitleTextAttributes:faProperties forState:UIControlStateNormal];
+		
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
 	}
 	
@@ -113,6 +116,12 @@
         Storage *storage = [Storage getStorage];
         [self setEditing:NO animated:NO];
         
+		if (!self.manageEnabled && [storage.employee manager]) {
+			[self.navigationItem setLeftBarButtonItem:managerButton];
+		} else {
+			[self.navigationItem setLeftBarButtonItem:nil];
+		}
+		
         if (![storage employee]) {
             // Lock
             [[LTHPasscodeViewController sharedUser] showLockscreenWithAnimation:YES];
@@ -170,6 +179,9 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 }
 
 - (void)openManager:(id)sender {
+	if (![[Storage getStorage].employee manager]) {
+		return;
+	}
 	[self performSegueWithIdentifier:@"openManager" sender:nil];
 }
 

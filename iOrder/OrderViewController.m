@@ -105,7 +105,10 @@
 	
     [order print];
 	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Order Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
+	
 	confirmedReprint = false;
+	[self reloadData];
 }
 
 #pragma mark - Table view data source
