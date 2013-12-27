@@ -1,4 +1,4 @@
-var io = require('socket.io').listen(8080);
+var io = require('socket.io').listen(parseInt(process.env.PORT) || 8080);
 var mongoose = require('mongoose')
 	, models = require('./models')
 	, spawn = require('child_process').spawn
