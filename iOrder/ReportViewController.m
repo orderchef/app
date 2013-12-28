@@ -7,7 +7,6 @@
 //
 
 #import "ReportViewController.h"
-#import "Report.h"
 
 @interface ReportViewController () {
 	float normalTotal;
@@ -42,7 +41,7 @@
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"EEEE dd"];
-	NSString *dayName = [dateFormat stringFromDate:[(Report *)[reports objectAtIndex:0] created]];
+	NSString *dayName = [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[[reports objectAtIndex:0] objectForKey:@"time"] intValue]]];
 	
 	[self.navigationItem setTitle:dayName];
 	
@@ -55,20 +54,23 @@
 }
 
 - (void)aggregate {
-	for (Report *r in reports) {
-		if (r.delivery) {
-			deliveryTotal += r.total;
-			deliveryQuantity += r.quantity;
-		} else if (r.takeaway) {
-			takeawayTotal += r.total;
-			takeawayQuantity += r.quantity;
+	for (NSDictionary *order in reports) {
+		float t = [[order objectForKey:@"total"] floatValue];
+		int q = [[order objectForKey:@"quantity"] intValue];
+		
+		if ([[order objectForKey:@"delivery"] boolValue]) {
+			deliveryTotal += t;
+			deliveryQuantity += q;
+		} else if ([[order objectForKey:@"takeaway"] boolValue]) {
+			takeawayTotal += t;
+			takeawayQuantity += q;
 		} else {
-			normalTotal += r.total;
-			normalQuantity += r.quantity;
+			normalTotal += t;
+			normalQuantity += q;
 		}
 		
-		total += r.total;
-		quantity += r.quantity;
+		total += t;
+		quantity += q;
 	}
 }
 

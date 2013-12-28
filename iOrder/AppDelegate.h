@@ -10,6 +10,7 @@
 
 #define kMasterIP @"127.0.0.1"
 #define kMasterPort 8000
+#define kReportsNotificationName @"ReportsLoadedNotification"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

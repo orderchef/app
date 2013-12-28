@@ -27,7 +27,6 @@
 		4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TablesViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
-		4F8B98C4185E28E7001354CA /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C3185E28E7001354CA /* Report.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
@@ -107,8 +106,6 @@
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
 		4F8B98C0185E279C001354CA /* ReportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportsViewController.m; sourceTree = "<group>"; };
-		4F8B98C2185E28E7001354CA /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
-		4F8B98C3185E28E7001354CA /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
 		4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderItemViewController.h; sourceTree = "<group>"; };
@@ -356,8 +353,6 @@
 				4F3A5D721820846800201B8C /* Item.m */,
 				4F3628B81855E31C00971505 /* Employee.h */,
 				4F3628B91855E31C00971505 /* Employee.m */,
-				4F8B98C2185E28E7001354CA /* Report.h */,
-				4F8B98C3185E28E7001354CA /* Report.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -534,7 +529,6 @@
 				4F283A491869CE48001E4223 /* OrderGroup.m in Sources */,
 				4F283A4C1869CE51001E4223 /* Order.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
-				4F8B98C4185E28E7001354CA /* Report.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
 				4F33E524181E673000E4FDD9 /* ItemController.m in Sources */,
 				4F3628B71855E0F900971505 /* SFHFKeychainUtils.m in Sources */,

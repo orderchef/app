@@ -9,7 +9,6 @@
 #import "ReportsViewController.h"
 #import "Storage.h"
 #import "Connection.h"
-#import "Report.h"
 #import "AppDelegate.h"
 #import "ReportViewController.h"
 #import "AppDelegate.h"
@@ -28,31 +27,28 @@
 	
 	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(reload:) forControlEvents:UIControlEventValueChanged];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotification:) name:kReportsNotificationName object:nil];
+	[[Connection getConnection].socket sendEvent:@"get.reports" withData:nil];
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	[[Storage getStorage] addObserver:self forKeyPath:@"reports" options:NSKeyValueObservingOptionNew context:nil];
 	if (sections == nil) {
 		[self reload:nil];
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Loading..." detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
 	}
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	
-	@try {
-		[[Storage getStorage] removeObserver:self forKeyPath:@"reports"];
-	} @catch (NSException *e) {}
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if ([keyPath isEqualToString:@"reports"]) {
-		if ([Storage getStorage].reports == nil) return;
-		
-		[self doSections];
+- (void)didReceiveNotification:(NSNotification *)notification {
+	if ([[notification name] isEqualToString:kReportsNotificationName]) {
+		NSDictionary *report = [notification userInfo];
+		[self doSections:report];
 		
 		[self.tableView reloadData];
 		[self.refreshControl endRefreshing];
@@ -63,37 +59,38 @@
 	[[[Connection getConnection] socket] sendEvent:@"get.reports" withData:nil];
 }
 
-- (void)doSections {
-	NSArray *reports = [Storage getStorage].reports;
+- (void)doSections:(NSDictionary *)report {
+	NSArray *orders = [report objectForKey:@"orders"];
+	
 	NSMutableDictionary *_sections = [[NSMutableDictionary alloc] init];
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	for (Report *report in reports) {
+	for (NSDictionary *order in orders) {
 		[dateFormat setDateFormat:@"MMMM YYYY"];
-		NSString *monthName = [dateFormat stringFromDate:report.created];
+		NSDate *created = [NSDate dateWithTimeIntervalSince1970:[[order objectForKey:@"time"] intValue]];
+		NSString *monthName = [dateFormat stringFromDate:created];
 		
 		if ([_sections objectForKey:monthName] == nil) {
 			[_sections setObject:[[NSMutableDictionary alloc] init] forKey:monthName];
 		}
 		
 		[dateFormat setDateFormat:@"EEEE dd"];
-		NSString *dayName = [dateFormat stringFromDate:report.created];
+		NSString *dayName = [dateFormat stringFromDate:created];
 		
 		if ([[_sections objectForKey:monthName] objectForKey:dayName] == nil) {
 			[[_sections objectForKey:monthName] setObject:[[NSMutableArray alloc] init] forKey:dayName];
 		}
 		
-		[[[_sections objectForKey:monthName] objectForKey:dayName] addObject:report];
+		[[[_sections objectForKey:monthName] objectForKey:dayName] addObject:order];
 	}
 	
 	sections = [_sections copy];
-	[Storage getStorage].reports = nil;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"Report"]) {
 		ReportViewController *vc = (ReportViewController *)[segue destinationViewController];
-		vc.reports = (NSMutableArray *)sender;
+		vc.reports = (NSArray *)sender;
 	}
 }
 
@@ -128,9 +125,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *key = [[sections allKeys] objectAtIndex:indexPath.section];
-	NSMutableArray *reports = [[sections objectForKey:key] objectForKey:[[[sections objectForKey:key] allKeys] objectAtIndex:indexPath.row]];
+	NSArray *report = [[sections objectForKey:key] objectForKey:[[[sections objectForKey:key] allKeys] objectAtIndex:indexPath.row]];
 	
-	[self performSegueWithIdentifier:@"Report" sender:reports];
+	[self performSegueWithIdentifier:@"Report" sender:report];
 }
 
 @end

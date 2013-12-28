@@ -14,7 +14,6 @@
 #import "ItemCategory.h"
 #import "Employee.h"
 #import "AppDelegate.h"
-#import "Report.h"
 #import "OrderGroup.h"
 
 @interface Storage () {
@@ -25,7 +24,7 @@
 
 @implementation Storage
 
-@synthesize tables, items, categories, staff, employee, reports;
+@synthesize tables, items, categories, staff, employee;
 @synthesize managedEmployee;
 
 + (Storage *)getStorage {
@@ -96,7 +95,10 @@
             [self setStaff:[self loopAndLoad:[packet args] object:[Employee class]]];
             [[LTHPasscodeViewController sharedUser] loadStaff:staff];
         } else if ([name isEqualToString:@"get.reports"]) {
-			[self setReports:[self loopAndLoad:[packet args] object:[Report class]]];
+			// reports
+			NSLog(@"%@", packet.args);
+			NSDictionary *reports = (NSDictionary *)[[packet args] objectAtIndex:0];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kReportsNotificationName object:self userInfo:reports];
 		}
         
         // for specific table
