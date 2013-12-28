@@ -56,10 +56,10 @@
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
 		if (indexPath.row == 0) {
 			//FaBarChartO
-			cell.textLabel.text = @"\uf080 Reports";
+			cell.textLabel.text = @"\uf080\tReports";
 		} else if (indexPath.row == 1) {
 			//FaUsers
-			cell.textLabel.text = @"\uf0c0 Staff";
+			cell.textLabel.text = @"\uf0c0\tStaff";
 		}
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
@@ -71,7 +71,7 @@
 		}
 	} else if (indexPath.section == 2) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
-		cell.textLabel.text = @"\uf05a About";
+		cell.textLabel.text = @"\uf05a\tAbout";
 	}
     
     return cell;

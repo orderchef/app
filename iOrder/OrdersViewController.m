@@ -94,7 +94,7 @@
 	}
 	
 	if (section == 1) {
-		return 1;
+		return 2;
 	}
 	
     return 0;
@@ -105,9 +105,17 @@
     static NSString *CellIdentifier = @"basket";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.textLabel.textAlignment = NSTextAlignmentLeft;
 	if (indexPath.section == 0) {
+		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
+		
 		Order *o = [table.group.orders objectAtIndex:indexPath.row];
-		cell.textLabel.text = [NSString stringWithFormat:@"#%d", ((int)indexPath.row)+1];
+		NSString *checkmark = @"\uf096\t";
+		if (o.printed) {
+			checkmark = @"\uf046\t";
+		}
+		cell.textLabel.text = [NSString stringWithFormat:@"%@#%d", checkmark, ((int)indexPath.row)+1];
 		float total = 0;
 		int totalq = 0;
 		for (NSDictionary *item in o.items) {
@@ -119,7 +127,13 @@
 		
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d items, £%.2f", totalq, total];
 	} else {
-		cell.textLabel.text = @"Create New Order";
+		if (indexPath.row == 0) {
+			cell.textLabel.text = @"Create New Order";
+		} else {
+			cell.textLabel.text = @"Clear Orders";
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		}
 		cell.detailTextLabel.text = nil;
 	}
     
@@ -129,6 +143,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Order *o;
 	if (indexPath.section == 1) {
+		if (indexPath.row == 1) {
+			// clear
+			[table.group clear];
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Cleared" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
+			[self refreshOrders:nil];
+			return;
+		}
+		
 		o = [[Order alloc] init];
 		o.group = table.group;
 		[o save];
@@ -151,6 +174,27 @@
 	}
 	
 	return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 1) {
+		return @"Only clear the orders when all orders have been checked out / printed.";
+	}
+	
+	return nil;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return YES;
+	
+	return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    }
 }
 
 @end

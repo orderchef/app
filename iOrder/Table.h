@@ -22,8 +22,6 @@
 
 - (void)save;
 - (void)loadItems;
-- (void)clearTable;
-- (void)sendToKitchen;
 - (void)deleteTable;
 
 @end

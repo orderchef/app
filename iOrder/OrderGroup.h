@@ -23,5 +23,6 @@
 
 - (void)save;
 - (void)getOrders;
+- (void)clear;
 
 @end

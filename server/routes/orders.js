@@ -26,7 +26,7 @@ exports.router = function (socket) {
 			if (!orders || orders.length == 0) {
 				console.log("Creating a group for an empty table")
 				order = new models.OrderGroup({
-					table: table,
+					table: query.table,
 					cleared: false
 				});
 				order.save();
@@ -50,6 +50,19 @@ exports.router = function (socket) {
 			group.save();
 		})
 	})
+	
+	socket.on('clear.group', function(data) {
+		console.log("Clearing orders from group")
+		
+		var group = mongoose.Types.ObjectId(data.group);
+		
+		models.OrderGroup.findById(group, function(err, group) {
+			group.cleared = true;
+			group.clearedAt = Date.now();
+			group.save();
+		})
+	});
+	
 	socket.on('save.order', function(data, fn) {
 		console.log("Saving order")
 		

@@ -78,6 +78,10 @@
 	[[[Connection getConnection] socket] sendEvent:@"get.group active" withData:@{@"_id": _id}];
 }
 
+- (void)clear {
+    [[[Connection getConnection] socket] sendEvent:@"clear.group" withData:@{@"group": _id}];
+}
+
 - (void)save {
 	NSString *tid = @"";
 	if (self.table) {

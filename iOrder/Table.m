@@ -63,10 +63,6 @@
 																				  }];
 }
 
-- (void)clearTable {
-    [[[Connection getConnection] socket] sendEvent:@"remove.table items" withData:@{@"table": _id}];
-}
-
 - (void)sendToKitchen {
     [[[Connection getConnection] socket] sendEvent:@"table.send kitchen" withData:@{@"table": _id}];
 }
