@@ -7,6 +7,7 @@
 //
 
 #import "ReportViewController.h"
+#import "ReportItemsViewController.h"
 
 @interface ReportViewController () {
 	float normalTotal;
@@ -78,15 +79,24 @@
 	
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"items"]) {
+		ReportItemsViewController *vc = (ReportItemsViewController *)segue.destinationViewController;
+		vc.reports = reports;
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if (section == 0) return 1;
+	
 	return 2;
 }
 
@@ -97,13 +107,21 @@
 	int q = 0;
 	float t = 0.f;
 	
+	cell.accessoryType = UITableViewCellAccessoryNone;
+	
 	if (indexPath.section == 0) {
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.textLabel.text = @"Items Sold";
+		cell.detailTextLabel.text = nil;
+		
+		return cell;
+	} else if (indexPath.section == 1) {
 		q = quantity;
 		t = total;
-	} else if (indexPath.section == 1) {
+	} else if (indexPath.section == 2) {
 		q = normalQuantity;
 		t = normalTotal;
-	} else if (indexPath.section == 2) {
+	} else if (indexPath.section == 3) {
 		q = takeawayQuantity;
 		t = takeawayTotal;
 	} else {
@@ -124,17 +142,26 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	switch (section) {
-		case 0:
-			return @"Grand Total";
 		case 1:
-			return @"Normal Tables";
+			return @"Grand Total";
 		case 2:
-			return @"Takeaway Tables";
+			return @"Normal Tables";
 		case 3:
+			return @"Takeaway Tables";
+		case 4:
 			return @"Delivery Tables";
 	}
 	
 	return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		[self performSegueWithIdentifier:@"items" sender:nil];
+		return;
+	}
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

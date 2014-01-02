@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kMasterIP @"127.0.0.1"
+#define kMasterIP @"localhost"
 #define kMasterPort 8000
 #define kReportsNotificationName @"ReportsLoadedNotification"
 

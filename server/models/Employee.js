@@ -25,7 +25,7 @@ module.exports.findOne({
 	
 	admin = new module.exports({
 		name: "OrderChef Admin",
-		code: "1111",
+		code: "0000",
 		manager: true
 	})
 	admin.save()

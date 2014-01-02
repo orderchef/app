@@ -29,6 +29,7 @@
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
+		4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA343461875DBCD0049734F /* ReportItemsViewController.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
 		4FD59E5D182573860077A70E /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5C182573860077A70E /* OrderViewController.m */; };
@@ -110,6 +111,8 @@
 		4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderItemViewController.h; sourceTree = "<group>"; };
 		4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderItemViewController.m; sourceTree = "<group>"; };
+		4FA343451875DBCD0049734F /* ReportItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemsViewController.h; sourceTree = "<group>"; };
+		4FA343461875DBCD0049734F /* ReportItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemsViewController.m; sourceTree = "<group>"; };
 		4FD59E5618211E870077A70E /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		4FD59E5718211E870077A70E /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
 		4FD59E59182128FF0077A70E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
@@ -201,6 +204,8 @@
 				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
 				4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */,
 				4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */,
+				4FA343451875DBCD0049734F /* ReportItemsViewController.h */,
+				4FA343461875DBCD0049734F /* ReportItemsViewController.m */,
 				4F33E522181E673000E4FDD9 /* ItemController.h */,
 				4F33E523181E673000E4FDD9 /* ItemController.m */,
 				4FD939301865D06800A2042F /* CategoriesViewController.h */,
@@ -512,6 +517,7 @@
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
+				4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
