@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 
 var scheme = schema({
 	name: String,
-	drink: { type: Boolean, default: false },
+	deleted: { type: Boolean, default: false },
 	printers: [String]
 });
 

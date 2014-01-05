@@ -18,6 +18,7 @@
 #import "OrderGroup.h"
 #import "Order.h"
 #import <CoreLocation/CoreLocation.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface OrderViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
@@ -155,12 +156,34 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 	CLLocation *location = [locations lastObject];
+	[locationManager stopUpdatingLocation];
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Calculating Distance" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
 	
-	
-	
-	[locationManager stopUpdatingLocation];
+	AFHTTPRequestOperationManager *request = [AFHTTPRequestOperationManager manager];
+	[request GET:[[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/distancematrix/json?origins=%f,%f&destinations=%@&sensor=false", location.coordinate.latitude, location.coordinate.longitude, order.postcode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *json) {
+		NSLog(@"%@", json);
+		
+		if ([[json objectForKey:@"status"] isEqualToString:@"OK"]) {
+			//YAY
+			NSDictionary *elements = [[[[json objectForKey:@"rows"] objectAtIndex:0] objectForKey:@"elements"] objectAtIndex:0];
+			if (![[elements objectForKey:@"status"] isEqualToString:@"OK"]) {
+				return;
+			}
+			
+			NSString *distance = [[elements objectForKey:@"distance"] objectForKey:@"text"];
+			NSString *time = [[elements objectForKey:@"duration"] objectForKey:@"text"];
+			NSString *formatted = [[NSString alloc] initWithFormat:@"%@, %@", distance, time];
+			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:formatted detail:nil hideAfter:1 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+			order.postcodeDistance = formatted;
+			
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
+		} else {
+			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Failed to get Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Failed to get Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+	}];
 }
 
 - (void)cancelPostcodeLookup:(id)sender {
@@ -234,9 +257,13 @@
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
     } else if (indexPath.section == 4) {
-		[[(TextFieldCell *)cell textField] setText:order.postcode];
-		[[(TextFieldCell *)cell textField] setPlaceholder:@"Postcode for Delivery"];
-		[[(TextFieldCell *)cell textField] addTarget:self action:@selector(startedPostcodeEditing:) forControlEvents:UIControlEventEditingDidBegin];
+		UITextField *field = [(TextFieldCell *)cell textField];
+		[field setText:order.postcode];
+		[field setPlaceholder:@"Postcode for Delivery"];
+		[field addTarget:self action:@selector(startedPostcodeEditing:) forControlEvents:UIControlEventEditingDidBegin];
+		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
+		[field setAutocapitalizationType:UITextAutocapitalizationTypeAllCharacters];
+		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 	}
 	
     return cell;
