@@ -918,6 +918,25 @@
                                     <outlet property="textField" destination="zkJ-AI-9oq" id="cGk-xZ-hKO"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postcode" id="5FP-LT-oBu" customClass="TextFieldCell">
+                                <rect key="frame" x="0.0" y="199" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5FP-LT-oBu" id="YwT-Ge-5Se">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="DSq-3x-egI">
+                                            <rect key="frame" x="20" y="0.0" width="280" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                        </textField>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="DSq-3x-egI" id="gbR-P0-zzO"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="G8d-bh-FFK" id="zPb-uY-jIO"/>
@@ -943,6 +962,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="vIn-OU-zy4"/>
         <segue reference="QML-Dq-TCZ"/>
-        <segue reference="WC3-Bi-NKW"/>
+        <segue reference="VdY-LJ-2Mo"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -16,7 +16,7 @@
 
 @implementation Order
 
-@synthesize _id, items,	printedAt, printed, notes, created;
+@synthesize _id, items,	printedAt, printed, notes, created, postcode, postcodeDistance;
 @synthesize group;
 
 - (id)init {
@@ -29,6 +29,8 @@
 		printedAt = [NSDate date];
 		notes = @"";
 		created = [[NSDate alloc] init];
+		postcode = @"";
+		postcodeDistance = @"";
 	}
 	
 	return self;
@@ -44,6 +46,8 @@
 	printedAt = [dateFormat dateFromString:[json objectForKey:@"printedAt"]];
 	created = [dateFormat dateFromString:[json objectForKey:@"created"]];
 	notes = [json objectForKey:@"notes"];
+	postcode = [json objectForKey:@"postcode"];
+	postcodeDistance = [json objectForKey:@"postcodeDistance"];
 	
 	NSMutableArray *_items = [[NSMutableArray alloc] init];
 	for (NSDictionary *it in [json objectForKey:@"items"]) {
@@ -85,7 +89,9 @@
 																		 @"printedAt": [NSNumber numberWithInt:[printedAt timeIntervalSince1970]],
 																		 @"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
 																		 @"notes": notes,
-																		 @"items": _items
+																		 @"items": _items,
+																		 @"postcode": postcode,
+																		 @"postcodeDistance": postcodeDistance
 																		 } andAcknowledge:^(NSString *data) {
 																			 _id = data;
 																			 [group save];

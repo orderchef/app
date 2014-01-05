@@ -26,7 +26,9 @@ var scheme = schema({
 	},
 	printedAt: {
 		type: Date
-	}
+	},
+	postcode: String,
+	postcodeDistance: String
 })
 
 function getSpaces (spaces) {
@@ -42,6 +44,8 @@ function getSpaces (spaces) {
 scheme.methods.update = function (data) {
 	this.notes = data.notes;
 	this.items = [];
+	this.postcode = data.postcode;
+	this.postcodeDistance = data.postcodeDistance;
 	
 	for (var i = 0; i < data.items.length; i++) {
 		var it = data.items[i];

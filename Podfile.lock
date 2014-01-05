@@ -1,4 +1,22 @@
 PODS:
+  - AFNetworking (2.0.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.0.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.0.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.0.3)
+  - AFNetworking/Security (2.0.3)
+  - AFNetworking/Serialization (2.0.3)
+  - AFNetworking/UIKit (2.0.3):
+    - AFNetworking/NSURLConnection
   - Bugsnag (3.1.0):
     - Reachability
   - FontAwesome+iOS (0.1.1)
@@ -9,12 +27,14 @@ PODS:
   - SocketRocket (0.3.1-beta2)
 
 DEPENDENCIES:
+  - AFNetworking
   - Bugsnag
   - FontAwesome+iOS
   - MBProgressHUD
   - socket.IO
 
 SPEC CHECKSUMS:
+  AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   Bugsnag: 7a61040b4be9fa2b51a34e87e1da2007b6640637
   FontAwesome+iOS: 243c5309e90d5788909b0f859f75ecff4a20f88f
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622

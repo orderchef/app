@@ -12,10 +12,12 @@
 #import "MenuViewController.h"
 #import "OrderItemViewController.h"
 #import "TextareaCell.h"
+#import "TextFieldCell.h"
 #import "Employee.h"
 #import "AppDelegate.h"
 #import "OrderGroup.h"
 #import "Order.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface OrderViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
@@ -23,6 +25,11 @@
 	UIActionSheet *sheet;
 	UIBarButtonItem *printItem;
 	bool confirmedReprint;
+	
+	bool showsDoneToDismiss;
+	
+	UITapGestureRecognizer *tapToCancelPostcode;
+	CLLocationManager *locationManager;
 }
 
 @end
@@ -36,6 +43,7 @@
 {
     [super viewDidLoad];
 	
+	showsDoneToDismiss = false;
     keyboardIsOpen = false;
     confirmedReprint = false;
 	
@@ -83,8 +91,16 @@
 - (void)reloadData {
 	[self.tableView reloadData];
 	
+	[self updateButtons];
+}
+
+- (void)updateButtons {
 	if (order.items.count > 0) {
-		[self.navigationItem setRightBarButtonItem:printItem animated:true];
+		if (showsDoneToDismiss) {
+			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissPostcode:)] animated:YES];
+		} else {
+			[self.navigationItem setRightBarButtonItem:printItem animated:true];
+		}
 	} else {
 		[self.navigationItem setRightBarButtonItem:nil animated:true];
 	}
@@ -112,11 +128,57 @@
 	[self reloadData];
 }
 
+- (void)startedPostcodeEditing:(id)sender {
+	showsDoneToDismiss = YES;
+	[self updateButtons];
+}
+
+- (void)dismissPostcode:(id)sender {
+	showsDoneToDismiss = NO;
+	[self updateButtons];
+	
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
+	[cell.textField resignFirstResponder];
+	order.postcode = cell.textField.text;
+	
+	if (order.postcode) {
+		tapToCancelPostcode = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPostcodeLookup:)];
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Getting Current Location" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
+		
+		locationManager = [[CLLocationManager alloc] init];
+		locationManager.delegate = self;
+		locationManager.distanceFilter = kCLDistanceFilterNone;
+		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		[locationManager startUpdatingLocation];
+	}
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+	CLLocation *location = [locations lastObject];
+	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Calculating Distance" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
+	
+	
+	
+	[locationManager stopUpdatingLocation];
+}
+
+- (void)cancelPostcodeLookup:(id)sender {
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Cancelled Postcode Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[order items] count] > 0 ? 4 : 1;
+	int sections = 1;
+	if ([order.items count] > 0) {
+		sections = 4;
+		
+		if (table.delivery) sections++;
+	}
+	
+	return sections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -138,12 +200,17 @@
     
     if (indexPath.section < 2) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    } else {
+    } else if (indexPath.section == 3) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"notes" forIndexPath:indexPath];
         if (!cell) {
             cell = [[TextareaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"notes"];
         }
-    }
+    } else if (indexPath.section == 4) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"postcode" forIndexPath:indexPath];
+		if (!cell) {
+			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"postcode"];
+		}
+	}
     
     if (indexPath.section == 0) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
@@ -166,7 +233,11 @@
         [[(TextareaCell *)cell textField] setText:order.notes];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
-    }
+    } else if (indexPath.section == 4) {
+		[[(TextFieldCell *)cell textField] setText:order.postcode];
+		[[(TextFieldCell *)cell textField] setPlaceholder:@"Postcode for Delivery"];
+		[[(TextFieldCell *)cell textField] addTarget:self action:@selector(startedPostcodeEditing:) forControlEvents:UIControlEventEditingDidBegin];
+	}
 	
     return cell;
 }
@@ -207,6 +278,8 @@
             return @"Items in Basket";
         case 3:
             return @"Notes for Order";
+		case 4:
+			return @"Delivery Postcode";
         default:
             return @"";
     }
@@ -226,6 +299,9 @@
         
         return [@"---- Total £" stringByAppendingFormat:@"%.2f ----", total];
     }
+	if (section == 4) {
+		return order.postcodeDistance;
+	}
     
     return nil;
 }
