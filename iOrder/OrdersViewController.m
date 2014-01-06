@@ -35,6 +35,12 @@
 	[self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshOrders:) forControlEvents:UIControlEventValueChanged];
     
+	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
+	[printItem setTitleTextAttributes:@{
+										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+										} forState:UIControlStateNormal];
+    [self.navigationItem setRightBarButtonItem:printItem animated:YES];
+	
 	[self refreshOrders:nil];
     [self reloadData];
 }
@@ -44,7 +50,14 @@
 		OrderViewController *vc = (OrderViewController *)[segue destinationViewController];
 		vc.order = (Order *)sender;
 		vc.table = table;
-		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", (int)[self.tableView indexPathForSelectedRow].row+1];
+		
+		NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+		int row = (int)selectedIndexPath.row+1;
+		if (selectedIndexPath.section == 1) {
+			row = table.group.orders.count;
+		}
+		
+		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", row];
 	}
 }
 
@@ -78,6 +91,11 @@
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
 	}
+}
+
+- (void)printOrder:(id)sender {
+	[table.group printBill];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 
 #pragma mark - Table view data source
@@ -130,7 +148,7 @@
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Create New Order";
 		} else {
-			cell.textLabel.text = @"Clear Orders";
+			cell.textLabel.text = @"Print Final Bill";
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		}
@@ -178,7 +196,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 1) {
-		return @"Only clear the orders when all orders have been checked out / printed.";
+		return @"Final Bill will print to the Printer by the Counter. Button above will also mark this order as finalised, and will be available in the reports.";
 	}
 	
 	return nil;
@@ -193,8 +211,18 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-    }
+	if (indexPath.section != 0 || editingStyle != UITableViewCellEditingStyleDelete) {
+		return;
+	}
+	
+	Order *order = [table.group.orders objectAtIndex:indexPath.row];
+	[order remove];
+	
+	NSMutableArray *mutableOrders = [table.group.orders mutableCopy];
+	[mutableOrders removeObjectAtIndex:indexPath.row];
+	[table.group setOrders:[mutableOrders copy]];
+	
+	[self reloadData];
 }
 
 @end

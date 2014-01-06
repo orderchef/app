@@ -14,6 +14,7 @@ if (process.env.NODE_ENV != 'production') {
 		socket: { emit: function() {} },
 		name: "Virtual Printer",
 		ip: "127.0.0.1",
+		printsBill: true,
 		prices: true,
 		characters: 40 //31
 	})

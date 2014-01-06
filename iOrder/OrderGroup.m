@@ -11,6 +11,7 @@
 #import "Table.h"
 #import "Order.h"
 #import "Connection.h"
+#import "Employee.h"
 
 @implementation OrderGroup
 
@@ -101,6 +102,13 @@
 																			@"table": tid,
 																			@"orders": orderIds
 																			}];
+}
+
+- (void)printBill {
+	[[Connection getConnection].socket sendEvent:@"print.group" withData:@{
+																		   @"group": _id,
+																		   @"employee": [Storage getStorage].employee.name
+																		   }];
 }
 
 @end

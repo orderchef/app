@@ -121,6 +121,55 @@ exports.router = function (socket) {
 		})
 	})
 	
+	socket.on('remove.order', function(data) {
+		console.log("Removing order");
+		
+		var group = mongoose.Types.ObjectId(data.group);
+		var orderID = mongoose.Types.ObjectId(data.order);
+		
+		models.OrderGroup.findById(group).exec(function(err, order) {
+			if (err || !order) {
+				return;
+			}
+			
+			for (var i = 0; i < order.orders.length; i++) {
+				if (order.orders[i].equals(orderID)) {
+					order.orders.splice(i, 1);
+					models.Order.find({ _id: orderID }).remove(function(err) {
+						if (err) throw err;
+					});
+				}
+			}
+			
+			order.save()
+		});
+	})
+	
+	socket.on('print.group', function(data) {
+		console.log("Printing group");
+		
+		var group = mongoose.Types.ObjectId(data.group);
+		
+		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
+			
+			async.each(group.orders, function(order, cb) {
+				order.populate('items.item', function() {
+					async.each(order.items, function(item, cb) {
+						item.item.populate('category', cb)
+					}, cb);
+				})
+			}, function(err) {
+				if (err) throw err;
+				
+				for (var i = 0; i < models.printers.length; i++) {
+					if (models.printers[i].printsBill) {
+						group.print(models.printers[i], data)
+					}
+				}
+			})
+		})
+	})
+	
 	socket.on('print.order', function(data) {
 		console.log("Printing order ;)")
 		

@@ -115,4 +115,11 @@
 																		   }];
 }
 
+- (void)remove {
+	[[Connection getConnection].socket sendEvent:@"remove.order" withData:@{
+																			  @"order": _id,
+																			  @"group": group._id
+																			  }];
+}
+
 @end

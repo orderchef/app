@@ -25,6 +25,16 @@ var scheme = schema({
 	}
 })
 
+function getSpaces (spaces) {
+	var spacer = "";
+	while (spaces >= 0) {
+		spacer += " ";
+		spaces--;
+	}
+
+	return spacer;
+}
+
 scheme.methods.update = function (data) {
 	try {
 		this.table = mongoose.Types.ObjectId(data.table);
@@ -36,6 +46,95 @@ scheme.methods.update = function (data) {
 	for (var i = 0; i < data.orders.length; i++) {
 		this.orders.push(mongoose.Types.ObjectId(data.orders[i]));
 	}
+}
+
+scheme.methods.print = function (printer, data) {
+	var self = this;
+	
+	var table = self.table.name;
+	var employee = data.employee;
+	
+	const kChars = printer.characters;
+	var d = new Date()
+	var time = "Time of Order:";
+	var time2 = d.getHours() + ":" + d.getMinutes() + "\n";
+	time = time + getSpaces(kChars - time.length - time2.length) + time2;
+	var date = "Date of Order:";
+	var date2 = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + "\n";
+	date = date + getSpaces(kChars - date.length - date2.length) + date2;
+	
+	var orderedString = "";
+	
+	var _total = 0;
+	for (var x = 0; x < self.orders.length; x++) {
+		var order = self.orders[x];
+		
+		orderedString += "Order placed "+order.created+"\n";
+		var total = 0;
+		for (var i = 0; i < order.items.length; i++) {
+			var it = order.items[i];
+		
+			if (it.item.category.printers.length > 0) {
+				var found = false;
+				for (var x = 0; x < it.item.category.printers.length; x++) {
+					if (it.item.category.printers[x] == printer.name) {
+						found = true;
+						break;
+					}
+				}
+			
+				if (!found) continue;
+			}
+		
+			if (printer.prices) {
+				// Printer prints prices too
+				var val = it.quantity * it.item.price;
+				total += val;
+			
+				var valueString = " £" + val.toFixed(2) + "\n";
+				var string = it.quantity + " " + it.item.name + " ";
+			
+				var spaces = kChars - valueString.length - string.length;
+				orderedString += string + getSpaces(spaces) + valueString;
+			} else {
+				// Just food items
+				orderedString += it.quantity + " " + it.item.name + "\n";
+			}
+			// notes (if any)
+			if (it.notes.trim().length > 0) {
+				orderedString += "  Notes: "+it.notes + "\n";
+			}
+		}
+		orderedString += "\nTotal for Order: £"+total+"\n\n";
+		
+		_total += total;
+	}
+	
+	var tableName = "Table "+ table;
+	var tableLength = kChars - tableName.length;
+	var spaces = getSpaces(Math.floor((tableLength+1)/2))
+	tableName = spaces + tableName;
+	
+	var __total = "";
+	var totalString = "";
+	if (printer.prices) {
+		__total = " £"+_total.toFixed(2)+"\n";
+		totalString = "Total:"+getSpaces(kChars - 6 - __total.length)+__total+"\n";
+	}
+	
+	var output = "\
+" + tableName +"\n\n\
+" + time + "\
+" + date + "\
+Serviced By " + employee + "\n\n\
+" + orderedString + "\
+"+ totalString + "\
+\n";
+	console.log(output);
+	
+	printer.socket.emit('print_data', {
+		data: output
+	});
 }
 
 scheme.statics.aggregate = function (socket, groups) {

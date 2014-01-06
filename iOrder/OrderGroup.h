@@ -24,5 +24,6 @@
 - (void)save;
 - (void)getOrders;
 - (void)clear;
+- (void)printBill;
 
 @end

@@ -71,6 +71,10 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
+	if (showsDoneToDismiss) {
+		[self dismissPostcode:nil];
+	}
+	
     @try {
         [order removeObserver:self forKeyPath:@"items" context:nil];
     }
@@ -177,6 +181,8 @@
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:formatted detail:nil hideAfter:1 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 			order.postcodeDistance = formatted;
 			
+			[order save];
+			
 			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
 		} else {
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Failed to get Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
@@ -270,6 +276,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (showsDoneToDismiss) {
+		[self dismissPostcode:nil];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		return;
+	}
+	
     if (indexPath.section == 0) {
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
     } else if (indexPath.section == 1) {
