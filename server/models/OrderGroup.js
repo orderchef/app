@@ -56,12 +56,8 @@ scheme.methods.print = function (printer, data) {
 	
 	const kChars = printer.characters;
 	var d = new Date()
-	var time = "Time of Order:";
-	var time2 = d.getHours() + ":" + d.getMinutes() + "\n";
-	time = time + getSpaces(kChars - time.length - time2.length) + time2;
-	var date = "Date of Order:";
-	var date2 = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + "\n";
-	date = date + getSpaces(kChars - date.length - date2.length) + date2;
+	var datetime = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + "\n";
+	datetime = getSpaces(kChars - datetime.length) + datetime;
 	
 	var orderedString = "";
 	
@@ -124,8 +120,7 @@ scheme.methods.print = function (printer, data) {
 	
 	var output = "\
 " + tableName +"\n\n\
-" + time + "\
-" + date + "\
+" + datetime + "\
 Serviced By " + employee + "\n\n\
 " + orderedString + "\
 "+ totalString + "\
