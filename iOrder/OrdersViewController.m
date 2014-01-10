@@ -54,7 +54,7 @@
 		NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 		int row = (int)selectedIndexPath.row+1;
 		if (selectedIndexPath.section == 1) {
-			row = table.group.orders.count;
+			row = (int)table.group.orders.count;
 		}
 		
 		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", row];
@@ -163,10 +163,12 @@
 	if (indexPath.section == 1) {
 		if (indexPath.row == 1) {
 			// clear
+			[table.group printBill];
 			[table.group clear];
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Cleared" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
 			[self refreshOrders:nil];
+			
 			return;
 		}
 		

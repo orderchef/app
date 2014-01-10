@@ -67,16 +67,6 @@
     [[[Connection getConnection] socket] sendEvent:@"table.send kitchen" withData:@{@"table": _id}];
 }
 
-- (void)addItem:(Item *)item {
-    [[[Connection getConnection] socket] sendEvent:@"add.table item" withData:@{@"table": _id, @"item": item._id}];
-    [self loadItems];
-}
-
-- (void)removeItem:(Item *)item {
-	[[[Connection getConnection] socket] sendEvent:@"remove.table item" withData:@{@"table": _id, @"item": item._id}];
-	[self loadItems];
-}
-
 - (void)deleteTable {
 	[[[Connection getConnection] socket] sendEvent:@"remove.table" withData:@{@"table": _id}];
 }

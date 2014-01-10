@@ -103,6 +103,32 @@
 																			  @"order": _id,
 																			  @"item": item._id
 																			  }];
+	
+	int found = -1;
+	for (int i = 0; i < items.count; i++) {
+		NSDictionary *it = [items objectAtIndex:i];
+		Item *_i = [it objectForKey:@"item"];
+		if ([_i._id isEqualToString:item._id]) {
+			found = i;
+			break;
+		}
+	}
+	
+	if (found != -1) {
+		NSMutableDictionary *it = [items objectAtIndex:found];
+		NSNumber *quantity = [it objectForKey:@"quantity"];
+		quantity = [NSNumber numberWithInt:[quantity intValue] + 1];
+		[it setObject:quantity forKey:@"quantity"];
+	} else {
+		NSMutableDictionary *it = [[NSMutableDictionary alloc] init];
+		[it setObject:[NSNumber numberWithInt:1] forKey:@"quantity"];
+		[it setObject:item forKey:@"item"];
+		[it setObject:@"" forKey:@"notes"];
+		
+		NSMutableArray *_items = [items mutableCopy];
+		[_items addObject:it];
+		items = [_items copy];
+	}
 }
 
 - (void)print {
@@ -120,6 +146,29 @@
 																			  @"order": _id,
 																			  @"group": group._id
 																			  }];
+}
+
+- (void)removeItem:(Item *)item {
+	[[Connection getConnection].socket sendEvent:@"remove.order item" withData:@{
+																			  @"order": _id,
+																			  @"item": item._id
+																			  }];
+	
+	int found = -1;
+	for (int i = 0; i < items.count; i++) {
+		NSDictionary *it = [items objectAtIndex:i];
+		Item *_i = [it objectForKey:@"item"];
+		if ([_i._id isEqualToString:item._id]) {
+			found = i;
+			break;
+		}
+	}
+	
+	if (found == -1) return;
+	
+	NSMutableArray *_items = [items mutableCopy];
+	[_items removeObjectAtIndex:found];
+	items = _items;
 }
 
 @end

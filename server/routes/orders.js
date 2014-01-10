@@ -121,6 +121,29 @@ exports.router = function (socket) {
 		})
 	})
 	
+	socket.on('remove.order item', function(data, fn) {
+		console.log("Removing item from order");
+		
+		models.Order.findById(data.order, function(err, order) {
+			if (!order) {
+				return;
+			}
+			
+			var item = mongoose.Types.ObjectId(data.item);
+			
+			var found = false;
+			for (var i = 0; i < order.items.length; i++) {
+				var it = order.items[i];
+				if (it.item.equals(item)) {
+					order.items.splice(i, 1);
+					break;
+				}
+			}
+			
+			order.save();
+		})
+	})
+	
 	socket.on('remove.order', function(data) {
 		console.log("Removing order");
 		

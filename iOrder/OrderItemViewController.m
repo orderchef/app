@@ -191,7 +191,7 @@
 
 - (void)deleteItemFromTable:(id)sender {
 	Item *it = [item objectForKey:@"item"];
-	//[table removeItem:it];
+	[order removeItem:it];
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:it.name detail:@"Removed from Basket" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 	[self.navigationController popViewControllerAnimated:YES];

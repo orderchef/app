@@ -30,5 +30,6 @@
 - (void)addItem:(Item *)item;
 - (void)print;
 - (void)remove;
+- (void)removeItem:(Item *)item;
 
 @end
