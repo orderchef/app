@@ -164,10 +164,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
+		if (indexPath.row == 1) {
 			[self performSegueWithIdentifier:@"items" sender:nil];
 		} else {
-			[self performSegueWithIdentifier:@"orders" sender:nil];
+			//[self performSegueWithIdentifier:@"orders" sender:nil];
 		}
 		return;
 	}
