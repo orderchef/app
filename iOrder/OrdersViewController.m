@@ -24,17 +24,20 @@
 
 @implementation OrdersViewController
 
-@synthesize table;
+@synthesize table, group;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-	self.navigationItem.title = table.name;
+	if (table) {
+		self.navigationItem.title = table.name;
+		[self setRefreshControl:[[UIRefreshControl alloc] init]];
+		[self.refreshControl addTarget:self action:@selector(refreshOrders:) forControlEvents:UIControlEventValueChanged];
+	} else {
+		self.navigationItem.title = @"";
+	}
 	
-	[self setRefreshControl:[[UIRefreshControl alloc] init]];
-    [self.refreshControl addTarget:self action:@selector(refreshOrders:) forControlEvents:UIControlEventValueChanged];
-    
 	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
 	[printItem setTitleTextAttributes:@{
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
@@ -54,7 +57,7 @@
 		NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 		int row = (int)selectedIndexPath.row+1;
 		if (selectedIndexPath.section == 1) {
-			row = (int)table.group.orders.count;
+			row = (int)group.orders.count;
 		}
 		
 		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", row];
@@ -62,6 +65,7 @@
 }
 
 - (void)reloadData {
+	if (table) group = table.group;
 	[self.tableView reloadData];
 }
 
@@ -94,7 +98,7 @@
 }
 
 - (void)printOrder:(id)sender {
-	[table.group printBill];
+	[group printBill];
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 
@@ -108,7 +112,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return [table.group orders].count;
+		return [group orders].count;
 	}
 	
 	if (section == 1) {
@@ -128,7 +132,7 @@
 	if (indexPath.section == 0) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
 		
-		Order *o = [table.group.orders objectAtIndex:indexPath.row];
+		Order *o = [group.orders objectAtIndex:indexPath.row];
 		NSString *checkmark = @"\uf096\t";
 		if (o.printed) {
 			checkmark = @"\uf046\t";
@@ -163,8 +167,8 @@
 	if (indexPath.section == 1) {
 		if (indexPath.row == 1) {
 			// clear
-			[table.group printBill];
-			[table.group clear];
+			[group printBill];
+			[group clear];
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Cleared" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
 			[self refreshOrders:nil];
@@ -173,16 +177,16 @@
 		}
 		
 		o = [[Order alloc] init];
-		o.group = table.group;
+		o.group = group;
 		[o save];
 		
-		NSMutableArray *orders = [table.group.orders mutableCopy];
+		NSMutableArray *orders = [group.orders mutableCopy];
 		[orders addObject:o];
-		table.group.orders = orders;
+		group.orders = orders;
 		
-		[table.group setOrders:orders];
+		[group setOrders:orders];
 	} else {
-		o = [table.group.orders objectAtIndex:indexPath.row];
+		o = [group.orders objectAtIndex:indexPath.row];
 	}
 	
 	[self performSegueWithIdentifier:@"order" sender:o];
@@ -217,12 +221,12 @@
 		return;
 	}
 	
-	Order *order = [table.group.orders objectAtIndex:indexPath.row];
+	Order *order = [group.orders objectAtIndex:indexPath.row];
 	[order remove];
 	
-	NSMutableArray *mutableOrders = [table.group.orders mutableCopy];
+	NSMutableArray *mutableOrders = [group.orders mutableCopy];
 	[mutableOrders removeObjectAtIndex:indexPath.row];
-	[table.group setOrders:[mutableOrders copy]];
+	[group setOrders:[mutableOrders copy]];
 	
 	[self reloadData];
 }

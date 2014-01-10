@@ -10,9 +10,11 @@
 
 @class Table;
 @class Order;
+@class OrderGroup;
 
 @interface OrdersViewController : UITableViewController
 
 @property (nonatomic, weak) Table *table;
+@property (nonatomic, weak) OrderGroup *group;
 
 @end

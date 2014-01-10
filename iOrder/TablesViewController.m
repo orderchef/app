@@ -189,6 +189,7 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	if ([[segue identifier] isEqualToString:@"openBasket"]) {
 		OrdersViewController *vc = (OrdersViewController *)[segue destinationViewController];
 		vc.table = (Table *)sender;
+		vc.group = vc.table.group;
 	} else if ([[segue identifier] isEqualToString:@"openMenu"]) {
 		MenuViewController *vc = (MenuViewController *)[segue.destinationViewController topViewController];
 		vc.table = (Table *)sender;

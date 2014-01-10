@@ -8,6 +8,7 @@
 
 #import "ReportViewController.h"
 #import "ReportItemsViewController.h"
+#import "OrdersViewController.h"
 
 @interface ReportViewController () {
 	float normalTotal;
@@ -83,6 +84,10 @@
 	if ([segue.identifier isEqualToString:@"items"]) {
 		ReportItemsViewController *vc = (ReportItemsViewController *)segue.destinationViewController;
 		vc.reports = reports;
+	} else if ([segue.identifier isEqualToString:@"orders"]) {
+		OrdersViewController *vc = (OrdersViewController *)segue.destinationViewController;
+		
+		vc.group = nil;//reports;
 	}
 }
 
@@ -95,8 +100,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (section == 0) return 1;
-	
 	return 2;
 }
 
@@ -110,8 +113,12 @@
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
 	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			cell.textLabel.text = @"Orders";
+		} else {
+			cell.textLabel.text = @"Items Sold";
+		}
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.textLabel.text = @"Items Sold";
 		cell.detailTextLabel.text = nil;
 		
 		return cell;
@@ -157,7 +164,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
-		[self performSegueWithIdentifier:@"items" sender:nil];
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"items" sender:nil];
+		} else {
+			[self performSegueWithIdentifier:@"orders" sender:nil];
+		}
 		return;
 	}
 	

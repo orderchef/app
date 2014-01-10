@@ -191,7 +191,10 @@ scheme.statics.aggregate = function (socket, groups) {
 	
 	console.log(finalData);
 	
-	socket.emit('get.reports', finalData)
+	socket.emit('get.reports', {
+		aggregated: finalData,
+		//groups: groups
+	})
 }
 
 module.exports = mongoose.model("OrderGroup", scheme);

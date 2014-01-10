@@ -397,6 +397,7 @@
                     <navigationItem key="navigationItem" title="{{ Report.name }}" id="SWi-zm-bTa"/>
                     <connections>
                         <segue destination="f40-k0-EV3" kind="push" identifier="items" id="Lzw-KL-8d6"/>
+                        <segue destination="NPr-S5-9oa" kind="push" identifier="orders" id="5M3-KS-fLC"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sLy-LQ-X2I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -960,8 +961,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="vIn-OU-zy4"/>
         <segue reference="QML-Dq-TCZ"/>
+        <segue reference="vIn-OU-zy4"/>
+        <segue reference="5M3-KS-fLC"/>
         <segue reference="VdY-LJ-2Mo"/>
     </inferredMetricsTieBreakers>
 </document>

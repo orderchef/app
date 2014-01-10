@@ -15,6 +15,7 @@
 
 @interface ReportsViewController () {
 	NSDictionary *sections;
+	NSArray *groups;
 }
 
 @end
@@ -48,7 +49,7 @@
 - (void)didReceiveNotification:(NSNotification *)notification {
 	if ([[notification name] isEqualToString:kReportsNotificationName]) {
 		NSDictionary *report = [notification userInfo];
-		[self doSections:report];
+		[self doSections:[report objectForKey:@"aggregated"]];
 		
 		[self.tableView reloadData];
 		[self.refreshControl endRefreshing];

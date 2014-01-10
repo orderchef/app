@@ -22,6 +22,11 @@
 {
     [super viewDidLoad];
 	
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(print:)] animated:true];
+	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																	 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																	 } forState:UIControlStateNormal];
+	
 	[self aggregate];
 	[self.navigationItem setTitle:@"Items Sold"];
 }
@@ -52,6 +57,10 @@
 	items = [[_items allValues] sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
 		return [[b objectForKey:@"quantity"] intValue] - [[a objectForKey:@"quantity"] intValue];
 	}];
+}
+
+- (void)print:(id)sender {
+	
 }
 
 #pragma mark - Table view data source
