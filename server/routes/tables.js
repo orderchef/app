@@ -20,13 +20,11 @@ exports.router = function (socket) {
 		console.log("Saving table ")
 		
 		models.Table.findById(data._id, function(err, table) {
-			if (table) {
-				table.update(data);
-			} else {
-				table = new models.Table({
-					name: data.name
-				});
+			if (!table) {
+				table = new models.Table();
 			}
+			
+			table.update(data);
 			
 			table.save();
 		});

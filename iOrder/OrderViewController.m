@@ -166,8 +166,6 @@
 	
 	AFHTTPRequestOperationManager *request = [AFHTTPRequestOperationManager manager];
 	[request GET:[[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/distancematrix/json?origins=%f,%f&destinations=%@&sensor=false", location.coordinate.latitude, location.coordinate.longitude, order.postcode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *json) {
-		NSLog(@"%@", json);
-		
 		if ([[json objectForKey:@"status"] isEqualToString:@"OK"]) {
 			//YAY
 			NSDictionary *elements = [[[[json objectForKey:@"rows"] objectAtIndex:0] objectForKey:@"elements"] objectAtIndex:0];
@@ -328,7 +326,10 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 0 && order.printed) {
 		return [@"This order was printed at " stringByAppendingString:[order.printedAt description]];
+	} else if (section == 0 && order.items.count == 0) {
+		return @"This is a new order. Add some items from the menu.";
 	}
+	
     if (section == 2) {
         float total = 0.f;
         for (NSDictionary *item in [order items]) {

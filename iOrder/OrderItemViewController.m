@@ -185,6 +185,11 @@
 		quantity = (int)[(UIStepper *)object value];
 		[quantityLabel setText:[NSString stringWithFormat:@"Quantity: %i", quantity]];
 		
+		Item *it = [item objectForKey:@"item"];
+		
+		AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+		[delegate showMessage:[NSString stringWithFormat:@"%dx %@", quantity, it.name] detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+		
 		[self saveItem];
 	}
 }
@@ -236,6 +241,5 @@
         [self dismissKeyboard:nil];
     }
 }
-
 
 @end

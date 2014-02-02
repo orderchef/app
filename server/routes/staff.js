@@ -18,15 +18,11 @@ exports.router = function (socket) {
 		console.log("Saving an Employee")
 		
 		models.Employee.findById(data._id, function(err, employee) {
-			if (employee) {
-				employee.update(data);
-			} else {
-				employee = new models.Employee({
-					name: data.name,
-					code: data.code,
-					manager: data.manager
-				});
+			if (!employee) {
+				employee = new models.Employee();
 			}
+			
+			employee.update(data);
 			
 			employee.save();
 		});
