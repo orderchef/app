@@ -11,6 +11,8 @@
   "dependencies": {
 	  "socket.io": "latest",
 	  "mongoose": "latest",
-	  "async": "latest"
+	  "async": "latest",
+	  "bugsnag": "latest",
+	  "moment": "latest"
   }
 }

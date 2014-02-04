@@ -12,7 +12,6 @@ exports.router = function (socket) {
 		}).sort('-clearedAt').populate('orders table').exec(function(err, groups) {
 			if (err) throw err;
 			
-			//console.log(groups);
 			async.each(groups, function(group, cb) {
 				async.each(group.orders, function(order, cb) {
 					order.populate('items.item', function(err) {

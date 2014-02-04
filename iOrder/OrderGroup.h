@@ -25,5 +25,6 @@
 - (void)getOrders;
 - (void)clear;
 - (void)printBill;
+- (void)printOrders;
 
 @end

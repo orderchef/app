@@ -7,6 +7,8 @@
 //
 
 #import "ReportItemsViewController.h"
+#import "Connection.h"
+#import "AppDelegate.h"
 
 @interface ReportItemsViewController () {
 	NSArray *items;
@@ -60,7 +62,21 @@
 }
 
 - (void)print:(id)sender {
+	NSMutableString *string = [[NSMutableString alloc] init];
 	
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:@"EEEE dd MMMM yyyy"];
+	NSString *dayName = [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[[reports objectAtIndex:0] objectForKey:@"time"] intValue]]];
+	
+	[string appendFormat:@"Report for %@\n", dayName];
+	
+	for (NSDictionary *item in items) {
+		[string appendFormat:@" %@, %d sold (£%.2f)\n", [item objectForKey:@"name"], [[item objectForKey:@"quantity"] intValue], [[item objectForKey:@"total"] floatValue]];
+	}
+	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Print Data Sent" detail:@"Please check your receipt printer." hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+	
+	[[[Connection getConnection] socket] sendEvent:@"print" withData:@{@"data": string, @"receiptPrinter": [NSNumber numberWithBool:YES]}];
 }
 
 #pragma mark - Table view data source
@@ -87,6 +103,10 @@
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%d sold (£%.2f)", [[item objectForKey:@"quantity"] intValue], [[item objectForKey:@"total"] floatValue]];
 	
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

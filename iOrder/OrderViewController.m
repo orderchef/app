@@ -118,7 +118,11 @@
 - (void)printOrder:(id)sender {
 	if (order.printed && !confirmedReprint) {
 		if (!sheet) {
-			sheet = [[UIActionSheet alloc] initWithTitle:[@"Order was printed at " stringByAppendingString:[order.created description]] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Print Again", nil];
+			NSDateFormatter *format = [[NSDateFormatter alloc] init];
+			[format setDateFormat:@"MMM dd, yyyy HH:mm"];
+			
+			NSString *created = [format stringFromDate:order.created];
+			sheet = [[UIActionSheet alloc] initWithTitle:[@"Order was printed on " stringByAppendingString:created] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Print Again", nil];
 		}
 		
 		[sheet showInView:self.view];
@@ -325,7 +329,11 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 0 && order.printed) {
-		return [@"This order was printed at " stringByAppendingString:[order.printedAt description]];
+		NSDateFormatter *format = [[NSDateFormatter alloc] init];
+		[format setDateFormat:@"MMM dd, yyyy HH:mm"];
+		
+		NSString *created = [format stringFromDate:order.created];
+		return [@"This order was printed on " stringByAppendingString:created];
 	} else if (section == 0 && order.items.count == 0) {
 		return @"This is a new order. Add some items from the menu.";
 	}

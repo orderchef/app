@@ -9,6 +9,7 @@
 #import "PrintersViewController.h"
 #import "Connection.h"
 #import "ItemCategory.h"
+#import "AppDelegate.h"
 
 @interface PrintersViewController () {
 	NSArray *printers;
@@ -24,6 +25,8 @@
 {
     [super viewDidLoad];
 	
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Uncheck All" style:UIBarButtonItemStyleDone target:self action:@selector(removeAll:)] animated:YES];
+	
 	printers = [NSArray array];
 	[self getPrinters];
 }
@@ -35,6 +38,12 @@
 		
 		[self.tableView reloadData];
 	}];
+}
+
+- (void)removeAll:(id)sender {
+	category.printers = [[NSArray alloc] init];
+	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Cleared All Printers" detail:@"from this Category" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 
 #pragma mark - Table view data source

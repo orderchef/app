@@ -35,4 +35,19 @@ exports.router = function (socket) {
 		
 		cb(models.printers);
 	})
+	
+	socket.on('print', function(data) {
+		console.log("Printing some data..");
+		
+		var receiptPrinterOnly = data.receiptPrinter;
+		for (var i = 0; i < models.printers.length; i++) {
+			if (models.printers[i].printsBill == receiptPrinterOnly) {
+				console.log("Printing to", models.printers[i].name);
+				console.log(data.data+"\n")
+				models.printers[i].socket.emit('print_data', {
+					data: data.data
+				})
+			}
+		}
+	})
 }

@@ -111,4 +111,12 @@
 																		   }];
 }
 
+- (void)printOrders {
+	[[Connection getConnection].socket sendEvent:@"print.group orders" withData:@{
+																				  @"group": _id,
+																				  @"table": table.name,
+																				  @"employee": [Storage getStorage].employee.name
+																				  }];
+}
+
 @end

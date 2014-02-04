@@ -18,7 +18,9 @@
 #import "Order.h"
 #import "OrderViewController.h"
 
-@interface OrdersViewController ()
+@interface OrdersViewController () {
+	UIActionSheet *printAndClearSheet;
+}
 
 @end
 
@@ -98,8 +100,9 @@
 }
 
 - (void)printOrder:(id)sender {
-	[group printBill];
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+	[group printOrders];
+	
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Printed" detail:@"Orders Were Printed to All Kitchen Printers" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 
 #pragma mark - Table view data source
@@ -167,11 +170,10 @@
 	if (indexPath.section == 1) {
 		if (indexPath.row == 1) {
 			// clear
-			[group printBill];
-			[group clear];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Cleared" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
-			[self refreshOrders:nil];
+			if (!printAndClearSheet) {
+				printAndClearSheet = [[UIActionSheet alloc] initWithTitle:@"Print and Clear All Orders?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Just Print", @"Print and Clear All Orders", nil];
+			}
+			[printAndClearSheet showInView:self.navigationController.view];
 			
 			return;
 		}
@@ -202,7 +204,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 1) {
-		return @"Final Bill will print to the Printer by the Counter. Button above will also mark this order as finalised, and will be available in the reports.";
+		return @"Print Final Bill button will only print to Receipt Printers. Cleared Orders are Viewable from the Admin Reports Section.\n\nNote: Printer Button at the top Prints All Orders to All Kitchen Printers";
 	}
 	
 	return nil;
@@ -229,6 +231,27 @@
 	[group setOrders:[mutableOrders copy]];
 	
 	[self reloadData];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex < 2) {
+		[group printBill];
+		
+		NSString *msg = @"Orders Printed";
+		if (buttonIndex == 1) {
+			msg = @"Orders Printed & Cleared";
+			[group clear];
+		}
+		
+		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:msg detail:@"Printed to Receipt Printer only" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
+		[self refreshOrders:nil];
+	}
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 @end

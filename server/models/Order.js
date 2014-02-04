@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 	, schema = mongoose.Schema
 	, ObjectId = schema.ObjectId
 	, async = require('async')
+	, common = require('../common')
 
 var scheme = schema({
 	items: [{
@@ -31,16 +32,6 @@ var scheme = schema({
 	postcodeDistance: String
 })
 
-function getSpaces (spaces) {
-	var spacer = "";
-	while (spaces >= 0) {
-		spacer += " ";
-		spaces--;
-	}
-
-	return spacer;
-}
-
 scheme.methods.update = function (data) {
 	this.notes = data.notes;
 	this.items = [];
@@ -58,20 +49,9 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.print = function (printer, data) {
-	var self = this;
-	
-	var table = data.table;
-	var employee = data.employee;
-	
+scheme.methods.getOrderData = function (printer) {
 	const kChars = printer.characters;
-	var d = new Date()
-	var time = "Time of Order:";
-	var time2 = d.getHours() + ":" + d.getMinutes() + "\n";
-	time = time + getSpaces(kChars - time.length - time2.length) + time2;
-	var date = "Date of Order:";
-	var date2 = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + "\n";
-	date = date + getSpaces(kChars - date.length - date2.length) + date2;
+	var self = this;
 	
 	var orderedString = "";
 	
@@ -100,7 +80,7 @@ scheme.methods.print = function (printer, data) {
 			var string = it.quantity + " " + it.item.name + " ";
 			
 			var spaces = kChars - valueString.length - string.length;
-			orderedString += string + getSpaces(spaces) + valueString;
+			orderedString += string + common.getSpaces(spaces) + valueString;
 		} else {
 			// Just food items
 			orderedString += it.quantity + " " + it.item.name + "\n";
@@ -111,27 +91,59 @@ scheme.methods.print = function (printer, data) {
 		}
 	}
 	
-	var tableName = "Table "+ table;
-	var tableLength = kChars - tableName.length;
-	var spaces = getSpaces(Math.floor((tableLength+1)/2))
-	tableName = spaces + tableName;
+	if (self.postcode && self.postcode.length > 0) {
+		orderedString += "\nPostcode: "+self.postcode+"\n";
+		orderedString += "Calculated Distance: "+self.postcodeDistance+"\n";
+	}
+	
+	return {
+		data: orderedString,
+		total: total
+	}
+}
+
+scheme.methods.print = function (printer, data) {
+	var self = this;
+	
+	var table = data.table;
+	var employee = data.employee;
+	
+	const kChars = printer.characters;
+	
+	var orderData = this.getOrderData(printer);
+	var orderedString = orderData.data;
+	var total = orderData.total;
+	
+	var d = new Date();
+	if (this.printedAt) {
+		d = this.printedAt;
+	}
+	var datetime = common.getDatetime(kChars, d);
 	
 	var _total = "";
 	var totalString = "";
 	if (printer.prices) {
 		_total = " £"+total.toFixed(2)+"\n";
-		totalString = "Total:"+getSpaces(kChars - 6 - _total.length)+_total+"\n";
+		totalString = "Total:"+common.getSpaces(kChars - 6 - _total.length)+_total+"\n";
 	}
+	
+	var tableName = "Table "+ table;
+	var tableLength = kChars - tableName.length;
+	tableName = common.getSpaces(Math.floor((tableLength+1)/2)) + tableName;
+	
+	var servicedBy = "Serviced By " + employee;
+	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
 	var output = "\
 " + tableName +"\n\n\
-" + time + "\
-" + date + "\
-Serviced By " + employee + "\n\n\
+" + datetime + "\
+" + servicedBy + "\n\n\
 Notes: " + self.notes + "\n\n\
 Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
+	
+	console.log("To Printer #"+printer.name);
 	console.log(output);
 	
 	printer.socket.emit('print_data', {

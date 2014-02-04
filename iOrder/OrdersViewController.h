@@ -12,7 +12,7 @@
 @class Order;
 @class OrderGroup;
 
-@interface OrdersViewController : UITableViewController
+@interface OrdersViewController : UITableViewController <UIActionSheetDelegate>
 
 @property (nonatomic, weak) Table *table;
 @property (nonatomic, weak) OrderGroup *group;

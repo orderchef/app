@@ -2,6 +2,8 @@ var mongoose = require('mongoose')
 	, schema = mongoose.Schema
 	, ObjectId = schema.ObjectId
 	, async = require('async')
+	, common = require('../common')
+	, moment = require('moment')
 
 var scheme = schema({
 	orders: [{
@@ -25,16 +27,6 @@ var scheme = schema({
 	}
 })
 
-function getSpaces (spaces) {
-	var spacer = "";
-	while (spaces >= 0) {
-		spacer += " ";
-		spaces--;
-	}
-
-	return spacer;
-}
-
 scheme.methods.update = function (data) {
 	try {
 		this.table = mongoose.Types.ObjectId(data.table);
@@ -48,16 +40,19 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.print = function (printer, data) {
+scheme.methods.print = function (printer, data, justOrders) {
+	if (typeof justOrders === 'undefined') {
+		justOrders = false;
+	}
+	
 	var self = this;
 	
 	var table = self.table.name;
 	var employee = data.employee;
 	
 	const kChars = printer.characters;
-	var d = new Date()
-	var datetime = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + "\n";
-	datetime = getSpaces(kChars - datetime.length) + datetime;
+	
+	var datetime = common.getDatetime(kChars, new Date());
 	
 	var orderedString = "";
 	
@@ -65,63 +60,47 @@ scheme.methods.print = function (printer, data) {
 	for (var x = 0; x < self.orders.length; x++) {
 		var order = self.orders[x];
 		
-		orderedString += "Order placed "+order.created+"\n";
-		var total = 0;
-		for (var i = 0; i < order.items.length; i++) {
-			var it = order.items[i];
-		
-			if (it.item.category.printers.length > 0) {
-				var found = false;
-				for (var x = 0; x < it.item.category.printers.length; x++) {
-					if (it.item.category.printers[x] == printer.name) {
-						found = true;
-						break;
-					}
-				}
-			
-				if (!found) continue;
-			}
-		
-			if (printer.prices) {
-				// Printer prints prices too
-				var val = it.quantity * it.item.price;
-				total += val;
-			
-				var valueString = " £" + val.toFixed(2) + "\n";
-				var string = it.quantity + " " + it.item.name + " ";
-			
-				var spaces = kChars - valueString.length - string.length;
-				orderedString += string + getSpaces(spaces) + valueString;
-			} else {
-				// Just food items
-				orderedString += it.quantity + " " + it.item.name + "\n";
-			}
-			// notes (if any)
-			if (it.notes.trim().length > 0) {
-				orderedString += "  Notes: "+it.notes + "\n";
-			}
+		if (!justOrders) {
+			orderedString += "Order placed "+moment(order.created).format('Do MMM [at] hh:mma')+"\n";
 		}
-		orderedString += "\nTotal for Order: £"+total+"\n\n";
+		
+		var orderData = order.getOrderData(printer);
+		orderedString += orderData.data;
+		var total = orderData.total;
+		
+		if (justOrders) {
+			orderedString += "\n";
+		} else {
+			var ___total = " £"+total.toFixed(2)+"\n";
+			var totalForOrder = "Total for Order:";
+			orderedString += "\n";
+			orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
+		}
 		
 		_total += total;
 	}
 	
 	var tableName = "Table "+ table;
 	var tableLength = kChars - tableName.length;
-	var spaces = getSpaces(Math.floor((tableLength+1)/2))
+	var spaces = common.getSpaces(Math.floor((tableLength+1)/2))
 	tableName = spaces + tableName;
 	
-	var __total = "";
 	var totalString = "";
-	if (printer.prices) {
-		__total = " £"+_total.toFixed(2)+"\n";
-		totalString = "Total:"+getSpaces(kChars - 6 - __total.length)+__total+"\n";
+	if (!justOrders) {
+		var __total = "";
+		if (printer.prices) {
+			__total = " £"+_total.toFixed(2)+"\n";
+			totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
+		}
 	}
+	
+	var servicedBy = "Serviced By " + employee;
+	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
 	var output = "\
 " + tableName +"\n\n\
 " + datetime + "\
-Serviced By " + employee + "\n\n\
+" + servicedBy + "\n\n\
 " + orderedString + "\
 "+ totalString + "\
 \n";
@@ -141,14 +120,15 @@ scheme.statics.aggregate = function (socket, groups) {
 	
 	for (var g = 0; g < groups.length; g++) {
 		var group = groups[g];
-		var date = new Date(group.clearedAt);
+		var date = group.clearedAt;
+		
 		var t = {
 			total: 0,
 			quantity: 0,
 			items: [],
 			delivery: group.table.delivery,
 			takeaway: group.table.takeaway,
-			time: Math.floor(date.getTime()/1000)
+			time: Math.round(date.getTime()/1000)
 		}; // order
 		
 		for (var o = 0; o < group.orders.length; o++) {
@@ -188,8 +168,6 @@ scheme.statics.aggregate = function (socket, groups) {
 		finalData.total += t.total;
 		finalData.quantity += t.quantity;
 	}
-	
-	console.log(finalData);
 	
 	socket.emit('get.reports', {
 		aggregated: finalData,

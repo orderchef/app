@@ -67,7 +67,7 @@
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	for (NSDictionary *order in orders) {
-		[dateFormat setDateFormat:@"MMMM YYYY"];
+		[dateFormat setDateFormat:@"yyyy MMMM"];
 		NSDate *created = [NSDate dateWithTimeIntervalSince1970:[[order objectForKey:@"time"] intValue]];
 		NSString *monthName = [dateFormat stringFromDate:created];
 		

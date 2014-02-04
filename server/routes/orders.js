@@ -169,7 +169,8 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('print.group', function(data) {
-		console.log("Printing group");
+		// Prints the final bill to receipt printer
+		console.log("Printing group bill");
 		
 		var group = mongoose.Types.ObjectId(data.group);
 		
@@ -185,15 +186,41 @@ exports.router = function (socket) {
 				if (err) throw err;
 				
 				for (var i = 0; i < models.printers.length; i++) {
-					if (models.printers[i].printsBill) {
-						group.print(models.printers[i], data)
-					}
+					if (!models.printers[i].printsBill) continue;
+					
+					group.print(models.printers[i], data)
 				}
 			})
 		})
 	})
 	
+	socket.on('print.group orders', function(data) {
+		// Prints all orders to kitchens --except for receipt printers
+		console.log("Printing group orders");
+		
+		var group = mongoose.Types.ObjectId(data.group);
+		
+		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
+			async.each(group.orders, function(order, cb) {
+				order.populate('items.item', function() {
+					async.each(order.items, function(item, cb) {
+						item.item.populate('category', cb)
+					}, cb);
+				})
+			}, function(err) {
+				if (err) throw err;
+				
+				for (var i = 0; i < models.printers.length; i++) {
+					if (models.printers[i].printsBill) continue;
+					
+					group.print(models.printers[i], data, true)
+				}
+			})
+		})
+	});
+	
 	socket.on('print.order', function(data) {
+		// Prints order to kitchens --except for receipt printer
 		console.log("Printing order ;)")
 		
 		var order = mongoose.Types.ObjectId(data.order);
@@ -213,6 +240,8 @@ exports.router = function (socket) {
 				if (err) throw err;
 				
 				for (var i = 0; i < models.printers.length; i++) {
+					if (models.printers[i].printsBill) continue;
+					
 					order.print(models.printers[i], data);
 				}
 			});
