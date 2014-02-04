@@ -49,6 +49,9 @@
 	postcode = [json objectForKey:@"postcode"];
 	postcodeDistance = [json objectForKey:@"postcodeDistance"];
 	
+	if (postcode == nil) postcode = @"";
+	if (postcodeDistance == nil) postcodeDistance = @"";
+	
 	NSMutableArray *_items = [[NSMutableArray alloc] init];
 	for (NSDictionary *it in [json objectForKey:@"items"]) {
 		
@@ -83,16 +86,18 @@
 						   }];
 	}
 	
-	[[Connection getConnection].socket sendEvent:@"save.order" withData:@{
-																		 @"_id": _id,
-																		 @"printed": [NSNumber numberWithBool:printed],
-																		 @"printedAt": [NSNumber numberWithInt:[printedAt timeIntervalSince1970]],
-																		 @"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
-																		 @"notes": notes,
-																		 @"items": _items,
-																		 @"postcode": postcode,
-																		 @"postcodeDistance": postcodeDistance
-																		 } andAcknowledge:^(NSString *data) {
+	NSDictionary *data = @{
+						   @"_id": _id,
+						   @"printed": [NSNumber numberWithBool:printed],
+						   @"printedAt": [NSNumber numberWithInt:[printedAt timeIntervalSince1970]],
+						   @"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
+						   @"notes": notes,
+						   @"items": _items,
+						   @"postcode": postcode,
+						   @"postcodeDistance": postcodeDistance
+						   };
+	
+	[[Connection getConnection].socket sendEvent:@"save.order" withData:data andAcknowledge:^(NSString *data) {
 																			 _id = data;
 																			 [group save];
 																		 }];
