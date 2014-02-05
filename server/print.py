@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # coding=UTF8
 
+#TODO this needs updating. I know there's something wrong with it.
+
 from escpos import *
 import logging
 from socketIO_client import SocketIO, BaseNamespace
