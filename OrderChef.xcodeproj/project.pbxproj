@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F283A491869CE48001E4223 /* OrderGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A481869CE48001E4223 /* OrderGroup.m */; };
 		4F283A4C1869CE51001E4223 /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A4B1869CE51001E4223 /* Order.m */; };
+		4F2E7E3618A4D8DD00BA29CC /* DiscountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */; };
 		4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E520181E672B00E4FDD9 /* MenuViewController.m */; };
 		4F33E524181E673000E4FDD9 /* ItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F33E523181E673000E4FDD9 /* ItemController.m */; };
 		4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F345AD7184E83D000A98BEB /* TextareaCell.m */; };
@@ -73,6 +74,8 @@
 		4F283A481869CE48001E4223 /* OrderGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderGroup.m; sourceTree = "<group>"; };
 		4F283A4A1869CE51001E4223 /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
 		4F283A4B1869CE51001E4223 /* Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Order.m; sourceTree = "<group>"; };
+		4F2E7E3418A4D8DD00BA29CC /* DiscountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountsViewController.h; sourceTree = "<group>"; };
+		4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountsViewController.m; sourceTree = "<group>"; };
 		4F33E51F181E672B00E4FDD9 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		4F33E520181E672B00E4FDD9 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		4F33E522181E673000E4FDD9 /* ItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemController.h; sourceTree = "<group>"; };
@@ -199,6 +202,8 @@
 			children = (
 				4F3628BB1855FF7700971505 /* ManagerViewController.h */,
 				4F3628BC1855FF7700971505 /* ManagerViewController.m */,
+				4F2E7E3418A4D8DD00BA29CC /* DiscountsViewController.h */,
+				4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */,
 				4F3628BE1856025B00971505 /* StaffViewController.h */,
 				4F3628BF1856025B00971505 /* StaffViewController.m */,
 				4F3628C11856063D00971505 /* EmployeeViewController.h */,
@@ -532,6 +537,7 @@
 				4F3628C01856025B00971505 /* StaffViewController.m in Sources */,
 				4F3A5D79182085F100201B8C /* Storage.m in Sources */,
 				4F33E521181E672B00E4FDD9 /* MenuViewController.m in Sources */,
+				4F2E7E3618A4D8DD00BA29CC /* DiscountsViewController.m in Sources */,
 				4FD59E5D182573860077A70E /* OrderViewController.m in Sources */,
 				4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */,
 				4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */,

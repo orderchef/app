@@ -6,6 +6,7 @@ module.exports = {
 	Report: require('./Report'),
 	Order: require('./Order'),
 	OrderGroup: require('./OrderGroup'),
+	Discount: require('./Discount'),
 	printers: []
 }
 

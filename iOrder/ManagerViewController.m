@@ -41,7 +41,7 @@
 	if (section == 0) {
 		return 2;
 	} else if (section == 1) {
-		return 3;
+		return 4;
 	}
 	
     return 1;
@@ -68,6 +68,8 @@
 			cell.textLabel.text = @"Items";
 		} else if (indexPath.row == 2) {
 			cell.textLabel.text = @"Item Categories";
+		} else if (indexPath.row == 3) {
+			cell.textLabel.text = @"Discounts";
 		}
 	} else if (indexPath.section == 2) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
@@ -91,6 +93,8 @@
 			[self performSegueWithIdentifier:@"Items" sender:nil];
 		} else if (indexPath.row == 2) {
 			[self performSegueWithIdentifier:@"Categories" sender:nil];
+		} else if (indexPath.row == 3) {
+			[self performSegueWithIdentifier:@"Discounts" sender:nil];
 		}
 	} else if (indexPath.section == 2) {
 		[self performSegueWithIdentifier:@"about" sender:nil];
