@@ -33,7 +33,17 @@ exports.router = function (socket) {
 	socket.on('get.printers', function(data, cb) {
 		console.log("Sending back printers..");
 		
-		cb(models.printers);
+		var ps = [];
+		for (var i = 0; i < models.printers.length; i++) {
+			ps.push({
+				name: models.printers[i].name,
+				ip: models.printers[i].ip,
+				prices: models.printers[i].prices,
+				category: models.printers[i].category
+			});
+		}
+		
+		cb(ps);
 	})
 	
 	socket.on('print', function(data) {
