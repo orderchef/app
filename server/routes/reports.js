@@ -2,10 +2,11 @@ var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
 	, async = require('async')
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('get.reports', function(data) {
-		console.log("Listing Reports")
+		winston.info("Listing Reports")
 		
 		models.OrderGroup.find({
 			cleared: true
@@ -30,7 +31,7 @@ exports.router = function (socket) {
 	});
 	
 	socket.on('print.report', function(data) {
-		console.log("Printing Report");
+		winston.info("Printing Report");
 		
 		models.Report.findById(data._id, function(err, report) {
 			if (err || !report) {
@@ -42,7 +43,7 @@ Report for Date: "+ report.created.getDate() +"/" + (report.created.getMonth()+1
 Items Ordered: " + report.quantity + "\n\
 Total Paid: £" + report.total + "\n\
 --------------------\n";
-			console.log(output);
+			winston.info(output);
 			
 			for (var i = 0; i < models.printers.length; i++) {
 				models.printers[i].socket.emit('print_data', {

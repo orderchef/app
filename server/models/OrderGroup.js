@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
 	, async = require('async')
 	, common = require('../common')
 	, moment = require('moment')
+	, winston = require('winston')
 
 var scheme = schema({
 	orders: [{
@@ -104,7 +105,7 @@ scheme.methods.print = function (printer, data, justOrders) {
 " + orderedString + "\
 "+ totalString + "\
 \n";
-	console.log(output);
+	winston.info(output);
 	
 	printer.socket.emit('print_data', {
 		data: output

@@ -1,23 +1,24 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('get.categories', function(data) {
-		console.log("Listing categories")
+		winston.info("Listing categories")
 		
 		models.Category.find({
 			deleted: false
 		}).sort('name').exec(function(err, cats) {
 			if (err) throw err;
 			
-			console.log(cats);
+			winston.info(cats);
 			socket.emit('get.categories', cats)
 		})
 	});
 	
 	socket.on('save.category', function(data) {
-		console.log("Saving category ")
+		winston.info("Saving category ")
 		
 		models.Category.findById(data._id, function(err, category) {
 			if (err || !category) {
@@ -30,7 +31,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('remove.category', function(data) {
-		console.log("Removing category");
+		winston.info("Removing category");
 		
 		models.Category.findById(data._id, function(err, category) {
 			if (err || !category) {

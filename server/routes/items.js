@@ -1,23 +1,24 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('get.items', function(data) {
-		console.log("Listing Items")
+		winston.info("Listing Items")
 		
 		models.Item.find({
 			disabled: false
 		}, function(err, items) {
 			if (err) throw err;
 			
-			console.log(items);
+			winston.info(items);
 			socket.emit('get.items', items)
 		})
 	});
 	
 	socket.on('set.item category', function(data) {
-		console.log("Setting category to item");
+		winston.info("Setting category to item");
 		
 		var itemID = mongoose.Types.ObjectId(data.item);
 		var categoryID = mongoose.Types.ObjectId(data.category);
@@ -29,7 +30,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('save.item', function(data) {
-		console.log("Saving item ")
+		winston.info("Saving item ")
 		
 		models.Item.findById(data._id, function(err, item) {
 			try {
@@ -48,7 +49,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('delete.item', function(data) {
-		console.log("Deleting item");
+		winston.info("Deleting item");
 		
 		models.Item.findById(data._id, function(err, item) {
 			if (err || !item) {

@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 	, schema = mongoose.Schema
 	, ObjectId = schema.ObjectId
 	, async = require('async')
+	, winston = require('winston')
 
 function getSpaces (spaces) {
 	var spacer = "";
@@ -92,7 +93,7 @@ Notes: " + table.notes + "\n\n\
 Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
-	console.log(output);
+	winston.info(output);
 	
 	printer.socket.emit('print_data', {
 		data: output

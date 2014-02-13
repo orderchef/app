@@ -1,10 +1,11 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, async = require('async')
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('get.group active', function(data) {
-		console.log("Getting an active group")
+		winston.info("Getting an active group")
 		
 		var query = {
 			cleared: false
@@ -24,7 +25,7 @@ exports.router = function (socket) {
 			}
 			
 			if (!orders || orders.length == 0) {
-				console.log("Creating a group for an empty table")
+				winston.info("Creating a group for an empty table")
 				order = new models.OrderGroup({
 					table: query.table,
 					cleared: false
@@ -39,7 +40,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('save.group', function(data) {
-		console.log("Saving group")
+		winston.info("Saving group")
 		
 		models.OrderGroup.findById(data._id, function(err, group) {
 			if (!group) {
@@ -52,7 +53,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('clear.group', function(data) {
-		console.log("Clearing orders from group")
+		winston.info("Clearing orders from group")
 		
 		var group = mongoose.Types.ObjectId(data.group);
 		
@@ -64,7 +65,7 @@ exports.router = function (socket) {
 	});
 	
 	socket.on('save.order', function(data, fn) {
-		console.log("Saving order")
+		winston.info("Saving order")
 		
 		if (!data._id || data._id.length == 0) {
 			order = new models.Order({
@@ -88,7 +89,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('add.order item', function(data, fn) {
-		console.log("Adding item to order");
+		winston.info("Adding item to order");
 		
 		models.Order.findById(data.order, function(err, order) {
 			if (!order) {
@@ -122,7 +123,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('remove.order item', function(data, fn) {
-		console.log("Removing item from order");
+		winston.info("Removing item from order");
 		
 		models.Order.findById(data.order, function(err, order) {
 			if (!order) {
@@ -145,7 +146,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('remove.order', function(data) {
-		console.log("Removing order");
+		winston.info("Removing order");
 		
 		var group = mongoose.Types.ObjectId(data.group);
 		var orderID = mongoose.Types.ObjectId(data.order);
@@ -170,7 +171,7 @@ exports.router = function (socket) {
 	
 	socket.on('print.group', function(data) {
 		// Prints the final bill to receipt printer
-		console.log("Printing group bill");
+		winston.info("Printing group bill");
 		
 		var group = mongoose.Types.ObjectId(data.group);
 		
@@ -196,7 +197,7 @@ exports.router = function (socket) {
 	
 	socket.on('print.group orders', function(data) {
 		// Prints all orders to kitchens --except for receipt printers
-		console.log("Printing group orders");
+		winston.info("Printing group orders");
 		
 		var group = mongoose.Types.ObjectId(data.group);
 		
@@ -221,7 +222,7 @@ exports.router = function (socket) {
 	
 	socket.on('print.order', function(data) {
 		// Prints order to kitchens --except for receipt printer
-		console.log("Printing order ;)")
+		winston.info("Printing order ;)")
 		
 		var order = mongoose.Types.ObjectId(data.order);
 		

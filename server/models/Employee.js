@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 	, schema = mongoose.Schema
-	, ObjectId = schema.ObjectId;
+	, ObjectId = schema.ObjectId
+	, winston = require('winston')
 
 var scheme = schema({
 	name: String,
@@ -21,7 +22,7 @@ module.exports.findOne({
 }, function(err, admin) {
 	if (err || admin) return;
 	
-	console.log("Creating admin");
+	winston.info("Creating admin");
 	
 	admin = new module.exports({
 		name: "OrderChef Admin",

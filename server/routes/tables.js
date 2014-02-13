@@ -1,23 +1,24 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, async = require('async')
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('get.tables', function(data) {
-		console.log("Listing Tables")
+		winston.info("Listing Tables")
 		
 		models.Table.find({
 			deleted: false
 		}, function(err, tables) {
 			if (err) throw err;
 			
-			console.log(tables);
+			winston.info(tables);
 			socket.emit('get.tables', tables)
 		})
 	})
 	
 	socket.on('save.table', function(data) {
-		console.log("Saving table ")
+		winston.info("Saving table ")
 		
 		models.Table.findById(data._id, function(err, table) {
 			if (!table) {
@@ -31,7 +32,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('remove.table', function(data) {
-		console.log("Deleting a table")
+		winston.info("Deleting a table")
 		
 		var table = mongoose.Types.ObjectId(data.table);
 		

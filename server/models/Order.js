@@ -3,6 +3,7 @@ var mongoose = require('mongoose')
 	, ObjectId = schema.ObjectId
 	, async = require('async')
 	, common = require('../common')
+	, winston = require('winston')
 
 var scheme = schema({
 	items: [{
@@ -143,8 +144,8 @@ Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
 	
-	console.log("To Printer #"+printer.name);
-	console.log(output);
+	winston.info("To Printer #"+printer.name);
+	winston.info(output);
 	
 	printer.socket.emit('print_data', {
 		data: output

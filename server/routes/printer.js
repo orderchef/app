@@ -1,12 +1,13 @@
 var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
+	, winston = require('winston')
 
 exports.router = function (socket) {
 	socket.on('register', function(data) {
-		console.log(models.printers);
+		winston.info(models.printers);
 		
-		console.log("Registering a printer @"+data.ip + " called "+data.name);
+		winston.info("Registering a printer @"+data.ip + " called "+data.name);
 		
 		var printer = {
 			socket: socket,
@@ -31,7 +32,7 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('get.printers', function(data, cb) {
-		console.log("Sending back printers..");
+		winston.info("Sending back printers..");
 		
 		var ps = [];
 		for (var i = 0; i < models.printers.length; i++) {
@@ -47,13 +48,13 @@ exports.router = function (socket) {
 	})
 	
 	socket.on('print', function(data) {
-		console.log("Printing some data..");
+		winston.info("Printing some data..");
 		
 		var receiptPrinterOnly = data.receiptPrinter;
 		for (var i = 0; i < models.printers.length; i++) {
 			if (models.printers[i].printsBill == receiptPrinterOnly) {
-				console.log("Printing to", models.printers[i].name);
-				console.log(data.data+"\n")
+				winston.info("Printing to", models.printers[i].name);
+				winston.info(data.data+"\n")
 				models.printers[i].socket.emit('print_data', {
 					data: data.data
 				})

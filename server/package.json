@@ -13,6 +13,7 @@
 	  "mongoose": "latest",
 	  "async": "latest",
 	  "bugsnag": "latest",
-	  "moment": "latest"
+	  "moment": "latest",
+	  "winston": "latest"
   }
 }
