@@ -28,7 +28,7 @@ export PORT=8000
 export NODE_ENV=production
 
 do_start () {
-    if [ "$(pidof process_name)" ]
+    if [ "$(pidof mongod)" ]
     then
        # do nothing
        echo "Not repairing"
