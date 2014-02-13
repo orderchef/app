@@ -9,7 +9,7 @@ var mongoose = require('mongoose')
 	, routes = require('./routes')
 	, bugsnag = require('bugsnag')
 
-winston.add(winston.transports.File, { filename: 'app.log', handleExceptions: true });
+winston.add(winston.transports.File, { filename: __dirname+'/app.log', handleExceptions: true });
 
 bugsnag.register('c987848f96714ef34560d05ef7e53b5d');
 
