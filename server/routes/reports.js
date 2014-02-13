@@ -41,7 +41,7 @@ exports.router = function (socket) {
 			var output = "--------------------\n\
 Report for Date: "+ report.created.getDate() +"/" + (report.created.getMonth()+1) + "/" +report.created.getFullYear() + "\n\
 Items Ordered: " + report.quantity + "\n\
-Total Paid: £" + report.total + "\n\
+Total Paid: " + report.total + " GBP\n\
 --------------------\n";
 			winston.info(output);
 			

@@ -72,7 +72,7 @@ scheme.methods.print = function (printer, data, justOrders) {
 		if (justOrders) {
 			orderedString += "\n";
 		} else {
-			var ___total = " £"+total.toFixed(2)+"\n";
+			var ___total = " "+total.toFixed(2)+" GBP\n";
 			var totalForOrder = "Total for Order:";
 			orderedString += "\n";
 			orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
@@ -90,7 +90,7 @@ scheme.methods.print = function (printer, data, justOrders) {
 	if (!justOrders) {
 		var __total = "";
 		if (printer.prices) {
-			__total = " £"+_total.toFixed(2)+"\n";
+			__total = " "+_total.toFixed(2)+" GBP\n";
 			totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
 		}
 	}

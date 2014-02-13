@@ -77,7 +77,7 @@ scheme.methods.getOrderData = function (printer) {
 			var val = it.quantity * it.item.price;
 			total += val;
 			
-			var valueString = " £" + val.toFixed(2) + "\n";
+			var valueString = " " + val.toFixed(2) + " GBP\n";
 			var string = it.quantity + " " + it.item.name + " ";
 			
 			var spaces = kChars - valueString.length - string.length;
@@ -124,7 +124,7 @@ scheme.methods.print = function (printer, data) {
 	var _total = "";
 	var totalString = "";
 	if (printer.prices) {
-		_total = " £"+total.toFixed(2)+"\n";
+		_total = " "+total.toFixed(2)+" GBP\n";
 		totalString = "Total:"+common.getSpaces(kChars - 6 - _total.length)+_total+"\n";
 	}
 	
