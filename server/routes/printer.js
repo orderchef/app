@@ -13,8 +13,9 @@ exports.router = function (socket) {
 			socket: socket,
 			name: data.name,
 			ip: data.ip,
+			printsBill: data.printsBill, // makes it a receipt printer
 			prices: data.prices,
-			category: data.category
+			characters: data.characters //31
 		}
 		
 		var found = false;

@@ -11,10 +11,14 @@ import socket
 
 logging.basicConfig(level=logging.ERROR)
 
-serverIP = "192.168.1.23"
-serverPort = 8080
-prices = True
-category = 'drink'
+serverIP = "192.168.1.103"
+serverPort = 8000
+#it is a receipt printer
+printsBill = True
+#shows prices..
+prices = False
+#40 characters, change!
+characters = 40
 
 printerName = "Receipt Printer"
 ip = socket.gethostbyname(socket.gethostname())
@@ -26,7 +30,13 @@ p = printer.Usb(0x4348, 0x5584, 0, 0x82, 0x01)
 class PrintNamespace(BaseNamespace):
     def on_connect(self):
         print 'I LOVES HIM!'
-        sock.emit('register', { 'ip': ip, 'name': printerName, 'prices': prices, 'category': category })
+        sock.emit('register', {
+            'ip': ip,
+            'name': printerName,
+            'printsBill': printsBill,
+            'prices': prices,
+            'characters': characters
+        })
     
 def print_data(*args):
     print 'printing ', args
