@@ -63,7 +63,9 @@ scheme.methods.print = function (printer, data, justOrders) {
 		
 		if (!justOrders) {
 			//orderedString += "Order placed "+moment(order.created).format('ddd Do/MM/YY HH:mm')+"\n";
-			orderedString += " Notes: " + order.notes + "\n\n";
+			if (order.notes.length > 0) {
+				orderedString += " Notes: " + order.notes + "\n\n";
+			}
 		}
 		
 		var orderData = order.getOrderData(printer, true);

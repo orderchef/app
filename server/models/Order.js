@@ -152,11 +152,16 @@ scheme.methods.print = function (printer, data) {
 	var servicedBy = "Serviced By " + employee;
 	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
+	var notes = "Notes: " + self.notes + "\n\n";
+	if (self.notes.length == 0) {
+		notes = "";
+	}
+	
 	var output = "\
 " + tableName +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
-Notes: " + self.notes + "\n\n\
+" + notes + "\
 Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
