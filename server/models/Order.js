@@ -68,7 +68,7 @@ scheme.methods.getOrderData = function (printer, force) {
 		if (it.item.category.printers.length > 0) {
 			var found = false;
 			for (var x = 0; x < it.item.category.printers.length; x++) {
-				if (force) {
+				if (force == true) {
 					found = true;
 					break;
 				}
@@ -104,9 +104,8 @@ scheme.methods.getOrderData = function (printer, force) {
 	}
 	
 	if (self.postcode && self.postcode.length > 0) {
-		postcode1 = "Postcode: ";
-		orderedString += "\n" + postcode1 + common.getSpaces(kChars - postcode1.length - self.postcode.length - 1) + self.postcode + "\n";
-		orderedString += "Calculated Distance: "+self.postcodeDistance+"\n";
+		orderedString += "\n Postcode: " + self.postcode + "\n";
+		orderedString += " Distance: "+self.postcodeDistance+"\n";
 	}
 	
 	return {

@@ -49,6 +49,7 @@ def print_data(*args):
         p.set('center')
         p.text("100 Cowley Road, Oxford, OX4 1JE\n")
         p.text("01865 434100\n")
+        p.text("\n")
         p.set('left')
     
     p.text(args[0]['data'].encode('utf-8'));
