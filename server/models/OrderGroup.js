@@ -70,7 +70,7 @@ scheme.methods.print = function (printer, data, justOrders) {
 		orderedString += orderData.data;
 		var total = orderData.total;
 		
-		if (orderData.printedData == false) {
+		if (orderData.printedData == false && force == false) {
 			// The printer doesn't have any data to be printed
 			return;
 		}
