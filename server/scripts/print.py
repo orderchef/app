@@ -39,16 +39,16 @@ class PrintNamespace(BaseNamespace):
 def print_data(*args):
     print 'printing ', args
     
-    if 'logo' in args[0] and args[0]['logo'] == True
+    if 'logo' in args[0] and args[0]['logo'] == True:
         p.set('center')
         p.image("logo.jpg")
         p.set('left')
     
-    if 'address' in args[0] and args[0]['address'] == True
+    if 'address' in args[0] and args[0]['address'] == True:
         p.text("\n")
         p.set('center', 'a', 'b')
-        p.text("100 Cowley Road, Oxford, OX4 1JE")
-        p.text("01865 434100")
+        p.text("100 Cowley Road, Oxford, OX4 1JE\n")
+        p.text("01865 434100\n")
         p.set('left', 'a', 'normal')
     
     #data = args[0]['data'].split('\n')
@@ -56,11 +56,13 @@ def print_data(*args):
     #    p.text(line.encode('utf-8')+'\n')
     p.text(args[0]['data'].encode('utf-8'));
     
-    if 'footer' in args[0] and args[0]['footer'] == True
+    if 'footer' in args[0] and args[0]['footer'] == True:
         p.text("\n")
         p.set('center', 'a', 'b')
         p.text("Service Charge not Included. Thank you")
         p.set('left', 'a', 'normal')
+    
+    p.cut()
 
 sock = SocketIO(serverIP, serverPort, PrintNamespace)
 sock.on('print_data', print_data)
