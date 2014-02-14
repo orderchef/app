@@ -57,6 +57,7 @@ scheme.methods.getOrderData = function (printer) {
 	var orderedString = "";
 	
 	var total = 0;
+	var printedData = false;
 	for (var i = 0; i < self.items.length; i++) {
 		var it = self.items[i];
 		
@@ -71,6 +72,7 @@ scheme.methods.getOrderData = function (printer) {
 			
 			if (!found) continue;
 		}
+		printedData = true;
 		
 		if (printer.prices) {
 			// Printer prints prices too
@@ -88,16 +90,18 @@ scheme.methods.getOrderData = function (printer) {
 		}
 		// notes (if any)
 		if (it.notes.trim().length > 0) {
-			orderedString += "  Notes: "+it.notes + "\n";
+			orderedString += " Notes: "+it.notes + "\n";
 		}
 	}
 	
 	if (self.postcode && self.postcode.length > 0) {
-		orderedString += "\nPostcode: "+self.postcode+"\n";
+		postcode1 = "Postcode: ";
+		orderedString += "\n" + postcode1 + common.getSpaces(kChars - postcode1.length - self.postcode.length - 1) + self.postcode + "\n";
 		orderedString += "Calculated Distance: "+self.postcodeDistance+"\n";
 	}
 	
 	return {
+		printedData: printedData,
 		data: orderedString,
 		total: total
 	}
@@ -112,6 +116,11 @@ scheme.methods.print = function (printer, data) {
 	const kChars = printer.characters;
 	
 	var orderData = this.getOrderData(printer);
+	if (orderData.printedData == false) {
+		// The printer doesn't have any data to be printed
+		return;
+	}
+	
 	var orderedString = orderData.data;
 	var total = orderData.total;
 	

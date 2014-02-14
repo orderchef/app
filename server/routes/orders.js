@@ -212,7 +212,7 @@ exports.router = function (socket) {
 				if (err) throw err;
 				
 				for (var i = 0; i < models.printers.length; i++) {
-					if (models.printers[i].printsBill) continue;
+					winston.info("Printing to "+models.printers[i].name)
 					
 					group.print(models.printers[i], data, true)
 				}
@@ -241,7 +241,7 @@ exports.router = function (socket) {
 				if (err) throw err;
 				
 				for (var i = 0; i < models.printers.length; i++) {
-					if (models.printers[i].printsBill) continue;
+					winston.info("Printing to "+models.printers[i].name)
 					
 					order.print(models.printers[i], data);
 				}

@@ -43,6 +43,8 @@
 - (void)removeAll:(id)sender {
 	category.printers = [[NSArray alloc] init];
 	
+	[self.tableView reloadData];
+	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Cleared All Printers" detail:@"from this Category" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 

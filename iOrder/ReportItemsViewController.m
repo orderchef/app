@@ -71,7 +71,7 @@
 	[string appendFormat:@"Report for %@\n", dayName];
 	
 	for (NSDictionary *item in items) {
-		[string appendFormat:@" %@, %d sold (£%.2f)\n", [item objectForKey:@"name"], [[item objectForKey:@"quantity"] intValue], [[item objectForKey:@"total"] floatValue]];
+		[string appendFormat:@" %@, %d sold (%.2f GBP)\n", [item objectForKey:@"name"], [[item objectForKey:@"quantity"] intValue], [[item objectForKey:@"total"] floatValue]];
 	}
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Print Data Sent" detail:@"Please check your receipt printer." hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];

@@ -63,11 +63,17 @@ scheme.methods.print = function (printer, data, justOrders) {
 		
 		if (!justOrders) {
 			orderedString += "Order placed "+moment(order.created).format('Do MMM [at] hh:mma')+"\n";
+			orderedString += " Notes: " + order.notes + "\n\n";
 		}
 		
 		var orderData = order.getOrderData(printer);
 		orderedString += orderData.data;
 		var total = orderData.total;
+		
+		if (orderData.printedData == false) {
+			// The printer doesn't have any data to be printed
+			return;
+		}
 		
 		if (justOrders) {
 			orderedString += "\n";
@@ -107,9 +113,15 @@ scheme.methods.print = function (printer, data, justOrders) {
 \n";
 	winston.info(output);
 	
-	printer.socket.emit('print_data', {
+	var printData = {
 		data: output
-	});
+	};
+	if (!justOrders) {
+		printData.address = true;
+		printData.logo = true;
+		printData.footer = true;
+	}
+	printer.socket.emit('print_data', printData);
 }
 
 scheme.statics.aggregate = function (socket, groups) {

@@ -88,16 +88,16 @@
 	[string appendFormat:@"\nReport for %@\n", dayName];
 	
 	[string appendFormat:@"Total\n Items Sold: %d\n", quantity];
-	[string appendFormat:@" Sales: £%.2f\n\n", total];
+	[string appendFormat:@" Sales: %.2f GBP\n\n", total];
 	
 	[string appendFormat:@"Normal Table:\n Items Sold: %d\n", normalQuantity];
-	[string appendFormat:@" Sales: £%.2f\n\n", normalTotal];
+	[string appendFormat:@" Sales: %.2f GBP\n\n", normalTotal];
 	
 	[string appendFormat:@"Takeaway Table:\n Items Sold: %d\n", takeawayQuantity];
-	[string appendFormat:@" Sales: £%.2f\n\n", takeawayTotal];
+	[string appendFormat:@" Sales: %.2f GBP\n\n", takeawayTotal];
 	
 	[string appendFormat:@"Delivery Table:\n Items Sold: %d\n", deliveryQuantity];
-	[string appendFormat:@" Sales: £%.2f\n\n", deliveryTotal];
+	[string appendFormat:@" Sales: %.2f GBP\n\n", deliveryTotal];
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Print Data Sent" detail:@"Please check your receipt printer." hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 	
