@@ -130,10 +130,10 @@
 - (void)loadData {
     SocketIO *socket = [[Connection getConnection] socket];
     
+	[socket sendEvent:@"get.items" withData:nil];
+	[socket sendEvent:@"get.categories" withData:nil];
 	[socket sendEvent:@"get.staff" withData:nil];
     [socket sendEvent:@"get.tables" withData:nil];
-    [socket sendEvent:@"get.categories" withData:nil];
-    [socket sendEvent:@"get.items" withData:nil];
 }
 
 - (ItemCategory *)findCategoryById:(NSString *)_id {

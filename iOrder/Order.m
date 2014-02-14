@@ -65,7 +65,12 @@
 		}
 		
 		if (!i) {
-			i = (Item *)[NSNull null];
+			// NULL items must not be present
+			[[Connection getConnection].socket sendEvent:@"remove.order item" withData:@{
+																						 @"order": _id,
+																						 @"item": it_id
+																						 }];
+			continue;
 		}
 		
 		NSMutableDictionary *md = [[NSMutableDictionary alloc] initWithDictionary:it];
