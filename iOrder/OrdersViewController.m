@@ -40,7 +40,7 @@
 		self.navigationItem.title = @"";
 	}
 	
-	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
+	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printButton:)];
 	[printItem setTitleTextAttributes:@{
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 										} forState:UIControlStateNormal];
@@ -99,10 +99,10 @@
 	}
 }
 
-- (void)printOrder:(id)sender {
-	[group printOrders];
+- (void)printButton:(id)sender {
+	[group printBill];
 	
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Orders Printed" detail:@"Orders Were Printed to All Kitchen Printers" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 }
 
 #pragma mark - Table view data source
@@ -239,9 +239,9 @@
 	if (buttonIndex < 2) {
 		[group printBill];
 		
-		NSString *msg = @"Orders Printed";
+		NSString *msg = @"Final Bill Printed";
 		if (buttonIndex == 1) {
-			msg = @"Orders Printed & Cleared";
+			msg = @"Final Bill Printed & Cleared";
 			[group clear];
 		}
 		

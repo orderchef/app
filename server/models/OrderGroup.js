@@ -41,11 +41,7 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.print = function (printer, data, justOrders) {
-	if (typeof justOrders === 'undefined') {
-		justOrders = false;
-	}
-	
+scheme.methods.print = function (printer, data) {
 	var self = this;
 	
 	var table = self.table.name;
@@ -61,21 +57,13 @@ scheme.methods.print = function (printer, data, justOrders) {
 	for (var x = 0; x < self.orders.length; x++) {
 		var order = self.orders[x];
 		
-		if (!justOrders) {
-			//orderedString += "Order placed "+moment(order.created).format('ddd Do/MM/YY HH:mm')+"\n";
-			if (order.notes.length > 0) {
-				orderedString += " Notes: " + order.notes + "\n\n";
-			}
+		if (order.notes.length > 0) {
+			orderedString += " Notes: " + order.notes + "\n\n";
 		}
 		
 		var orderData = order.getOrderData(printer, true);
 		orderedString += orderData.data;
 		var total = orderData.total;
-		
-		if (orderData.printedData == false && justOrders != false) {
-			// The printer doesn't have any data to be printed
-			return;
-		}
 		
 		if (justOrders) {
 			orderedString += "\n";
@@ -95,13 +83,9 @@ scheme.methods.print = function (printer, data, justOrders) {
 	tableName = spaces + tableName;
 	
 	var totalString = "";
-	if (!justOrders) {
-		var __total = "";
-		if (printer.prices) {
-			__total = " "+_total.toFixed(2)+" GBP\n";
-			totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
-		}
-	}
+	var __total = "";
+	__total = " "+_total.toFixed(2)+" GBP\n";
+	totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
 	
 	var servicedBy = "Serviced By " + employee;
 	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
@@ -116,15 +100,12 @@ scheme.methods.print = function (printer, data, justOrders) {
 	
 	//winston.info(output);
 	
-	var printData = {
-		data: output
-	};
-	if (!justOrders) {
-		printData.address = true;
-		printData.logo = true;
-		printData.footer = true;
-	}
-	printer.socket.emit('print_data', printData);
+	printer.socket.emit('print_data', {
+		data: output,
+		printData.address: true,
+		printData.logo: true,
+		printData.footer: true
+	});
 }
 
 scheme.statics.aggregate = function (socket, groups) {

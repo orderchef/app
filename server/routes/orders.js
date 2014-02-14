@@ -196,31 +196,6 @@ exports.router = function (socket) {
 		})
 	})
 	
-	socket.on('print.group orders', function(data) {
-		// Prints all orders to kitchens --except for receipt printers
-		winston.info("Printing group orders");
-		
-		var group = mongoose.Types.ObjectId(data.group);
-		
-		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
-			async.each(group.orders, function(order, cb) {
-				order.populate('items.item', function() {
-					async.each(order.items, function(item, cb) {
-						item.item.populate('category', cb)
-					}, cb);
-				})
-			}, function(err) {
-				if (err) throw err;
-				
-				for (var i = 0; i < models.printers.length; i++) {
-					winston.info("Printing to "+models.printers[i].name)
-					
-					group.print(models.printers[i], data, true)
-				}
-			})
-		})
-	});
-	
 	socket.on('print.order', function(data) {
 		// Prints order to kitchens --except for receipt printer
 		winston.info("Printing order ;)")
