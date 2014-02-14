@@ -46,21 +46,18 @@ def print_data(*args):
     
     if 'address' in args[0] and args[0]['address'] == True:
         p.text("\n")
-        p.set('center', 'a', 'b')
+        p.set('center')
         p.text("100 Cowley Road, Oxford, OX4 1JE\n")
         p.text("01865 434100\n")
-        p.set('left', 'a', 'normal')
+        p.set('left')
     
-    #data = args[0]['data'].split('\n')
-    #for line in data:
-    #    p.text(line.encode('utf-8')+'\n')
     p.text(args[0]['data'].encode('utf-8'));
     
     if 'footer' in args[0] and args[0]['footer'] == True:
         p.text("\n")
-        p.set('center', 'a', 'b')
+        p.set('center')
         p.text("Service Charge not Included. Thank you")
-        p.set('left', 'a', 'normal')
+        p.set('left')
     
     p.cut()
 

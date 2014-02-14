@@ -189,6 +189,7 @@ exports.router = function (socket) {
 				for (var i = 0; i < models.printers.length; i++) {
 					if (!models.printers[i].printsBill) continue;
 					
+					winston.info("Printing bill to "+models.printers[i].name);
 					group.print(models.printers[i], data)
 				}
 			})
