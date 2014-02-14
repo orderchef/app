@@ -130,10 +130,15 @@
 - (void)loadData {
     SocketIO *socket = [[Connection getConnection] socket];
     
-	[socket sendEvent:@"get.items" withData:nil];
 	[socket sendEvent:@"get.categories" withData:nil];
 	[socket sendEvent:@"get.staff" withData:nil];
-    [socket sendEvent:@"get.tables" withData:nil];
+	[socket sendEvent:@"get.tables" withData:nil];
+	
+	double delayInSeconds = 0.2;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[socket sendEvent:@"get.items" withData:nil];
+	});
 }
 
 - (ItemCategory *)findCategoryById:(NSString *)_id {
