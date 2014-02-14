@@ -11,7 +11,7 @@ exports.getSpaces = function (spaces) {
 }
 
 exports.getDatetime = function (kChars, d) {
-	var datetime = moment(d).format('ddd Do/MM/YY HH:mm');
+	var datetime = moment(d).format('ddd DD/MM/YY HH:mm');
 	
 	return exports.getSpaces(Math.floor((kChars - datetime.length + 1)/2)) + datetime + "\n";
 }
