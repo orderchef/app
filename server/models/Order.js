@@ -50,7 +50,11 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.getOrderData = function (printer) {
+scheme.methods.getOrderData = function (printer, force) {
+	if (typeof force === 'undefined') {
+		force = false;
+	}
+	
 	const kChars = printer.characters;
 	var self = this;
 	
@@ -64,6 +68,11 @@ scheme.methods.getOrderData = function (printer) {
 		if (it.item.category.printers.length > 0) {
 			var found = false;
 			for (var x = 0; x < it.item.category.printers.length; x++) {
+				if (force) {
+					found = true;
+					break;
+				}
+				
 				if (it.item.category.printers[x] == printer.name) {
 					found = true;
 					break;

@@ -66,7 +66,7 @@ scheme.methods.print = function (printer, data, justOrders) {
 			orderedString += " Notes: " + order.notes + "\n\n";
 		}
 		
-		var orderData = order.getOrderData(printer);
+		var orderData = order.getOrderData(printer, true);
 		orderedString += orderData.data;
 		var total = orderData.total;
 		
@@ -116,6 +116,11 @@ scheme.methods.print = function (printer, data, justOrders) {
 	var printData = {
 		data: output
 	};
+	if (!justOrders) {
+		printData.address = true;
+		printData.logo = true;
+		printData.footer = true;
+	}
 	printer.socket.emit('print_data', printData);
 }
 
