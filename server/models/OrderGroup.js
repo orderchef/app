@@ -116,11 +116,6 @@ scheme.methods.print = function (printer, data, justOrders) {
 	var printData = {
 		data: output
 	};
-	if (!justOrders) {
-		printData.address = true;
-		printData.logo = true;
-		printData.footer = true;
-	}
 	printer.socket.emit('print_data', printData);
 }
 
