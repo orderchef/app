@@ -9,21 +9,21 @@ import socket
 
 logging.basicConfig(level=logging.ERROR)
 
-serverIP = "192.168.1.103"
+serverIP = "192.168.0.64"
 serverPort = 8000
 #it is a receipt printer
-printsBill = True
+printsBill = False
 #shows prices..
 prices = False
 #40 characters, change!
-characters = 40
+characters = 42
 
 printerName = "Receipt Printer"
 ip = socket.gethostbyname(socket.gethostname())
 
 print ip
 
-p = printer.Usb(0x4348, 0x5584, 0, 0x82, 0x01)
+p = printer.Usb(0x4348, 0x5584)
 
 class PrintNamespace(BaseNamespace):
     def on_connect(self):

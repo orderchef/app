@@ -111,7 +111,8 @@ scheme.methods.print = function (printer, data, justOrders) {
 " + orderedString + "\
 "+ totalString + "\
 \n";
-	winston.info(output);
+	
+	//winston.info(output);
 	
 	var printData = {
 		data: output
