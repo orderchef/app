@@ -5,7 +5,7 @@ var mongoose = require('mongoose')
 
 exports.router = function (socket) {
 	socket.on('register', function(data) {
-		winston.info(models.printers);
+		//winston.info(models.printers);
 		
 		winston.info("Registering a printer @"+data.ip + " called "+data.name);
 		
