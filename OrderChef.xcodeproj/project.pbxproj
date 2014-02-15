@@ -202,26 +202,11 @@
 			children = (
 				4F3628BB1855FF7700971505 /* ManagerViewController.h */,
 				4F3628BC1855FF7700971505 /* ManagerViewController.m */,
-				4F2E7E3418A4D8DD00BA29CC /* DiscountsViewController.h */,
-				4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */,
-				4F3628BE1856025B00971505 /* StaffViewController.h */,
-				4F3628BF1856025B00971505 /* StaffViewController.m */,
-				4F3628C11856063D00971505 /* EmployeeViewController.h */,
-				4F3628C21856063D00971505 /* EmployeeViewController.m */,
-				4F8B98BF185E279C001354CA /* ReportsViewController.h */,
-				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
-				4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */,
-				4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */,
-				4FA343451875DBCD0049734F /* ReportItemsViewController.h */,
-				4FA343461875DBCD0049734F /* ReportItemsViewController.m */,
-				4F33E522181E673000E4FDD9 /* ItemController.h */,
-				4F33E523181E673000E4FDD9 /* ItemController.m */,
-				4FD939301865D06800A2042F /* CategoriesViewController.h */,
-				4FD939311865D06800A2042F /* CategoriesViewController.m */,
-				4FD9392D1865CFBA00A2042F /* CategoryViewController.h */,
-				4FD9392E1865CFBA00A2042F /* CategoryViewController.m */,
-				4FDEE0501852022F009AEB5B /* TableViewController.h */,
-				4FDEE0511852022F009AEB5B /* TableViewController.m */,
+				4FDAB54B18AFA3E100D7BF4C /* Discount */,
+				4FDAB54C18AFA3EA00D7BF4C /* Staff */,
+				4FDAB54D18AFA3F100D7BF4C /* Reports */,
+				4FDAB54E18AFA3F700D7BF4C /* Items */,
+				4FDAB54F18AFA40300D7BF4C /* Table */,
 				4FF29312186DB90000795167 /* PrintersViewController.h */,
 				4FF29313186DB90000795167 /* PrintersViewController.m */,
 			);
@@ -265,6 +250,61 @@
 				4F345AD7184E83D000A98BEB /* TextareaCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		4FDAB54B18AFA3E100D7BF4C /* Discount */ = {
+			isa = PBXGroup;
+			children = (
+				4F2E7E3418A4D8DD00BA29CC /* DiscountsViewController.h */,
+				4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */,
+			);
+			name = Discount;
+			sourceTree = "<group>";
+		};
+		4FDAB54C18AFA3EA00D7BF4C /* Staff */ = {
+			isa = PBXGroup;
+			children = (
+				4F3628BE1856025B00971505 /* StaffViewController.h */,
+				4F3628BF1856025B00971505 /* StaffViewController.m */,
+				4F3628C11856063D00971505 /* EmployeeViewController.h */,
+				4F3628C21856063D00971505 /* EmployeeViewController.m */,
+			);
+			name = Staff;
+			sourceTree = "<group>";
+		};
+		4FDAB54D18AFA3F100D7BF4C /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				4F8B98BF185E279C001354CA /* ReportsViewController.h */,
+				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
+				4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */,
+				4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */,
+				4FA343451875DBCD0049734F /* ReportItemsViewController.h */,
+				4FA343461875DBCD0049734F /* ReportItemsViewController.m */,
+			);
+			name = Reports;
+			sourceTree = "<group>";
+		};
+		4FDAB54E18AFA3F700D7BF4C /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				4F33E522181E673000E4FDD9 /* ItemController.h */,
+				4F33E523181E673000E4FDD9 /* ItemController.m */,
+				4FD939301865D06800A2042F /* CategoriesViewController.h */,
+				4FD939311865D06800A2042F /* CategoriesViewController.m */,
+				4FD9392D1865CFBA00A2042F /* CategoryViewController.h */,
+				4FD9392E1865CFBA00A2042F /* CategoryViewController.m */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
+		4FDAB54F18AFA40300D7BF4C /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				4FDEE0501852022F009AEB5B /* TableViewController.h */,
+				4FDEE0511852022F009AEB5B /* TableViewController.m */,
+			);
+			name = Table;
 			sourceTree = "<group>";
 		};
 		4FF0F392181DC6DE00447906 = {

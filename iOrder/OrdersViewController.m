@@ -204,7 +204,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 1) {
-		return @"Print Final Bill button will only print to Receipt Printers. Cleared Orders are Viewable from the Admin Reports Section.\n\nNote: Printer Button at the top Prints All Orders to All Kitchen Printers";
+		return @"Print Final Bill button will only print to Receipt Printers. Cleared Orders are Viewable from the Admin Reports Section.";
 	}
 	
 	return nil;

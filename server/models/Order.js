@@ -166,11 +166,13 @@ Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
 	
-	//winston.info("To Printer #"+printer.name);
 	//winston.info(output);
 	
 	printer.socket.emit('print_data', {
-		data: output
+		data: output,
+		address: false,
+		logo: false,
+		footer: false
 	});
 }
 

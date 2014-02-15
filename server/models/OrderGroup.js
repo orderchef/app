@@ -102,9 +102,9 @@ scheme.methods.print = function (printer, data) {
 	
 	printer.socket.emit('print_data', {
 		data: output,
-		printData.address: true,
-		printData.logo: true,
-		printData.footer: true
+		address: true,
+		logo: true,
+		footer: true
 	});
 }
 
