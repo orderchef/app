@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Matej Kramny. All rights reserved.
 //
 
-#import "DiscountsViewController.h"
+#import "DiscountViewController.h"
 
-@interface DiscountsViewController ()
+@interface DiscountViewController ()
 
 @end
 
-@implementation DiscountsViewController
+@implementation DiscountViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[self.navigationItem setTitle:@"Discounts"];
+	[self.navigationController setTitle:@"Discount"];
 }
 
 #pragma mark - Table view data source

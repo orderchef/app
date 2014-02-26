@@ -12,7 +12,8 @@ var scheme = schema({
 		notes: {
 			type: String,
 			default: ""
-		}
+		},
+		price: Number
 	}],
 	notes: {
 		type: String,
@@ -50,12 +51,9 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.getOrderData = function (printer, force, discounts) {
+scheme.methods.getOrderData = function (printer, force) {
 	if (typeof force === 'undefined') {
 		force = false;
-	}
-	if (typeof discounts === 'undefined') {
-		discounts = [];
 	}
 	
 	const kChars = printer.characters;
@@ -88,11 +86,7 @@ scheme.methods.getOrderData = function (printer, force, discounts) {
 		
 		if (printer.prices) {
 			// Printer prints prices too
-			var val = it.quantity * it.item.price;
-			for (var d = 0; d < discounts.length; d++) {
-				val = discounts[d].applyDiscount(it, val);
-			}
-			
+			var val = it.quantity * it.price;
 			total += val;
 			
 			var valueString = " " + val.toFixed(2) + " GBP\n";
@@ -122,7 +116,7 @@ scheme.methods.getOrderData = function (printer, force, discounts) {
 	}
 }
 
-scheme.methods.print = function (printer, data, discounts) {
+scheme.methods.print = function (printer, data) {
 	var self = this;
 	
 	var table = data.table;
@@ -130,7 +124,7 @@ scheme.methods.print = function (printer, data, discounts) {
 	
 	const kChars = printer.characters;
 	
-	var orderData = this.getOrderData(printer, false, discounts);
+	var orderData = this.getOrderData(printer);
 	if (orderData.printedData == false) {
 		// The printer doesn't have any data to be printed
 		return;

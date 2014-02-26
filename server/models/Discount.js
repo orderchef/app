@@ -58,13 +58,13 @@ scheme.methods.applyValue = function (value) {
 	return value;
 }
 
-scheme.methods.applyDiscount = function (item, value) {
+scheme.methods.applyDiscount = function (category, value) {
 	if (this.allCategories == true) {
 		return this.applyValue(value);
 	}
 	
 	for (var i = 0; i < this.categories.length; i++) {
-		if (item.item.category._id.equals(this.categories[i])) {
+		if (category.equals(this.categories[i])) {
 			return this.applyValue(value);
 		}
 	}
@@ -72,13 +72,7 @@ scheme.methods.applyDiscount = function (item, value) {
 	return value;
 }
 
-scheme.statics.getDiscounts = function (table, order, callback) {
-	var categories = [];
-	
-	for (var i = 0; i < order.items.length; i++) {
-		categories.push(order.items[i].item.category._id)
-	}
-	
+scheme.statics.getDiscounts = function (table, categories, callback) {
 	module.exports.find({
 		$and: [
 			{

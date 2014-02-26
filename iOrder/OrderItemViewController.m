@@ -78,7 +78,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 2;
+		return 3;
 	}
 	if (section == 1) {
 		return 0;
@@ -100,12 +100,17 @@
 		
 		Item *it = [item objectForKey:@"item"];
 		
+		float price = [[item objectForKey:@"price"] floatValue];
+		
 		if (indexPath.row == 0) {
-			[[cell textLabel] setText:@"Item Price"];
+			[[cell textLabel] setText:@"Individual Price"];
 			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", [it.price floatValue]]];
-		} else {
-			[[cell textLabel] setText:@"Total Price"];
-			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", [it.price floatValue] * (float)quantity]];
+		} else if (indexPath.row == 1) {
+			[[cell textLabel] setText:@"Individual with Discount"];
+			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", price]];
+		} else if (indexPath.row == 2) {
+			[[cell textLabel] setText:@"Total for Order"];
+			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", price * (float)quantity]];
 		}
 	} else if (indexPath.section == 2) {
 		// notes

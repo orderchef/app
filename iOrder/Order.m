@@ -111,7 +111,8 @@
 - (void)addItem:(Item *)item {
 	[[Connection getConnection].socket sendEvent:@"add.order item" withData:@{
 																			  @"order": _id,
-																			  @"item": item._id
+																			  @"item": item._id,
+																			  @"tableid": self.group.table._id
 																			  }];
 	
 	int found = -1;

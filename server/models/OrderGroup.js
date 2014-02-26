@@ -5,6 +5,7 @@ var mongoose = require('mongoose')
 	, common = require('../common')
 	, moment = require('moment')
 	, winston = require('winston')
+	, Discount = require('./Discount')
 
 var scheme = schema({
 	orders: [{
@@ -54,54 +55,63 @@ scheme.methods.print = function (printer, data) {
 	var orderedString = "";
 	
 	var _total = 0;
-	for (var x = 0; x < self.orders.length; x++) {
-		var order = self.orders[x];
+	
+	async.each(self.orders, function(order, cb) {
+		var tableId = mongoose.Types.ObjectId(data.tableid);
+		var categories = [];
+		for (var i = 0; i < order.items.length; i++) {
+			categories.push(order.items[i].item.category._id)
+		}
 		
 		if (order.notes.length > 0) {
 			orderedString += " Notes: " + order.notes + "\n\n";
 		}
 		
-		var orderData = order.getOrderData(printer, true);
-		orderedString += orderData.data;
-		var total = orderData.total;
-		
-		var ___total = " "+total.toFixed(2)+" GBP\n";
-		var totalForOrder = "Total for Order:";
-		orderedString += "\n";
-		orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
-		
-		_total += total;
-	}
+		Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), categories, function(discounts) {
+			var orderData = order.getOrderData(printer, true, discounts);
+			orderedString += orderData.data;
+			var total = orderData.total;
+			
+			var ___total = " "+total.toFixed(2)+" GBP\n";
+			var totalForOrder = "Total for Order:";
+			orderedString += "\n";
+			orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
+			
+			_total += total;
+			
+			cb(null);
+		});
+	}, function() {
+		var tableName = "Table "+ table;
+		var tableLength = kChars - tableName.length;
+		var spaces = common.getSpaces(Math.floor((tableLength+1)/2))
+		tableName = spaces + tableName;
 	
-	var tableName = "Table "+ table;
-	var tableLength = kChars - tableName.length;
-	var spaces = common.getSpaces(Math.floor((tableLength+1)/2))
-	tableName = spaces + tableName;
+		var totalString = "";
+		var __total = "";
+		__total = " "+_total.toFixed(2)+" GBP\n";
+		totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
 	
-	var totalString = "";
-	var __total = "";
-	__total = " "+_total.toFixed(2)+" GBP\n";
-	totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
+		var servicedBy = "Serviced By " + employee;
+		servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
-	var servicedBy = "Serviced By " + employee;
-	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
-	
-	var output = "\
+		var output = "\
 " + tableName +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
 " + orderedString + "\
 "+ totalString + "\
 \n";
-	
-	//winston.info(output);
-	
-	printer.socket.emit('print_data', {
-		data: output,
-		address: true,
-		logo: true,
-		footer: true
-	});
+		
+		winston.info(output);
+		
+		printer.socket.emit('print_data', {
+			data: output,
+			address: true,
+			logo: true,
+			footer: true
+		});
+	})
 }
 
 scheme.statics.aggregate = function (socket, groups) {

@@ -251,7 +251,7 @@
         NSDictionary *item = [[order items] objectAtIndex:indexPath.row];
         Item *it = [item objectForKey:@"item"];
         int quantity = [[item objectForKey:@"quantity"] intValue];
-        float total = quantity * [it.price floatValue];
+        float total = quantity * [[item objectForKey:@"price"] floatValue];
         
         cell.textLabel.text = it.name;
         if (quantity > 1) {
@@ -304,6 +304,7 @@
         MenuViewController *vc = (MenuViewController *)segue.destinationViewController;
 		vc.table = table;
 		vc.activeOrder = order;
+		vc.delegate = self;
     } else if ([[segue identifier] isEqualToString:@"openBasketItem"]) {
 		OrderItemViewController *vc = (OrderItemViewController *)segue.destinationViewController;
 		NSDictionary *item = [[order items] objectAtIndex:((NSIndexPath *)sender).row];
@@ -341,8 +342,7 @@
     if (section == 2) {
         float total = 0.f;
         for (NSDictionary *item in [order items]) {
-            Item *it = [item objectForKey:@"item"];
-            total += [[item objectForKey:@"quantity"] intValue] * [it.price floatValue];
+            total += [[item objectForKey:@"quantity"] intValue] * [[item objectForKey:@"price"] floatValue];
         }
         
         return [@"---- Total £" stringByAppendingFormat:@"%.2f ----", total];
@@ -424,6 +424,14 @@
 			[self printOrder:nil];
 			break;
 	}
+}
+
+#pragma mark - MenuControlDelegate
+
+- (void)didSelectItem:(Item *)item {
+	[self reloadData];
+	[self.refreshControl beginRefreshing];
+	[self refreshBasket:nil];
 }
 
 @end

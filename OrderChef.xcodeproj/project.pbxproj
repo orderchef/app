@@ -27,6 +27,7 @@
 		4F450870186388B900C1F374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45086F186388B900C1F374 /* QuartzCore.framework */; };
 		4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TablesViewController.m */; };
 		4F5C77C51879B99E00ED9A80 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */; };
+		4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5FD2A718BE76B500A5059B /* DiscountViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */; };
@@ -108,6 +109,8 @@
 		4F5BE44B181DD255007EF69F /* TablesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TablesViewController.h; sourceTree = "<group>"; };
 		4F5BE44C181DD255007EF69F /* TablesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TablesViewController.m; sourceTree = "<group>"; };
 		4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		4F5FD2A618BE76B500A5059B /* DiscountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountViewController.h; sourceTree = "<group>"; };
+		4F5FD2A718BE76B500A5059B /* DiscountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
@@ -257,6 +260,8 @@
 			children = (
 				4F2E7E3418A4D8DD00BA29CC /* DiscountsViewController.h */,
 				4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */,
+				4F5FD2A618BE76B500A5059B /* DiscountViewController.h */,
+				4F5FD2A718BE76B500A5059B /* DiscountViewController.m */,
 			);
 			name = Discount;
 			sourceTree = "<group>";
@@ -594,6 +599,7 @@
 				4FD59E5818211E870077A70E /* Connection.m in Sources */,
 				4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */,
 				4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */,
+				4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

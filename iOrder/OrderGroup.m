@@ -107,6 +107,7 @@
 - (void)printBill {
 	[[Connection getConnection].socket sendEvent:@"print.group" withData:@{
 																		   @"group": _id,
+																		   @"tableid": self.table._id,
 																		   @"employee": [Storage getStorage].employee.name
 																		   }];
 }

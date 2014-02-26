@@ -145,7 +145,7 @@
 		int totalq = 0;
 		for (NSDictionary *item in o.items) {
 			int q = [[item objectForKey:@"quantity"] intValue];
-			float p = [[(Item *)[item objectForKey:@"item"] price] floatValue];
+			float p = [[item objectForKey:@"price"] floatValue];
 			total += q * p;
 			totalq += q;
 		}

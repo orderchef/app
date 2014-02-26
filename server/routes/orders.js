@@ -6,24 +6,24 @@ var mongoose = require('mongoose')
 exports.router = function (socket) {
 	socket.on('get.group active', function(data) {
 		winston.info("Getting an active group")
-		
+	
 		var query = {
 			cleared: false
 		}
-		
+	
 		if (data._id) {
 			query._id = mongoose.Types.ObjectId(data._id);
 		} else {
 			query.table = mongoose.Types.ObjectId(data.table);
 		}
-		
+	
 		models.OrderGroup.find(query).populate('orders')
 		.exec(function(err, orders) {
 			if (err) {
 				throw err;
 				return;
 			}
-			
+		
 			if (!orders || orders.length == 0) {
 				winston.info("Creating a group for an empty table")
 				order = new models.OrderGroup({
@@ -31,10 +31,10 @@ exports.router = function (socket) {
 					cleared: false
 				});
 				order.save();
-				
+			
 				orders.push(order)
 			}
-			
+		
 			socket.emit('get.group active', orders);
 		})
 	})
@@ -108,12 +108,27 @@ exports.router = function (socket) {
 			}
 			
 			if (found === false) {
-				found = {
-					item: item,
-					notes: "",
-					quantity: 1
-				}
-				order.items.push(found)
+				models.Item.findById(item, function(err, item) {
+					models.Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), [item.category], function(discounts) {
+						var price = item.price;
+						
+						for (var i = 0; i < discounts.length; i++) {
+							price = discounts[i].applyDiscount(item.category, price);
+						}
+						
+						found = {
+							item: item,
+							notes: "",
+							quantity: 1,
+							price: price
+						}
+						order.items.push(found)
+					
+						order.save();
+					});
+				})
+				
+				return;
 			} else {
 				found.quantity++;
 			}
@@ -180,7 +195,7 @@ exports.router = function (socket) {
 			async.each(group.orders, function(order, cb) {
 				order.populate('items.item', function() {
 					async.each(order.items, function(item, cb) {
-						item.item.populate('category', cb)
+						item.item.populate('category', cb);
 					}, cb);
 				})
 			}, function(err) {
@@ -188,7 +203,7 @@ exports.router = function (socket) {
 				
 				for (var i = 0; i < models.printers.length; i++) {
 					if (!models.printers[i].printsBill) continue;
-					
+				
 					winston.info("Printing bill to "+models.printers[i].name);
 					group.print(models.printers[i], data)
 				}
@@ -216,13 +231,11 @@ exports.router = function (socket) {
 			}, function(err) {
 				if (err) throw err;
 				
-				models.Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), order, function(discounts) {
-					for (var i = 0; i < models.printers.length; i++) {
-						winston.info("Printing to "+models.printers[i].name)
-						
-						order.print(models.printers[i], data, discounts);
-					}
-				});
+				for (var i = 0; i < models.printers.length; i++) {
+					winston.info("Printing to "+models.printers[i].name)
+					
+					order.print(models.printers[i], data);
+				}
 			});
 		});
 	})
