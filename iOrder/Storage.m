@@ -110,9 +110,12 @@
             [[LTHPasscodeViewController sharedUser] loadStaff:staff];
         } else if ([name isEqualToString:@"get.reports"]) {
 			// reports
+			[[NSNotificationCenter defaultCenter] postNotificationName:kReportsNotificationName object:self userInfo:(NSDictionary *)[[packet args] objectAtIndex:0]];
+		} else if ([name isEqualToString:@"get.discounts"]) {
+			// discounts
 			NSLog(@"%@", packet.args);
-			NSDictionary *reports = (NSDictionary *)[[packet args] objectAtIndex:0];
-			[[NSNotificationCenter defaultCenter] postNotificationName:kReportsNotificationName object:self userInfo:reports];
+			NSDictionary *discounts = (NSDictionary *)[[packet args] objectAtIndex:0];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kDiscountsNotificationName object:self userInfo:discounts];
 		}
         
         // for specific table

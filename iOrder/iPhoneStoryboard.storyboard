@@ -612,6 +612,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="YkF-j2-XJM"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="fJ6-6D-z4g" kind="push" identifier="openDiscount" id="xFy-Ko-MN3"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="th4-Dt-4pR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -998,6 +1001,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kLq-Sm-PvG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1424" y="87"/>
+        </scene>
+        <!--Discount View Controller-->
+        <scene sceneID="Mxn-B0-pPs">
+            <objects>
+                <tableViewController id="fJ6-6D-z4g" customClass="DiscountViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bCF-zF-KUI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="whi-zc-aDG">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="whi-zc-aDG" id="vlV-41-eNq">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fJ6-6D-z4g" id="N0O-2T-fWq"/>
+                            <outlet property="delegate" destination="fJ6-6D-z4g" id="Cjt-uB-QTw"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Ha6-Ug-4gq"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A7m-Ih-fJO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3157" y="-1265"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

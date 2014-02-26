@@ -100,7 +100,12 @@
         hud = [MBProgressHUD showHUDAddedTo:vc.view animated:animated];
         hud.yOffset = 40.f;
     } else {
-		UIView *v = _window.rootViewController.view;
+		UIViewController *controller = _window.rootViewController;
+		while (controller.presentedViewController) {
+			controller = controller.presentedViewController;
+		}
+		
+		UIView *v = controller.view;
 		if (view) {
 			v = view;
 		}

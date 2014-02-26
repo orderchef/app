@@ -11,6 +11,7 @@
 #define kMasterIP @"localhost"
 #define kMasterPort 8000
 #define kReportsNotificationName @"ReportsLoadedNotification"
+#define kDiscountsNotificationName @"DiscountsLoadedNotification"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
