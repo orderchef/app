@@ -39,7 +39,6 @@
     self = [super init];
     
     if (self) {
-        [self connect];
         disconnectedQuickly = 0;
         lastDisconnect = -1;
         shouldAttemptRecovery = YES;
@@ -51,18 +50,22 @@
 - (void)connect {
     NSLog(@"Connecting..");
     if (socket && (socket.isConnected || socket.isConnecting)) {
-        return;
+		return;
     }
     
     if (!socket) {
         socket = [[SocketIO alloc] initWithDelegate:self];
     }
+	
     [socket connectToHost:kMasterIP onPort:kMasterPort];
+	[self setIsConnected:false];
 }
 
 - (void)disconnect {
-    [self setIsConnected:false];
+	shouldAttemptRecovery = false;
     [socket disconnect];
+	
+	[self setIsConnected:false];
 }
 
 - (void)attemptReconnect {
@@ -94,16 +97,16 @@
 
 - (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error {
 	NSLog(@"Disconnected %@", error);
-    [self setIsConnected:false];
-    
-    [self attemptReconnect];
+	[self setIsConnected:false];
+	
+	[self attemptReconnect];
 }
 
 - (void)socketIO:(SocketIO *)socket onError:(NSError *)error {
     NSLog(@"Errord %@", error);
-    [self setIsConnected:NO];
-    
-    [self attemptReconnect];
+	[self setIsConnected:false];
+	
+	[self attemptReconnect];
 }
 
 - (void)socketIO:(SocketIO *)socket didReceiveEvent:(SocketIOPacket *)packet {

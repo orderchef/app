@@ -65,14 +65,10 @@ scheme.methods.print = function (printer, data) {
 		orderedString += orderData.data;
 		var total = orderData.total;
 		
-		if (justOrders) {
-			orderedString += "\n";
-		} else {
-			var ___total = " "+total.toFixed(2)+" GBP\n";
-			var totalForOrder = "Total for Order:";
-			orderedString += "\n";
-			orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
-		}
+		var ___total = " "+total.toFixed(2)+" GBP\n";
+		var totalForOrder = "Total for Order:";
+		orderedString += "\n";
+		orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
 		
 		_total += total;
 	}

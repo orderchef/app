@@ -50,9 +50,12 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.getOrderData = function (printer, force) {
+scheme.methods.getOrderData = function (printer, force, discounts) {
 	if (typeof force === 'undefined') {
 		force = false;
+	}
+	if (typeof discounts === 'undefined') {
+		discounts = [];
 	}
 	
 	const kChars = printer.characters;
@@ -86,6 +89,10 @@ scheme.methods.getOrderData = function (printer, force) {
 		if (printer.prices) {
 			// Printer prints prices too
 			var val = it.quantity * it.item.price;
+			for (var d = 0; d < discounts.length; d++) {
+				val = discounts[d].applyDiscount(it, val);
+			}
+			
 			total += val;
 			
 			var valueString = " " + val.toFixed(2) + " GBP\n";
@@ -115,7 +122,7 @@ scheme.methods.getOrderData = function (printer, force) {
 	}
 }
 
-scheme.methods.print = function (printer, data) {
+scheme.methods.print = function (printer, data, discounts) {
 	var self = this;
 	
 	var table = data.table;
@@ -123,7 +130,7 @@ scheme.methods.print = function (printer, data) {
 	
 	const kChars = printer.characters;
 	
-	var orderData = this.getOrderData(printer);
+	var orderData = this.getOrderData(printer, false, discounts);
 	if (orderData.printedData == false) {
 		// The printer doesn't have any data to be printed
 		return;
@@ -166,7 +173,7 @@ Ordered Items:\n" + orderedString + "\n\
 "+ totalString + "\
 \n";
 	
-	//winston.info(output);
+	winston.info(output);
 	
 	printer.socket.emit('print_data', {
 		data: output,

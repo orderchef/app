@@ -12,7 +12,6 @@ exports.router = function (socket) {
 		}).sort('name').exec(function(err, cats) {
 			if (err) throw err;
 			
-			winston.info(cats);
 			socket.emit('get.categories', cats)
 		})
 	});

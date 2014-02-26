@@ -147,6 +147,7 @@
 	[[Connection getConnection].socket sendEvent:@"print.order" withData:@{
 																		   @"order": _id,
 																		   @"table": group.table.name,
+																		   @"tableid": group.table._id,
 																		   @"employee": [Storage getStorage].employee.name
 																		   }];
 }

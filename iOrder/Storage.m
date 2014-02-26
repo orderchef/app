@@ -43,13 +43,27 @@
 	
 	if (self)
 	{
-        [self loadData];
-        loadedData = false;
-        
+		loadedData = false;
         [[LTHPasscodeViewController sharedUser] setDelegate:self];
+		[[Connection getConnection] addObserver:self forKeyPath:@"isConnected" options:NSKeyValueObservingOptionNew context:nil];
 	}
 	
 	return self;
+}
+
+- (void)dealloc {
+	@try {
+		[[Connection getConnection] removeObserver:self forKeyPath:@"isConnected" context:nil];
+	}
+	@catch (NSException *exception) {}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"isConnected"]) {
+		if ([[Connection getConnection] isConnected] && loadedData == false) {
+			[self loadData];
+		}
+	}
 }
 
 - (NSMutableArray *)loopAndLoad:(NSArray *)args object:(Class)target {

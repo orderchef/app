@@ -216,11 +216,13 @@ exports.router = function (socket) {
 			}, function(err) {
 				if (err) throw err;
 				
-				for (var i = 0; i < models.printers.length; i++) {
-					winston.info("Printing to "+models.printers[i].name)
-					
-					order.print(models.printers[i], data);
-				}
+				models.Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), order, function(discounts) {
+					for (var i = 0; i < models.printers.length; i++) {
+						winston.info("Printing to "+models.printers[i].name)
+						
+						order.print(models.printers[i], data, discounts);
+					}
+				});
 			});
 		});
 	})

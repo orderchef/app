@@ -15,6 +15,7 @@
 @interface AppDelegate () {
     MBProgressHUD *hud;
     UITapGestureRecognizer *tapToReconnect;
+	UITapGestureRecognizer *tapToDisconnect;
 }
 
 @end
@@ -67,12 +68,17 @@
         
         if (!tapToReconnect) {
             tapToReconnect = [[UITapGestureRecognizer alloc] initWithTarget:[Connection getConnection] action:@selector(connect)];
+			tapToDisconnect = [[UITapGestureRecognizer alloc] initWithTarget:[Connection getConnection] action:@selector(disconnect)];
         }
         
         if (connected) {
             [self showMessage:@"Connected" detail:nil hideAfter:0.5f showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:nil];
         } else {
-            [self showMessage:@"Disconnected!" detail:@"Tap to reconnect" hideAfter:0.f showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:tapToReconnect toView:nil];
+			if ([[[Connection getConnection] socket] isConnecting]) {
+				[self showMessage:@"Connecting..." detail:@"Tap to disconnect" hideAfter:0.f showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:tapToDisconnect toView:nil];
+			} else {
+				[self showMessage:@"Disconnected!" detail:@"Tap to reconnect" hideAfter:0.f showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:tapToReconnect toView:nil];
+			}
         }
     }
 }

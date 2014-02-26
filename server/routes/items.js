@@ -12,7 +12,6 @@ exports.router = function (socket) {
 		}, function(err, items) {
 			if (err) throw err;
 			
-			winston.info(items);
 			socket.emit('get.items', items)
 		})
 	});

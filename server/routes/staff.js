@@ -10,7 +10,6 @@ exports.router = function (socket) {
 		models.Employee.find({}).sort('-manager').exec(function(err, staff) {
 			if (err) throw err;
 			
-			winston.info(staff);
 			socket.emit('get.staff', staff)
 		})
 	});

@@ -5,7 +5,6 @@ var mongoose = require('mongoose')
 var scheme = schema({
 	name: { type: String, required: true },
 	discountPercent: { type: Boolean, default: true },
-	percent: { type: Number, default: 0 },
 	value: { type: Number, default: 0 },
 	created: { type: Date, default: Date.now },
 	allTables: { type: Boolean, default: false },
@@ -17,7 +16,8 @@ var scheme = schema({
 	categories: [{
 		type: ObjectId,
 		ref: 'Category'
-	}]
+	}],
+	disabled: { type: Boolean, default: false }
 });
 
 // Discount may have Percentage (+-)
@@ -32,18 +32,98 @@ var scheme = schema({
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
-	this.percent = data.percent;
 	this.value = date.value;
 	this.allTables = data.allTables;
 	this.allCategories = data.allCategories;
 	this.tables = [];
 	for (var i = 0; i < data.tables.length; i++) {
-		this.tables.push(data.tables[i]);
+		this.tables.push(mongoose.Types.ObjectId(data.tables[i]));
 	}
 	this.categories = [];
 	for (var i = 0; i < data.categories.length; i++) {
-		this.categories.push(data.categories[i]);
+		this.categories.push(mongoose.Types.ObjectId(data.categories[i]));
 	}
 }
 
+scheme.methods.applyValue = function (value) {
+	if (this.discountPercent) {
+		// -20 value = -20 % off
+		var val = (this.value / 100) * -1;
+		value *= 1 - val;
+	} else {
+		// usually -4 (£4 off). X +- 4 = x - 4
+		value += this.value;
+	}
+	
+	return value;
+}
+
+scheme.methods.applyDiscount = function (item, value) {
+	if (this.allCategories == true) {
+		return this.applyValue(value);
+	}
+	
+	for (var i = 0; i < this.categories.length; i++) {
+		if (item.item.category._id.equals(this.categories[i])) {
+			return this.applyValue(value);
+		}
+	}
+	
+	return value;
+}
+
+scheme.statics.getDiscounts = function (table, order, callback) {
+	var categories = [];
+	
+	for (var i = 0; i < order.items.length; i++) {
+		categories.push(order.items[i].item.category._id)
+	}
+	
+	module.exports.find({
+		$and: [
+			{
+				$or: [
+					{
+						allTables: true
+					},
+					{
+						tables: {
+							$in: [table]
+						}
+					}
+				],
+			},
+			{
+				$or: [
+					{
+						allCategories: true
+					},
+					{
+						categories: {
+							$in: categories
+						}
+					}
+				]
+			}
+		]
+	}, function(err, discounts) {
+		if (err) throw err;
+		
+		console.log(discounts)
+		callback(discounts)
+	})
+}
+
 module.exports = mongoose.model("Discount", scheme);
+
+/*
+new module.exports({
+	name: "My Discount",
+	discountPercent: true,
+	value: -20,
+	allTables: true,
+	allCategories: true,
+	tables: [],
+	categories: []
+}).save()
+*/

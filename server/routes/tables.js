@@ -12,7 +12,6 @@ exports.router = function (socket) {
 		}, function(err, tables) {
 			if (err) throw err;
 			
-			winston.info(tables);
 			socket.emit('get.tables', tables)
 		})
 	})
