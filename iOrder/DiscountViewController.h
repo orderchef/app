@@ -10,4 +10,6 @@
 
 @interface DiscountViewController : UITableViewController
 
+@property (nonatomic, weak) NSDictionary *discount;
+
 @end

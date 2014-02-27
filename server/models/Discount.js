@@ -112,12 +112,12 @@ module.exports = mongoose.model("Discount", scheme);
 
 /*
 new module.exports({
-	name: "My Discount",
-	discountPercent: true,
-	value: -20,
-	allTables: true,
+	name: "Dave's Discount",
+	discountPercent: false,
+	value: -0.2,
+	allTables: false,
 	allCategories: true,
-	tables: [],
+	tables: [mongoose.Types.ObjectId("530f4d4add7430f4013db069")],
 	categories: []
 }).save()
 */

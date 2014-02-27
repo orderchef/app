@@ -11,6 +11,7 @@ routes.push(require('./tables'));
 routes.push(require('./reports'));
 routes.push(require('./printer'));
 routes.push(require('./orders'));
+routes.push(require('./discounts'))
 
 exports.router = function (s) {
 	for (i in routes) {

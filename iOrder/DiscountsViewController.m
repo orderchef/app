@@ -38,13 +38,13 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"openDiscount"]) {
 		DiscountViewController *vc = [segue destinationViewController];
-		
+		vc.discount = (NSDictionary *)sender;
 	}
 }
 
 - (void)didReceiveNotification:(NSNotification *)notification {
-	if ([[notification name] isEqualToString:kReportsNotificationName]) {
-		NSDictionary *discounts = [notification userInfo];
+	if ([[notification name] isEqualToString:kDiscountsNotificationName]) {
+		discounts = (NSArray *)[notification userInfo];
 		
 		[self.tableView reloadData];
 		[self.refreshControl endRefreshing];
@@ -58,18 +58,24 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 0;
+	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 0;
+	return [discounts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"discount";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+	cell.textLabel.text = [[discounts objectAtIndex:indexPath.row] objectForKey:@"name"];
+	
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self performSegueWithIdentifier:@"openDiscount" sender:[discounts objectAtIndex:indexPath.row]];
 }
 
 @end
