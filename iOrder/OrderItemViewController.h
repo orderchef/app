@@ -12,7 +12,7 @@
 @class Table;
 @class Order;
 
-@interface OrderItemViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate>
+@interface OrderItemViewController : UITableViewController <TextareaDelegate>
 
 @property (nonatomic, weak) NSDictionary *item;
 @property (nonatomic, weak) Table *table;

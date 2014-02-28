@@ -15,7 +15,6 @@
 
 @interface OrderItemViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
-    bool keyboardIsOpen;
 	
 	UIStepper *quantityStepper;
 	UILabel *quantityLabel;
@@ -46,8 +45,6 @@
 	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
 																	 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 																	 } forState:UIControlStateNormal];
-	
-	keyboardIsOpen = false;
     
 }
 
@@ -215,19 +212,13 @@
 }
 
 - (void)textFieldDidBeginEditing {
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    
     dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     dismissKeyboardGesture.cancelsTouchesInView = YES;
     
     [self.tableView addGestureRecognizer:dismissKeyboardGesture];
-    
-    keyboardIsOpen = true;
 }
 
 - (void)textFieldDidEndEditing {
-    keyboardIsOpen = false;
-    
 	[self saveItem];
 	
     @try {
@@ -236,14 +227,6 @@
     @catch (NSException *exception) {}
     @finally {
         dismissKeyboardGesture = nil;
-    }
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (keyboardIsOpen) {
-        [self dismissKeyboard:nil];
     }
 }
 

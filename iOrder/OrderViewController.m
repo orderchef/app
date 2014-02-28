@@ -22,13 +22,11 @@
 
 @interface OrderViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
-    bool keyboardIsOpen;
 	UIActionSheet *sheet;
 	UIBarButtonItem *printItem;
 	bool confirmedReprint;
 	
-	bool showsDoneToDismiss;
-	
+	UITapGestureRecognizer *dismissPostcodeRecogniser;
 	UITapGestureRecognizer *tapToCancelPostcode;
 	CLLocationManager *locationManager;
 }
@@ -44,8 +42,6 @@
 {
     [super viewDidLoad];
 	
-	showsDoneToDismiss = false;
-    keyboardIsOpen = false;
     confirmedReprint = false;
 	
 	printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printOrder:)];
@@ -57,8 +53,6 @@
     [self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
     
     [self reloadData];
-	
-	//[self.navigationItem setTitle:[order.created description]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -70,10 +64,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	
-	if (showsDoneToDismiss) {
-		[self dismissPostcode:nil];
-	}
 	
     @try {
         [order removeObserver:self forKeyPath:@"items" context:nil];
@@ -101,11 +91,7 @@
 
 - (void)updateButtons {
 	if (order.items.count > 0) {
-		if (showsDoneToDismiss) {
-			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissPostcode:)] animated:YES];
-		} else {
-			[self.navigationItem setRightBarButtonItem:printItem animated:true];
-		}
+		[self.navigationItem setRightBarButtonItem:printItem animated:true];
 	} else {
 		[self.navigationItem setRightBarButtonItem:nil animated:true];
 	}
@@ -137,13 +123,18 @@
 	[self reloadData];
 }
 
-- (void)startedPostcodeEditing:(id)sender {
-	showsDoneToDismiss = YES;
-	[self updateButtons];
+- (void)beganPostcode:(id)sender {
+	dismissPostcodeRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPostcode:)];
+	[dismissPostcodeRecogniser setCancelsTouchesInView:YES];
+	[self.tableView addGestureRecognizer:dismissPostcodeRecogniser];
 }
 
 - (void)dismissPostcode:(id)sender {
-	showsDoneToDismiss = NO;
+	@try {
+		[self.tableView removeGestureRecognizer:dismissPostcodeRecogniser];
+	} @catch (NSException *e) {}
+	dismissPostcodeRecogniser = nil;
+	
 	[self updateButtons];
 	
 	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
@@ -268,22 +259,18 @@
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setText:order.postcode];
 		[field setPlaceholder:@"Postcode for Delivery"];
-		[field addTarget:self action:@selector(startedPostcodeEditing:) forControlEvents:UIControlEventEditingDidBegin];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeAllCharacters];
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
+		[field setDelegate:self];
+		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
+		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
 	}
 	
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (showsDoneToDismiss) {
-		[self dismissPostcode:nil];
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		return;
-	}
-	
     if (indexPath.section == 0) {
         [self performSegueWithIdentifier:@"openMenu" sender:nil];
     } else if (indexPath.section == 1) {
@@ -379,21 +366,12 @@
 }
 
 - (void)textFieldDidBeginEditing {
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    
-    dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
-    dismissKeyboardGesture.cancelsTouchesInView = YES;
-    
-    [self.tableView addGestureRecognizer:dismissKeyboardGesture];
-    
-    keyboardIsOpen = true;
+	dismissKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+	[dismissKeyboardGesture setCancelsTouchesInView:YES];
+	[self.tableView addGestureRecognizer:dismissKeyboardGesture];
 }
 
 - (void)textFieldDidEndEditing {
-    //[self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height  + 216 - self.toolbar.frame.size.height)];
-    
-    keyboardIsOpen = false;
-    
     TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 	order.notes = [cell.textField text];
     [order save];
@@ -404,14 +382,6 @@
     @catch (NSException *exception) {}
     @finally {
         dismissKeyboardGesture = nil;
-    }
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (keyboardIsOpen) {
-        [self dismissKeyboard:nil];
     }
 }
 
@@ -432,6 +402,14 @@
 	[self reloadData];
 	[self.refreshControl beginRefreshing];
 	[self refreshBasket:nil];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	
+	return YES;
 }
 
 @end

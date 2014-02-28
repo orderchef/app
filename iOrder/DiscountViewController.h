@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DiscountViewController : UITableViewController
+@class Discount;
 
-@property (nonatomic, weak) NSDictionary *discount;
+@interface DiscountViewController : UITableViewController <UITextFieldDelegate>
+
+@property (nonatomic, weak) Discount *discount;
 
 @end

@@ -337,7 +337,6 @@
 		[activeOrder addItem:item];
 		
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-#warning insert delegate
 		[[self delegate] didSelectItem:item];
 		[self.navigationController popViewControllerAnimated:YES];
 		

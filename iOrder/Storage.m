@@ -15,6 +15,7 @@
 #import "Employee.h"
 #import "AppDelegate.h"
 #import "OrderGroup.h"
+#import "Discount.h"
 
 @interface Storage () {
     bool loadedData; // at least once....
@@ -113,9 +114,8 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:kReportsNotificationName object:self userInfo:(NSDictionary *)[[packet args] objectAtIndex:0]];
 		} else if ([name isEqualToString:@"get.discounts"]) {
 			// discounts
-			NSLog(@"%@", packet.args);
-			NSDictionary *discounts = (NSDictionary *)[[packet args] objectAtIndex:0];
-			[[NSNotificationCenter defaultCenter] postNotificationName:kDiscountsNotificationName object:self userInfo:discounts];
+			NSArray *discounts = [self loopAndLoad:[packet args] object:[Discount class]];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kDiscountsNotificationName object:self userInfo:@{ @"discounts": discounts }];
 		}
         
         // for specific table

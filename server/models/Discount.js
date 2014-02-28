@@ -47,12 +47,11 @@ scheme.methods.update = function (data) {
 
 scheme.methods.applyValue = function (value) {
 	if (this.discountPercent) {
-		// -20 value = -20 % off
-		var val = (this.value / 100) * -1;
+		// 20 value = -20 % off
+		var val = this.value / 100;
 		value *= 1 - val;
 	} else {
-		// usually -4 (£4 off). X +- 4 = x - 4
-		value += this.value;
+		value -= this.value;
 	}
 	
 	return value;

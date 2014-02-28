@@ -25,6 +25,10 @@
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
 		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
 		4F450870186388B900C1F374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45086F186388B900C1F374 /* QuartzCore.framework */; };
+		4F545EE718C0D140006BA9E7 /* Discount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EE618C0D140006BA9E7 /* Discount.m */; };
+		4F545EEA18C0E04B006BA9E7 /* TextSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EE918C0E04B006BA9E7 /* TextSwitchCell.m */; };
+		4F545EF018C11019006BA9E7 /* DiscountCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EEF18C11019006BA9E7 /* DiscountCategoriesViewController.m */; };
+		4F545EF318C1101F006BA9E7 /* DiscountTablesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EF218C1101F006BA9E7 /* DiscountTablesViewController.m */; };
 		4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TablesViewController.m */; };
 		4F5C77C51879B99E00ED9A80 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */; };
 		4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5FD2A718BE76B500A5059B /* DiscountViewController.m */; };
@@ -106,6 +110,14 @@
 		4F3A5D77182085F100201B8C /* Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Storage.h; sourceTree = "<group>"; };
 		4F3A5D78182085F100201B8C /* Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Storage.m; sourceTree = "<group>"; };
 		4F45086F186388B900C1F374 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4F545EE518C0D140006BA9E7 /* Discount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Discount.h; sourceTree = "<group>"; };
+		4F545EE618C0D140006BA9E7 /* Discount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Discount.m; sourceTree = "<group>"; };
+		4F545EE818C0E04B006BA9E7 /* TextSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSwitchCell.h; sourceTree = "<group>"; };
+		4F545EE918C0E04B006BA9E7 /* TextSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSwitchCell.m; sourceTree = "<group>"; };
+		4F545EEE18C11019006BA9E7 /* DiscountCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountCategoriesViewController.h; sourceTree = "<group>"; };
+		4F545EEF18C11019006BA9E7 /* DiscountCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountCategoriesViewController.m; sourceTree = "<group>"; };
+		4F545EF118C1101F006BA9E7 /* DiscountTablesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountTablesViewController.h; sourceTree = "<group>"; };
+		4F545EF218C1101F006BA9E7 /* DiscountTablesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountTablesViewController.m; sourceTree = "<group>"; };
 		4F5BE44B181DD255007EF69F /* TablesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TablesViewController.h; sourceTree = "<group>"; };
 		4F5BE44C181DD255007EF69F /* TablesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TablesViewController.m; sourceTree = "<group>"; };
 		4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -251,6 +263,8 @@
 				4F6F7864181F1BB10042BC47 /* TextFieldCell.m */,
 				4F345AD6184E83D000A98BEB /* TextareaCell.h */,
 				4F345AD7184E83D000A98BEB /* TextareaCell.m */,
+				4F545EE818C0E04B006BA9E7 /* TextSwitchCell.h */,
+				4F545EE918C0E04B006BA9E7 /* TextSwitchCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -262,6 +276,10 @@
 				4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */,
 				4F5FD2A618BE76B500A5059B /* DiscountViewController.h */,
 				4F5FD2A718BE76B500A5059B /* DiscountViewController.m */,
+				4F545EEE18C11019006BA9E7 /* DiscountCategoriesViewController.h */,
+				4F545EEF18C11019006BA9E7 /* DiscountCategoriesViewController.m */,
+				4F545EF118C1101F006BA9E7 /* DiscountTablesViewController.h */,
+				4F545EF218C1101F006BA9E7 /* DiscountTablesViewController.m */,
 			);
 			name = Discount;
 			sourceTree = "<group>";
@@ -412,6 +430,8 @@
 				4F3A5D721820846800201B8C /* Item.m */,
 				4F3628B81855E31C00971505 /* Employee.h */,
 				4F3628B91855E31C00971505 /* Employee.m */,
+				4F545EE518C0D140006BA9E7 /* Discount.h */,
+				4F545EE618C0D140006BA9E7 /* Discount.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -574,6 +594,7 @@
 				4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
+				4F545EF018C11019006BA9E7 /* DiscountCategoriesViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
 				4FF29311186D991000795167 /* OrdersViewController.m in Sources */,
@@ -588,15 +609,18 @@
 				4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F283A491869CE48001E4223 /* OrderGroup.m in Sources */,
+				4F545EF318C1101F006BA9E7 /* DiscountTablesViewController.m in Sources */,
 				4F283A4C1869CE51001E4223 /* Order.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
+				4F545EEA18C0E04B006BA9E7 /* TextSwitchCell.m in Sources */,
 				4F33E524181E673000E4FDD9 /* ItemController.m in Sources */,
 				4F3628B71855E0F900971505 /* SFHFKeychainUtils.m in Sources */,
 				4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */,
 				4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */,
 				4FD9392F1865CFBA00A2042F /* CategoryViewController.m in Sources */,
 				4FD59E5818211E870077A70E /* Connection.m in Sources */,
+				4F545EE718C0D140006BA9E7 /* Discount.m in Sources */,
 				4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */,
 				4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */,
 				4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */,

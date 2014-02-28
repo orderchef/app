@@ -11,5 +11,6 @@
 @implementation TextFieldCell
 
 @synthesize textField;
+@synthesize label;
 
 @end

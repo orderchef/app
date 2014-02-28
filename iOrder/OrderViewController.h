@@ -14,7 +14,7 @@
 @class Table;
 @class Order;
 
-@interface OrderViewController : UITableViewController <TextareaDelegate, UIScrollViewDelegate, UIActionSheetDelegate, CLLocationManagerDelegate, MenuControlDelegate>
+@interface OrderViewController : UITableViewController <TextareaDelegate, UIActionSheetDelegate, CLLocationManagerDelegate, MenuControlDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) Table *table;
 @property (nonatomic, weak) Order *order;

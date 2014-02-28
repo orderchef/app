@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "DiscountViewController.h"
 #import "Connection.h"
+#import "Discount.h"
 
 @interface DiscountsViewController () {
 	NSArray *discounts;
@@ -38,13 +39,13 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"openDiscount"]) {
 		DiscountViewController *vc = [segue destinationViewController];
-		vc.discount = (NSDictionary *)sender;
+		vc.discount = (Discount *)sender;
 	}
 }
 
 - (void)didReceiveNotification:(NSNotification *)notification {
 	if ([[notification name] isEqualToString:kDiscountsNotificationName]) {
-		discounts = (NSArray *)[notification userInfo];
+		discounts = [[notification userInfo] objectForKey:@"discounts"];
 		
 		[self.tableView reloadData];
 		[self.refreshControl endRefreshing];
@@ -69,7 +70,7 @@
     static NSString *CellIdentifier = @"discount";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-	cell.textLabel.text = [[discounts objectAtIndex:indexPath.row] objectForKey:@"name"];
+	cell.textLabel.text = [[discounts objectAtIndex:indexPath.row] name];
 	
     return cell;
 }
