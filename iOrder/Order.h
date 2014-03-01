@@ -27,7 +27,7 @@
 @property (nonatomic, weak) OrderGroup *group;
 
 - (void)save;
-- (void)addItem:(Item *)item;
+- (void)addItem:(Item *)item andAcknowledge:(void (^)(id))acknowledge;
 - (void)print;
 - (void)remove;
 - (void)removeItem:(Item *)item;

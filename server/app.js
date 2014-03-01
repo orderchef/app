@@ -7,11 +7,11 @@ var mongoose = require('mongoose')
 	, models = require('./models')
 	, spawn = require('child_process').spawn
 	, routes = require('./routes')
-	, bugsnag = require('bugsnag')
+//	, bugsnag = require('bugsnag')
 
-winston.add(winston.transports.File, { filename: __dirname+'/app.log', handleExceptions: true });
+winston.add(winston.transports.File, { filename: __dirname+'/app.log', handleExceptions: false });
 
-bugsnag.register('c987848f96714ef34560d05ef7e53b5d');
+//bugsnag.register('c987848f96714ef34560d05ef7e53b5d');
 
 mongoose.connect("mongodb://127.0.0.1/iorder", {
 	auto_reconnect: true,

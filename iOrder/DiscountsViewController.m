@@ -14,6 +14,7 @@
 
 @interface DiscountsViewController () {
 	NSArray *discounts;
+	Discount *newDiscount;
 }
 
 @end
@@ -33,7 +34,8 @@
 }
 
 - (void)addDiscount:(id)sender {
-	[self performSegueWithIdentifier:@"openDiscount" sender:nil];
+	newDiscount = [[Discount alloc] init];
+	[self performSegueWithIdentifier:@"openDiscount" sender:newDiscount];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

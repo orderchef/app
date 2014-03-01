@@ -69,7 +69,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -82,6 +82,9 @@
 	}
 	if (section == 2) {
 		return 1;
+	}
+	if (section == 3) {
+		return [[item objectForKey:@"discounts"] count];
 	}
 	
 	return 0;
@@ -100,10 +103,10 @@
 		float price = [[item objectForKey:@"price"] floatValue];
 		
 		if (indexPath.row == 0) {
-			[[cell textLabel] setText:@"Individual Price"];
+			[[cell textLabel] setText:@"Price Original"];
 			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", [it.price floatValue]]];
 		} else if (indexPath.row == 1) {
-			[[cell textLabel] setText:@"Individual with Discount"];
+			[[cell textLabel] setText:@"Price After Discounts"];
 			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", price]];
 		} else if (indexPath.row == 2) {
 			[[cell textLabel] setText:@"Total for Order"];
@@ -119,6 +122,12 @@
         [[(TextareaCell *)cell textField] setText:[item objectForKey:@"notes"]];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
+	} else if (indexPath.section == 3) {
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		NSDictionary *discount = [[item objectForKey:@"discounts"] objectAtIndex:indexPath.row];
+		cell.textLabel.text = [discount objectForKey:@"name"];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[discount objectForKey:@"value"] floatValue]];
 	}
 	
 	return cell;
@@ -145,6 +154,9 @@
 	if (section == 2) {
 		return @"Item-specific notes";
 	}
+	if (section == 3 && [[item objectForKey:@"discounts"] count] > 0) {
+		return @"Discounts";
+	}
 	
 	return nil;
 }
@@ -160,7 +172,7 @@
 			[quantityStepper setFrame:CGRectMake(self.tableView.frame.size.width - quantityStepper.frame.size.width - 20, 0, quantityStepper.frame.size.width, quantityStepper.frame.size.height)];
 		}
 		if (!quantityLabel) {
-			quantityLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 29.f)];
+			quantityLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 120, 29.f)];
 			[quantityLabel setText:[NSString stringWithFormat:@"Quantity: %d", [[item objectForKey:@"quantity"] intValue]]];
 		}
 		

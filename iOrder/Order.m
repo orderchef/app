@@ -87,7 +87,9 @@
 		[_items addObject:@{
 						   @"item": [(Item *)[item objectForKey:@"item"] _id],
 						   @"quantity": [item objectForKey:@"quantity"],
-						   @"notes": [item objectForKey:@"notes"]
+						   @"notes": [item objectForKey:@"notes"],
+						   @"price": [item objectForKey:@"price"],
+						   @"discounts": [item objectForKey:@"discounts"]
 						   }];
 	}
 	
@@ -108,12 +110,12 @@
 																		 }];
 }
 
-- (void)addItem:(Item *)item {
+- (void)addItem:(Item *)item andAcknowledge:(void (^)(id))acknowledge {
 	[[Connection getConnection].socket sendEvent:@"add.order item" withData:@{
 																			  @"order": _id,
 																			  @"item": item._id,
 																			  @"tableid": self.group.table._id
-																			  }];
+																			  } andAcknowledge:acknowledge];
 	
 	int found = -1;
 	for (int i = 0; i < items.count; i++) {

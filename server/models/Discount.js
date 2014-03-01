@@ -32,9 +32,10 @@ var scheme = schema({
 
 scheme.methods.update = function (data) {
 	this.name = data.name;
-	this.value = date.value;
+	this.value = data.value;
 	this.allTables = data.allTables;
 	this.allCategories = data.allCategories;
+	this.discountPercent = data.discountPercent;
 	this.tables = [];
 	for (var i = 0; i < data.tables.length; i++) {
 		this.tables.push(mongoose.Types.ObjectId(data.tables[i]));
@@ -48,8 +49,7 @@ scheme.methods.update = function (data) {
 scheme.methods.applyValue = function (value) {
 	if (this.discountPercent) {
 		// 20 value = -20 % off
-		var val = this.value / 100;
-		value *= 1 - val;
+		value *= 1 - (this.value / 100);
 	} else {
 		value -= this.value;
 	}
@@ -98,7 +98,8 @@ scheme.statics.getDiscounts = function (table, categories, callback) {
 					}
 				]
 			}
-		]
+		],
+		disabled: false
 	}, function(err, discounts) {
 		if (err) throw err;
 		

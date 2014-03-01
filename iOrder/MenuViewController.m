@@ -334,11 +334,12 @@
 	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (table) {
-		[activeOrder addItem:item];
-		
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-		[[self delegate] didSelectItem:item];
-		[self.navigationController popViewControllerAnimated:YES];
+		[activeOrder addItem:item andAcknowledge:^(id args) {
+			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+			[[self delegate] didSelectItem:item];
+			
+			[self.navigationController popViewControllerAnimated:YES];
+		}];
 		
 		return;
 	}

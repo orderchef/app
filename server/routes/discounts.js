@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 	, models = require('../models')
 	, spawn = require('child_process').spawn
 	, winston = require('winston')
+	, bugsnag = require('bugsnag')
 
 exports.router = function (socket) {
 	socket.on('get.discounts', function(data) {
@@ -19,27 +20,24 @@ exports.router = function (socket) {
 	socket.on('save.discount', function(data) {
 		winston.info("Saving Discount ")
 		
-		var id = data._id;
-		try {
-			id = mongoose.Types.ObjectId(data._id)
-		} catch (e) {
-			winston.err(e);
-			return;
-		}
+		if (data.name.length == 0) return;
 		
-		models.Discount.findById(id, function(err, discount) {
-			if (err) throw err;
-			
+		models.Discount.findById(data._id, function(err, discount) {
 			if (!discount) {
 				discount = new models.Discount();
 			}
 			
-			discount.update(data);
+			try {
+				discount.update(data);
+			} catch (e) {
+				return bugsnag.notify(e)
+			}
+			
 			discount.save();
 		});
 	})
 	
-	socket.on('delete.discount', function(data) {
+	socket.on('remove.discount', function(data) {
 		winston.info("Deleting Discount");
 		
 		var id = data._id;

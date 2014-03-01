@@ -112,18 +112,27 @@ exports.router = function (socket) {
 					models.Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), [item.category], function(discounts) {
 						var price = item.price;
 						
+						var ds = []
 						for (var i = 0; i < discounts.length; i++) {
-							price = discounts[i].applyDiscount(item.category, price);
+							var newPrice = discounts[i].applyDiscount(item.category, price);
+							ds.push({
+								name: discounts[i].name,
+								discount: discounts[i]._id,
+								value: price - newPrice
+							})
+							
+							price = newPrice;
 						}
 						
 						found = {
 							item: item,
 							notes: "",
 							quantity: 1,
-							price: price
+							price: price,
+							discounts: ds
 						}
 						order.items.push(found)
-					
+						
 						order.save();
 					});
 				})
@@ -135,6 +144,8 @@ exports.router = function (socket) {
 			
 			order.save();
 		})
+		
+		fn()
 	})
 	
 	socket.on('remove.order item', function(data, fn) {

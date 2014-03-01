@@ -12,8 +12,11 @@
 #import "Discount.h"
 #import "DiscountCategoriesViewController.h"
 #import "DiscountTablesViewController.h"
+#import "AppDelegate.h"
 
-@interface DiscountViewController ()
+@interface DiscountViewController () {
+	bool save;
+}
 
 @end
 
@@ -24,8 +27,10 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	save = true;
+	
 	[self.navigationItem setTitle:@"New Discount"];
-	if (discount) {
+	if (discount._id.length > 0) {
 		[self.navigationItem setTitle:[discount name]];
 	}
 	
@@ -38,8 +43,31 @@
 	}
 }
 
-- (void)deleteDiscount:(id)sender {
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	
+	save = true;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	if (save && discount.name.length > 0) {
+		discount.value = [[(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] textField].text floatValue];
+		discount.discountPercent = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]] checkbox] isOn];
+		discount.allTables = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]] checkbox] isOn];
+		discount.allCategories = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]] checkbox] isOn];
+		
+		[discount save];
+	}
+}
+
+- (void)deleteDiscount:(id)sender {
+	save = false;
+	
+	[discount remove];
+	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[discount.name stringByAppendingString:@" Deleted"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)discountPercentChanged:(id)sender {
@@ -59,6 +87,8 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	save = false;
+	
 	if ([[segue identifier] isEqualToString:@"openCategories"]) {
 		DiscountCategoriesViewController *vc = segue.destinationViewController;
 		vc.discount = discount;
@@ -66,6 +96,11 @@
 		DiscountTablesViewController *vc = segue.destinationViewController;
 		vc.discount = discount;
 	}
+}
+
+- (void)updateName:(UITextField *)sender {
+	discount.name = sender.text;
+	[self.navigationItem setTitle:discount.name];
 }
 
 #pragma mark - Table view data source
@@ -124,10 +159,9 @@ static NSString *selectCellID = @"select";
 		TextFieldCell *cell = [self allocTextCell:tableView indexPath:indexPath];
 		
 		cell.textField.placeholder = @"Discount Name";
-		if (discount && discount._id.length > 0) {
-			cell.textField.text = [discount name];
-		}
+		cell.textField.text = [discount name];
 		cell.textField.delegate = self;
+		[cell.textField addTarget:self action:@selector(updateName:) forControlEvents:UIControlEventEditingChanged];
 		
 		return cell;
 	}
@@ -139,19 +173,15 @@ static NSString *selectCellID = @"select";
 			
 			cell.label.text = @"Discount Value";
 			cell.textField.placeholder = @"0.00";
-			if (discount && discount._id.length > 0) {
-				cell.textField.text = [NSString stringWithFormat:@"%.f", discount.value];
-			}
+			cell.textField.text = [NSString stringWithFormat:@"%.f", discount.value];
 			
 			return cell;
 		} else if (indexPath.row == 1) {
 			TextSwitchCell *cell = [self allocSwitchCell:tableView indexPath:indexPath];
 			
 			cell.label.text = @"Percentage";
-			cell.checkbox.on = false;
-			if (discount && discount._id.length > 0) {
-				cell.checkbox.on = discount.discountPercent;
-			}
+			cell.checkbox.on = discount.discountPercent;
+			
 			[cell.checkbox removeTarget:self action:@selector(discountPercentChanged:) forControlEvents:UIControlEventValueChanged];
 			[cell.checkbox addTarget:self action:@selector(discountPercentChanged:) forControlEvents:UIControlEventValueChanged];
 			
@@ -164,9 +194,8 @@ static NSString *selectCellID = @"select";
 			
 			cell.label.text = @"All Tables";
 			cell.checkbox.on = false;
-			if (discount && discount._id.length > 0) {
-				cell.checkbox.on = discount.allTables;
-			}
+			cell.checkbox.on = discount.allTables;
+			
 			[cell.checkbox removeTarget:self action:@selector(allTablesChanged:) forControlEvents:UIControlEventValueChanged];
 			[cell.checkbox addTarget:self action:@selector(allTablesChanged:) forControlEvents:UIControlEventValueChanged];
 			
@@ -184,9 +213,8 @@ static NSString *selectCellID = @"select";
 			
 			cell.label.text = @"All Categories";
 			cell.checkbox.on = false;
-			if (discount && discount._id.length > 0) {
-				cell.checkbox.on = discount.allCategories;
-			}
+			cell.checkbox.on = discount.allCategories;
+			
 			[cell.checkbox removeTarget:self action:@selector(allCategoriesChanged:) forControlEvents:UIControlEventValueChanged];
 			[cell.checkbox addTarget:self action:@selector(allCategoriesChanged:) forControlEvents:UIControlEventValueChanged];
 			
