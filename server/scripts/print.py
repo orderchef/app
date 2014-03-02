@@ -57,7 +57,8 @@ def print_data(*args):
     if 'footer' in args[0] and args[0]['footer'] == True:
         p.text("\n")
         p.set('center')
-        p.text("Service Charge not Included. Thank you")
+        p.text("Service Charge not Included\n")
+        p.text("Thank you\n")
         p.set('left')
     
     p.cut()
