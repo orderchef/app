@@ -10,7 +10,7 @@
 
 @class Item;
 
-@interface ItemController : UITableViewController <UIAlertViewDelegate>
+@interface ItemController : UITableViewController <UIAlertViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) Item *item;
 

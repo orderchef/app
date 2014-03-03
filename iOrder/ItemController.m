@@ -54,6 +54,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+	save = true;
+	
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -116,6 +118,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"Categories"]) {
+		save = false;
 		CategoriesViewController *vc = (CategoriesViewController *)[segue destinationViewController];
 		vc.item = item;
 	}
@@ -163,6 +166,7 @@
                 name = cell.textField;
 				[name setText:item.name];
 				[name addTarget:self action:@selector(nameChanged:) forControlEvents:UIControlEventEditingChanged];
+				name.delegate = self;
                 break;
             case 1:
                 [cell.textField setPlaceholder:@"Item Price (required)"];
@@ -185,7 +189,7 @@
 		if (item.category)
 			cell.textLabel.text = item.category.name;
 		else
-			cell.textLabel.text = @"Choose Category";
+			cell.textLabel.text = @"Choose Category (Required)";
         
         return cell;
     }
@@ -225,6 +229,14 @@
         
         [self reloadData];
     }
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	
+	return YES;
 }
 
 @end

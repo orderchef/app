@@ -6,6 +6,12 @@ import logging
 from socketIO_client import SocketIO, BaseNamespace
 import sys
 import socket
+import bugsnag
+
+bugsnag.configure(
+    api_key = "c987848f96714ef34560d05ef7e53b5d",
+    project_root = "/var/orderchef"
+)
 
 logging.basicConfig(level=logging.ERROR)
 

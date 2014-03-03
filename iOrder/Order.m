@@ -137,6 +137,8 @@
 		[it setObject:[NSNumber numberWithInt:1] forKey:@"quantity"];
 		[it setObject:item forKey:@"item"];
 		[it setObject:@"" forKey:@"notes"];
+		[it setObject:item.price forKey:@"price"];
+		[it setObject:@[] forKey:@"discounts"];
 		
 		NSMutableArray *_items = [items mutableCopy];
 		[_items addObject:it];

@@ -55,7 +55,7 @@
 	}
 	
 	if (!self.manageEnabled) {
-		UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height, self.tableView.frame.size.width, 200.f)];
+		UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, 200.f)];
 		[footer setBackgroundColor:[UIColor whiteColor]];
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 29.f)];
 		label.text = [@"OrderChef v" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -64,7 +64,7 @@
 		label.font = [UIFont fontWithName:@"AppleGothic" size:14.f];
 		[footer addSubview:label];
 		
-		[self.tableView addSubview:footer];
+		//[self.tableView addSubview:footer];
 	}
 	
     [self reloadData];
