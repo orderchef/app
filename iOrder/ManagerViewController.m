@@ -110,4 +110,19 @@
 	}
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 2)
+		return [@"OrderChef v" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+	
+	return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
+    if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+		UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
+		v.textLabel.textAlignment = NSTextAlignmentCenter;
+		v.textLabel.font = [UIFont fontWithName:@"AppleGothic" size:14.f];
+    }
+}
+
 @end

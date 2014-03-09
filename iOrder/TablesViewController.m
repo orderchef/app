@@ -54,19 +54,6 @@
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
 	}
 	
-	if (!self.manageEnabled) {
-		UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, self.tableView.contentSize.height, self.tableView.frame.size.width, 200.f)];
-		[footer setBackgroundColor:[UIColor whiteColor]];
-		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 29.f)];
-		label.text = [@"OrderChef v" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-		label.textAlignment = NSTextAlignmentCenter;
-		label.textColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f];
-		label.font = [UIFont fontWithName:@"AppleGothic" size:14.f];
-		[footer addSubview:label];
-		
-		//[self.tableView addSubview:footer];
-	}
-	
     [self reloadData];
 }
 

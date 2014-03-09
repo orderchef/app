@@ -52,19 +52,10 @@
 	isNavbarHidden = false;
 	isOverlayHidden = true;
 	
-	kNavbarDefaultPosition = self.navigationController.navigationBar.layer.position;
-	kNavbarMinimalPosition = CGPointMake(kNavbarDefaultPosition.x, kNavbarDefaultPosition.y - self.searchBar.frame.size.height);
-	kTableDefaultPosition = self.tableView.layer.position;
-	kTableMinimalPosition = CGPointMake(kTableDefaultPosition.x, kTableDefaultPosition.y - self.searchBar.frame.size.height);
-	kTableDefaultHeight = self.tableView.frame.size.height;
-	kTableMaximumHeight = self.tableView.frame.size.height + 44.f;
-	
-	blackOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 44.f, self.tableView.frame.size.width, self.tableView.frame.size.height)];
 	tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resetSearchBar:)];
 	[tapRecognizer setCancelsTouchesInView:YES];
-	[blackOverlay addGestureRecognizer:tapRecognizer];
 	
-    if ([[[Storage getStorage] employee] manager] && !table) {
+	if ([[[Storage getStorage] employee] manager] && !table) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItem:)]];
     } else {
 		[self.navigationItem setRightBarButtonItem:nil];
@@ -84,6 +75,7 @@
 	}
 	
 	self.searchBar.delegate = self;
+	self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
 	
     [self reloadData];
 	
@@ -103,6 +95,9 @@
 	
     [self reloadData];
 	[[Storage getStorage] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+	
+	[self initPositions];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -110,11 +105,28 @@
 	
     @try {
         [[Storage getStorage] removeObserver:self forKeyPath:@"items"];
+		[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIDeviceOrientationDidChangeNotification context:nil];
     } @catch (NSException *exception) {}
 }
 
 - (void)refreshData:(id)sender {
     [[Storage getStorage] loadData];
+}
+
+- (void)orientationChanged:(NSNotification *)notification {
+	[self initPositions];
+}
+
+- (void)initPositions {
+	kNavbarDefaultPosition = self.navigationController.navigationBar.layer.position;
+	kNavbarMinimalPosition = CGPointMake(kNavbarDefaultPosition.x, kNavbarDefaultPosition.y - self.searchBar.frame.size.height);
+	kTableDefaultPosition = self.tableView.layer.position;
+	kTableMinimalPosition = CGPointMake(kTableDefaultPosition.x, kTableDefaultPosition.y - self.searchBar.frame.size.height);
+	kTableDefaultHeight = self.tableView.frame.size.height;
+	kTableMaximumHeight = self.tableView.frame.size.height + 44.f;
+	
+	blackOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 44.f, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+	[blackOverlay addGestureRecognizer:tapRecognizer];
 }
 
 - (void)newItem:(id) sender {
@@ -304,6 +316,17 @@
     return [categories count];
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+	if (isNavbarHidden || !table) return nil;
+	
+	NSMutableArray *titles_single = [[NSMutableArray alloc] initWithCapacity:titles.count];
+	for (NSString *title in titles) {
+		[titles_single addObject:[title substringToIndex:1]];
+	}
+	
+	return titles_single;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[categories objectAtIndex:section] count];
@@ -353,8 +376,6 @@
         v.textLabel.textAlignment = NSTextAlignmentCenter;
         v.textLabel.textColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f];
         v.backgroundView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.95f];
-        //v.backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
-        //v.backgroundView.layer.borderWidth = 0.5f;
     }
 }
 
@@ -366,18 +387,18 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[searchBar setText:@""];
-	[searchBar resignFirstResponder];
 	[self.searchBar setShowsCancelButton:NO animated:YES];
 	
 	[self searchBar:searchBar textDidChange:@""];
 	
-	[self showNavbar];
-	[self hideOverlay];
+	[searchBar resignFirstResponder];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)aSearchText {
-	searchText = aSearchText;
-	[self reloadData];
+	if (![searchText isEqualToString:aSearchText]) {
+		searchText = aSearchText;
+		[self reloadData];
+	}
 	
 	if (searchText.length > 0) {
 		[self.searchBar setShowsSearchResultsButton:YES];
@@ -394,6 +415,8 @@
 	[self.searchBar setShowsCancelButton:YES animated:YES];
 	
 	[self showOverlay];
+	
+	[self.tableView reloadSectionIndexTitles];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -403,6 +426,8 @@
 	}
 	
 	[self hideOverlay];
+	
+	[self.tableView reloadSectionIndexTitles];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {

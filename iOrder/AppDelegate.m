@@ -60,6 +60,8 @@
 	[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f]];
 	[[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	
+	[[UITableView appearance] setSectionIndexBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
