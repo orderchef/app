@@ -49,6 +49,9 @@
     [self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
     
 	[self.navigationItem setTitle:category];
+	if (self.category.length == 0) {
+		[self.navigationItem setTitle:@"All Categories"];
+	}
 	
     [self reloadData];
 }
@@ -87,16 +90,16 @@
 	items = [storage items];
 	
     for (Item *i in items) {
-        ItemCategory *category = i.category;
+        ItemCategory *itemCategory = i.category;
         
         NSString *section;
-        if (!category) {
+        if (!itemCategory) {
             section = @"Uncategorised";
         } else {
-            section = [category name];
+            section = [itemCategory name];
         }
 		
-		if (![section isEqualToString:self.category]) {
+		if (self.category.length > 0 && ![section isEqualToString:self.category]) {
 			continue;
 		}
         
@@ -144,6 +147,10 @@
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+	if (self.category.length > 0) {
+		return nil;
+	}
+	
 	NSMutableArray *titles_single = [[NSMutableArray alloc] initWithCapacity:titles.count];
 	for (NSString *title in titles) {
 		[titles_single addObject:[title substringToIndex:1]];
@@ -166,10 +173,12 @@
     cell.textLabel.text = item.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [item.price floatValue]];
 	
-    cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
-    cell.layer.borderWidth = 0.5f;
-    cell.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
-    [cell backgroundView].backgroundColor = [UIColor blackColor];
+	if (self.category.length == 0) {
+		cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+		cell.layer.borderWidth = 0.5f;
+		cell.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+		[cell backgroundView].backgroundColor = [UIColor blackColor];
+	}
     
     return cell;
 }
@@ -210,6 +219,9 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (self.category.length > 0)
+		return nil;
+	
     return [titles objectAtIndex:section];
 }
 

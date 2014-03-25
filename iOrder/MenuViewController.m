@@ -146,35 +146,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	NSMutableArray *titles_single = [[NSMutableArray alloc] initWithCapacity:titles.count];
-	for (NSString *title in titles) {
-		[titles_single addObject:[title substringToIndex:1]];
-	}
-	
-	return titles_single;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if (section == 0) return 1;
+	
     return [titles count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *CellIdentifier = @"menu";
+	static NSString *CellIdentifier = @"category";
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 	
-	cell.textLabel.text = [titles objectAtIndex:indexPath.row];
+	if (indexPath.section == 0) {
+		cell.textLabel.text = @"All Categories";
+	} else {
+		cell.textLabel.text = [titles objectAtIndex:indexPath.row];
+	}
 	
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self performSegueWithIdentifier:@"SubMenu" sender:[titles objectAtIndex:indexPath.row]];
+	NSString *category = @"";
+	if (indexPath.section > 0) {
+		category = [titles objectAtIndex:indexPath.row];
+	}
+	
+	[self performSegueWithIdentifier:@"SubMenu" sender:category];
 }
 
 #pragma mark - MenuControlDelegate
