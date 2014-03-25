@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
+#import "SubMenuViewController.h"
 #import "MenuViewController.h"
 #import "Item.h"
 #import "ItemCategory.h"
@@ -16,21 +17,21 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 #import "Order.h"
-#import "SubMenuViewController.h"
 
-@interface MenuViewController () {
+@interface SubMenuViewController () {
 	NSArray *categories;
-	NSArray *titles;
+    NSArray *titles;
 	Item *newItem;
 }
 
 @end
 
-@implementation MenuViewController
+@implementation SubMenuViewController
 
 @synthesize table;
 @synthesize activeOrder;
 @synthesize delegate;
+@synthesize category;
 
 - (void)viewDidLoad
 {
@@ -47,17 +48,9 @@
     [self setRefreshControl:[[UIRefreshControl alloc] init]];
     [self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
     
-    [self setTitle];
-    
+	[self.navigationItem setTitle:category];
+	
     [self reloadData];
-}
-
-- (void)setTitle {
-	if (!table) {
-		[self.navigationItem setTitle:@"Items"];
-	} else {
-		[self.navigationItem setTitle:@"Add to Basket"];
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,6 +95,10 @@
         } else {
             section = [category name];
         }
+		
+		if (![section isEqualToString:self.category]) {
+			continue;
+		}
         
         NSMutableArray *sec = [secs objectForKey:section];
         if (!sec) {
@@ -133,12 +130,9 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"SubMenu"]) {
-		SubMenuViewController *vc = (SubMenuViewController *)[segue destinationViewController];
-		vc.table = table;
-		vc.activeOrder = activeOrder;
-		vc.delegate = self.delegate;
-        vc.category = (NSString *)sender;
+	if ([segue.identifier isEqualToString:@"Item"]) {
+		ItemController *vc = (ItemController *)[segue destinationViewController];
+		vc.item = (Item *)sender;
 	}
 }
 
@@ -146,7 +140,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [categories count];
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -160,26 +154,29 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [titles count];
+    return [[categories objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *CellIdentifier = @"menu";
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"menu";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    cell.textLabel.text = item.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [item.price floatValue]];
 	
-	cell.textLabel.text = [titles objectAtIndex:indexPath.row];
-	
-	return cell;
+    cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+    cell.layer.borderWidth = 0.5f;
+    cell.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+    [cell backgroundView].backgroundColor = [UIColor blackColor];
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self performSegueWithIdentifier:@"SubMenu" sender:[titles objectAtIndex:indexPath.row]];
-}
-
-#pragma mark - MenuControlDelegate
-
-- (void)didSelectItem:(Item *)item {
+	Item *item = [[categories objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	
 	if (table) {
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[@"Adding " stringByAppendingString:item.name] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:nil toView:self.parentViewController.view];
 		
@@ -187,11 +184,33 @@
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
 			[[self delegate] didSelectItem:item];
 			
-			[self.navigationController popViewControllerAnimated:YES];
+			UIViewController *controller = nil;
+			for (UIViewController *vc in [self.navigationController viewControllers]) {
+				if ([vc conformsToProtocol:@protocol(MenuControlDelegate)]) {
+					controller = vc;
+					break;
+				}
+			}
+			[self.navigationController popToViewController:controller animated:YES];
 		}];
 		
 		return;
 	}
+	
+	[self performSegueWithIdentifier:@"Item" sender:item];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+        UITableViewHeaderFooterView *v = (UITableViewHeaderFooterView *)view;
+        v.textLabel.textAlignment = NSTextAlignmentCenter;
+        v.textLabel.textColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f];
+        v.backgroundView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.95f];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [titles objectAtIndex:section];
 }
 
 @end

@@ -33,6 +33,7 @@
 		4F5C77C51879B99E00ED9A80 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */; };
 		4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5FD2A718BE76B500A5059B /* DiscountViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
+		4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7F353518E18D740090FF44 /* SubMenuViewController.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
@@ -125,6 +126,8 @@
 		4F5FD2A718BE76B500A5059B /* DiscountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
+		4F7F353418E18D740090FF44 /* SubMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubMenuViewController.h; sourceTree = "<group>"; };
+		4F7F353518E18D740090FF44 /* SubMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubMenuViewController.m; sourceTree = "<group>"; };
 		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
 		4F8B98C0185E279C001354CA /* ReportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportsViewController.m; sourceTree = "<group>"; };
 		4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */,
 				4F33E51F181E672B00E4FDD9 /* MenuViewController.h */,
 				4F33E520181E672B00E4FDD9 /* MenuViewController.m */,
+				4F7F353418E18D740090FF44 /* SubMenuViewController.h */,
+				4F7F353518E18D740090FF44 /* SubMenuViewController.m */,
 			);
 			name = VCs;
 			sourceTree = "<group>";
@@ -593,6 +598,7 @@
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
 				4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
+				4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */,
 				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
 				4F545EF018C11019006BA9E7 /* DiscountCategoriesViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,

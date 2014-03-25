@@ -7,22 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MenuViewController.h"
 
 @class Table;
 @class Order;
 @class Item;
 
-@protocol MenuControlDelegate <NSObject>
-
-- (void)didSelectItem:(Item *) item;
-
-@end
-
-@interface MenuViewController : UITableViewController <MenuControlDelegate, UINavigationControllerDelegate>
+@interface SubMenuViewController : UITableViewController <UINavigationControllerDelegate>
 
 @property (nonatomic, weak) Table *table;
 @property (nonatomic , weak) Order *activeOrder;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (assign) id<MenuControlDelegate> delegate;
+@property (nonatomic, weak) NSString *category;
 
 @end

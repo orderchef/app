@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>186725C4-DCA9-4313-BB32-F1CDE967367D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OrderChef</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>969D874A-7835-4B07-A5EC-959E6E856D97</key>
+		<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OrderChef.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>969D874A-7835-4B07-A5EC-959E6E856D97</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>969D874A-7835-4B07-A5EC-959E6E856D97</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>969D874A-7835-4B07-A5EC-959E6E856D97</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iOrder</string>
+		</dict>
+	</array>
+</dict>
+</plist>
