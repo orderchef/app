@@ -17,6 +17,7 @@
 #import "OrderGroup.h"
 #import "Order.h"
 #import "OrderViewController.h"
+#import "TextFieldCell.h"
 
 @interface OrdersViewController () {
 	UIActionSheet *printAndClearSheet;
@@ -114,6 +115,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	/*if (section == 0) {
+		return 0;
+	}*/
+	
 	if (section == 0) {
 		return [group orders].count;
 	}
@@ -127,11 +132,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"basket";
+	static NSString *CellIdentifier = @"basket";
+	static NSString *fieldIdentifier = @"text";
+	
+	/*
+    if (indexPath.section == 0) {
+		TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:fieldIdentifier forIndexPath:indexPath];
+		if (!cell) {
+			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:fieldIdentifier];
+		}
+		
+		cell.textField.text = @"";
+		cell.textField.placeholder = @"Customer Name";
+		
+		return cell;
+	}*/
+	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.textLabel.textAlignment = NSTextAlignmentLeft;
+	
 	if (indexPath.section == 0) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:18.f];
 		
@@ -167,6 +188,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Order *o;
+	//if (indexPath.section == 0) return;
+	
 	if (indexPath.section == 1) {
 		if (indexPath.row == 1) {
 			// clear

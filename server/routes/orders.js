@@ -30,6 +30,22 @@ exports.router = function (socket) {
 					table: query.table,
 					cleared: false
 				});
+
+				models.OrderGroup.findOne({}).select('orderNumber').sort('-orderNumber').limit(1).exec(function(err, lastOrder) {
+					if (err) throw err;
+
+					var orderNumber = lastOrder.orderNumber;
+					models.OrderGroup.update({
+						_id: order._id
+					}, {
+						$set: {
+							orderNumber: orderNumber + 1
+						}
+					}, function(err) {
+						if (err) throw err;
+					});
+				});
+
 				order.save();
 			
 				orders.push(order)
@@ -203,6 +219,8 @@ exports.router = function (socket) {
 		
 		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
 			
+			data.orderNumber = group.orderNumber;
+			
 			async.each(group.orders, function(order, cb) {
 				order.populate('items.item', function() {
 					async.each(order.items, function(item, cb) {
@@ -227,27 +245,39 @@ exports.router = function (socket) {
 		winston.info("Printing order ;)")
 		
 		var order = mongoose.Types.ObjectId(data.order);
-		
-		models.Order.findById(order).populate('items.item').exec(function(err, order) {
-			if (err || !order) {
-				return;
+		data.orderNumber = 0;
+
+		models.OrderGroup.findOne({
+			orders: {
+				$in: [ order ]
 			}
-			
-			order.printed = true;
-			order.printedAt = Date.now();
-			order.save();
-			
-			async.each(order.items, function(item, cb) {
-				item.item.populate('category', cb)
-			}, function(err) {
-				if (err) throw err;
-				
-				for (var i = 0; i < models.printers.length; i++) {
-					winston.info("Printing to "+models.printers[i].name)
-					
-					order.print(models.printers[i], data);
+		}).select('orderNumber').exec(function(err, ordergroup) {
+			if (err) throw err;
+
+			data.orderNumber = ordergroup.orderNumber;
+
+			models.Order.findById(order).populate('items.item').exec(function(err, order) {
+				if (err || !order) {
+					return;
 				}
+				
+				order.printed = true;
+				order.printedAt = Date.now();
+				order.save();
+				
+				async.each(order.items, function(item, cb) {
+					item.item.populate('category', cb)
+				}, function(err) {
+					if (err) throw err;
+					
+					for (var i = 0; i < models.printers.length; i++) {
+						winston.info("Printing to "+models.printers[i].name)
+						
+						order.print(models.printers[i], data);
+					}
+				});
 			});
-		});
+
+		})
 	})
 }

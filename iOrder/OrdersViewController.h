@@ -14,7 +14,7 @@
 
 @interface OrdersViewController : UITableViewController <UIActionSheetDelegate>
 
-@property (nonatomic, weak) Table *table;
+@property (nonatomic, strong) Table *table;
 @property (nonatomic, weak) OrderGroup *group;
 
 @end

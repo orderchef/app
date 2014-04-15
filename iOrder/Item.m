@@ -29,8 +29,12 @@
         category = nil;
         table = nil;
     }
-    
+	
     return self;
+}
+
+- (NSComparisonResult)caseInsensitiveCompare:(Item *)item {
+	return [self.name caseInsensitiveCompare:item.name];
 }
 
 - (void)loadFromJSON:(NSDictionary *)json {

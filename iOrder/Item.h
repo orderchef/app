@@ -22,5 +22,6 @@
 - (void)save;
 - (void)saveCategory:(ItemCategory *)theCategory;
 - (void)deleteItem;
+- (NSComparisonResult)caseInsensitiveCompare:(Item *)item;
 
 @end

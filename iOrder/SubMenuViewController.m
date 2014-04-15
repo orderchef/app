@@ -68,7 +68,6 @@
 	
     @try {
         [[Storage getStorage] removeObserver:self forKeyPath:@"items"];
-		[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIDeviceOrientationDidChangeNotification context:nil];
     } @catch (NSException *exception) {}
 }
 
@@ -78,6 +77,7 @@
 
 - (void)newItem:(id) sender {
 	newItem = [[Item alloc] init];
+	newItem.category = [[Storage getStorage] findCategoryByName:self.category];
 	[self performSegueWithIdentifier:@"Item" sender:newItem];
 }
 
@@ -116,7 +116,7 @@
 	NSMutableArray *sortedCategories = [[NSMutableArray alloc] initWithCapacity:categories.count];
 	
 	for (NSString *key in sortedTitles) {
-		[sortedCategories addObject:[secs objectForKey:key]];
+		[sortedCategories addObject:[[secs objectForKey:key] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
 	}
 	
 	titles = sortedTitles;

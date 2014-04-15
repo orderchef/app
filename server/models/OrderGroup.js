@@ -26,6 +26,10 @@ var scheme = schema({
 	},
 	clearedAt: {
 		type: Date
+	},
+	orderNumber: {
+		type: Number,
+		default: 0
 	}
 })
 
@@ -54,53 +58,78 @@ scheme.methods.print = function (printer, data) {
 	
 	var orderedString = "";
 	
-	var _total = 0;
-	
-	async.each(self.orders, function(order, cb) {
-		var tableId = mongoose.Types.ObjectId(data.tableid);
-		var categories = [];
-		for (var i = 0; i < order.items.length; i++) {
-			categories.push(order.items[i].item.category._id)
+	var categories = [];
+	var items = [];
+	var postcode = "";
+	var postcodeDistance = "";
+
+	for (var i = 0; i < self.orders.length; i++) {
+		var order = self.orders[i];
+
+		if (order.postcode) {
+			postcode = order.postcode;
+			postcodeDistance = order.postcodeDistance;
 		}
-		
-		if (order.notes.length > 0) {
-			orderedString += " Notes: " + order.notes + "\n\n";
+
+		for (var x = 0; x < order.items.length; x++) {
+			var item = order.items[x];
+
+			if (typeof items[item.item._id] === 'undefined') {
+				items[item.item._id] = item;
+			} else {
+				var it = items[item.item._id];
+				it.quantity += item.quantity;
+			}
+
+			categories.push(item.item.category._id)
 		}
-		
-		Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), categories, function(discounts) {
-			var orderData = order.getOrderData(printer, true, discounts);
-			orderedString += orderData.data;
-			var total = orderData.total;
-			
-			var ___total = " "+total.toFixed(2)+" GBP\n";
-			var totalForOrder = "Total for Order:";
-			orderedString += "\n";
-			orderedString += totalForOrder + common.getSpaces(kChars - totalForOrder.length - ___total.length)+___total+"\n";
-			
-			_total += total;
-			
-			cb(null);
+	}
+
+	// Convert items to a regular array
+	var _items = [];
+	for (var it in items) {
+		if (items.hasOwnProperty(it)) {
+			_items.push(items[it]);
+		}
+	}
+	items = _items;
+	_items = null;
+
+	var tableId = mongoose.Types.ObjectId(data.tableid);
+	Discount.getDiscounts(tableId, categories, function(discounts) {
+		// Fool the order object with a custom context (this)
+		var ctx = {
+			items: items,
+			postcode: postcode,
+			postcodeDistance: postcodeDistance
+		}
+		var orderData = order.getOrderData.bind(ctx)(printer, {
+			force: true,
+			prices: true,
+			notes: false
 		});
-	}, function() {
-		var tableName = "Table "+ table;
-		var tableLength = kChars - tableName.length;
-		var spaces = common.getSpaces(Math.floor((tableLength+1)/2))
-		tableName = spaces + tableName;
-	
+
+		if (orderData.postcode.length > 0) {
+			postcode = orderData.postcode;
+		}
+		orderedString += orderData.data;
+
 		var totalString = "";
-		var __total = "";
-		__total = " "+_total.toFixed(2)+" GBP\n";
-		totalString = "Total:"+common.getSpaces(kChars - 6 - __total.length)+__total+"\n";
+		var total = "";
+		total = " "+orderData.total.toFixed(2)+" GBP\n";
+		totalString = "\nTotal:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
 	
 		var servicedBy = "Serviced By " + employee;
 		servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
 		var output = "\
-" + tableName +"\n\n\
+ Order #" + data.orderNumber + "\n\
+ " + table +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
 " + orderedString + "\
-"+ totalString + "\
+" + totalString + "\
+" + postcode + "\
 \n";
 		
 		winston.info(output);
@@ -111,7 +140,7 @@ scheme.methods.print = function (printer, data) {
 			logo: true,
 			footer: true
 		});
-	})
+	});
 }
 
 scheme.statics.aggregate = function (socket, groups) {

@@ -160,11 +160,13 @@
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Calculating Distance" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
 	
 	AFHTTPRequestOperationManager *request = [AFHTTPRequestOperationManager manager];
-	[request GET:[[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/distancematrix/json?origins=%f,%f&destinations=%@&units=imperial&sensor=false", location.coordinate.latitude, location.coordinate.longitude, order.postcode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *json) {
+	[request GET:[[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/distancematrix/json?origins=%f,%f&destinations=%@&units=imperial&sensor=false", location.coordinate.latitude, location.coordinate.longitude, [order.postcode stringByReplacingOccurrencesOfString:@" " withString:@"+"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *json) {
+		NSLog(@"%@", json);
 		if ([[json objectForKey:@"status"] isEqualToString:@"OK"]) {
 			//YAY
 			NSDictionary *elements = [[[[json objectForKey:@"rows"] objectAtIndex:0] objectForKey:@"elements"] objectAtIndex:0];
 			if (![[elements objectForKey:@"status"] isEqualToString:@"OK"]) {
+				[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Address Not Found" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
 				return;
 			}
 			
@@ -258,9 +260,9 @@
     } else if (indexPath.section == 4) {
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setText:order.postcode];
-		[field setPlaceholder:@"Postcode for Delivery"];
+		[field setPlaceholder:@"Address for Delivery"];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
-		[field setAutocapitalizationType:UITextAutocapitalizationTypeAllCharacters];
+		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 		[field setDelegate:self];
 		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
@@ -308,7 +310,7 @@
         case 3:
             return @"Notes for Order";
 		case 4:
-			return @"Delivery Postcode";
+			return @"Delivery Address";
         default:
             return @"";
     }

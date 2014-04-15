@@ -58,9 +58,9 @@ scheme.methods.update = function (data) {
 	}
 }
 
-scheme.methods.getOrderData = function (printer, force) {
-	if (typeof force === 'undefined') {
-		force = false;
+scheme.methods.getOrderData = function (printer, opts) {
+	if (typeof opts === 'undefined') {
+		opts = {};
 	}
 	
 	const kChars = printer.characters;
@@ -76,7 +76,7 @@ scheme.methods.getOrderData = function (printer, force) {
 		if (it.item.category.printers.length > 0) {
 			var found = false;
 			for (var x = 0; x < it.item.category.printers.length; x++) {
-				if (force == true) {
+				if (opts.force == true) {
 					found = true;
 					break;
 				}
@@ -91,7 +91,7 @@ scheme.methods.getOrderData = function (printer, force) {
 		}
 		printedData = true;
 		
-		if (printer.prices) {
+		if (opts.prices) {
 			// Printer prints prices too
 			var val = it.quantity * it.price;
 			total += val;
@@ -106,20 +106,22 @@ scheme.methods.getOrderData = function (printer, force) {
 			orderedString += it.quantity + " " + it.item.name + "\n";
 		}
 		// notes (if any)
-		if (it.notes.trim().length > 0) {
+		if (opts.notes && it.notes.trim().length > 0) {
 			orderedString += " Notes: "+it.notes + "\n";
 		}
 	}
 	
+	var postcode = "";
 	if (self.postcode && self.postcode.length > 0) {
-		orderedString += "\n Postcode: " + self.postcode + "\n";
-		orderedString += " Distance: "+self.postcodeDistance+"\n";
+		postcode += " Address: " + self.postcode + "\n";
+		postcode += " Distance: "+self.postcodeDistance+"\n";
 	}
 	
 	return {
 		printedData: printedData,
 		data: orderedString,
-		total: total
+		total: total,
+		postcode: postcode
 	}
 }
 
@@ -131,7 +133,9 @@ scheme.methods.print = function (printer, data) {
 	
 	const kChars = printer.characters;
 	
-	var orderData = this.getOrderData(printer);
+	var orderData = this.getOrderData(printer, {
+		notes: true
+	});
 	if (orderData.printedData == false) {
 		// The printer doesn't have any data to be printed
 		return;
@@ -153,10 +157,6 @@ scheme.methods.print = function (printer, data) {
 		totalString = "Total:"+common.getSpaces(kChars - 6 - _total.length)+_total+"\n";
 	}
 	
-	var tableName = "Table "+ table;
-	var tableLength = kChars - tableName.length;
-	tableName = common.getSpaces(Math.floor((tableLength+1)/2)) + tableName;
-	
 	var servicedBy = "Serviced By " + employee;
 	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
 	
@@ -166,11 +166,12 @@ scheme.methods.print = function (printer, data) {
 	}
 	
 	var output = "\
-" + tableName +"\n\n\
+ Order #" + data.orderNumber + "\n\
+ " + table +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
-" + notes + "\
 Ordered Items:\n" + orderedString + "\n\
+" + notes + "\
 "+ totalString + "\
 \n";
 	

@@ -34,5 +34,6 @@
 - (void)parseEvent:(SocketIOPacket *)packet;
 
 - (ItemCategory *)findCategoryById:(NSString *)_id;
+- (ItemCategory *)findCategoryByName:(NSString *)name;
 
 @end

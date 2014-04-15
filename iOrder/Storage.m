@@ -103,7 +103,8 @@
         if ([name isEqualToString:@"get.tables"]) {
             [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
         } else if ([name isEqualToString:@"get.categories"]) {
-            [self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
+			[self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
+            //[self updateCategories:packet.args];
         } else if ([name isEqualToString:@"get.items"]) {
             [self setItems:[self loopAndLoad:[packet args] object:[Item class]]];
         } else if ([name isEqualToString:@"get.staff"]) {
@@ -144,6 +145,58 @@
     }
 }
 
+- (void)updateCategories:(NSArray *)cats {
+    if ([cats count] == 0) {
+        return;
+    }
+    
+	NSMutableArray *insert = [[NSMutableArray alloc] init];
+	NSMutableArray *delete = [[NSMutableArray alloc] init];
+	
+    for (NSDictionary *x in [cats objectAtIndex:0]) {
+		NSString *_id = [x objectForKey:@"_id"];
+		
+		bool found = false;
+		for (ItemCategory *category in categories) {
+			if ([category._id isEqualToString:_id]) {
+				found = true;
+				[category loadFromJSON:x];
+				break;
+			}
+		}
+		
+		if (!found) {
+			// Insert
+			[insert addObject:x];
+		}
+	}
+	
+	for (ItemCategory *category in categories) {
+		bool found = false;
+		for (NSDictionary *x in [cats objectAtIndex:0]) {
+			if ([[x objectForKey:@"_id"] isEqualToString:category._id]) {
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) {
+			[delete addObject:category];
+		}
+	}
+	
+	for (NSDictionary *x in insert) {
+		ItemCategory *cat = [[ItemCategory alloc] init];
+		[cat loadFromJSON:x];
+		
+		[categories addObject:cat];
+	}
+	
+	for (ItemCategory *del in delete) {
+		[categories removeObjectIdenticalTo:del];
+	}
+}
+
 - (void)loadData {
     SocketIO *socket = [[Connection getConnection] socket];
     
@@ -161,6 +214,16 @@
 - (ItemCategory *)findCategoryById:(NSString *)_id {
     for (ItemCategory *category in self.categories) {
         if ([category._id isEqualToString:_id]) {
+            return category;
+        }
+    }
+    
+    return nil;
+}
+
+- (ItemCategory *)findCategoryByName:(NSString *)name {
+	for (ItemCategory *category in self.categories) {
+        if ([category.name isEqualToString:name]) {
             return category;
         }
     }

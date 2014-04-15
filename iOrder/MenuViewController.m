@@ -21,7 +21,6 @@
 @interface MenuViewController () {
 	NSArray *categories;
 	NSArray *titles;
-	Item *newItem;
 }
 
 @end
@@ -36,11 +35,7 @@
 {
     [super viewDidLoad];
 	
-	if ([[[Storage getStorage] employee] manager] && !table) {
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItem:)]];
-    } else {
-		[self.navigationItem setRightBarButtonItem:nil];
-    }
+	[self.navigationItem setRightBarButtonItem:nil];
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -78,11 +73,6 @@
 
 - (void)refreshData:(id)sender {
     [[Storage getStorage] loadData];
-}
-
-- (void)newItem:(id) sender {
-	newItem = [[Item alloc] init];
-	[self performSegueWithIdentifier:@"Item" sender:newItem];
 }
 
 - (void)reloadData {

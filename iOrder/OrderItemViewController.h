@@ -15,7 +15,7 @@
 @interface OrderItemViewController : UITableViewController <TextareaDelegate>
 
 @property (nonatomic, weak) NSDictionary *item;
-@property (nonatomic, weak) Table *table;
-@property (nonatomic, weak) Order *order;
+@property (nonatomic, strong) Table *table;
+@property (nonatomic, strong) Order *order;
 
 @end
