@@ -21,8 +21,6 @@
 @property (nonatomic, strong) NSArray *items;
 @property (assign) BOOL printed;
 @property (nonatomic, strong) NSDate *printedAt;
-@property (nonatomic, strong) NSString *postcode;
-@property (nonatomic, strong) NSString *postcodeDistance;
 
 @property (nonatomic, weak) OrderGroup *group;
 

@@ -17,18 +17,12 @@
 #import "AppDelegate.h"
 #import "OrderGroup.h"
 #import "Order.h"
-#import <CoreLocation/CoreLocation.h>
-#import <AFNetworking/AFNetworking.h>
 
 @interface OrderViewController () {
     UITapGestureRecognizer *dismissKeyboardGesture;
 	UIActionSheet *sheet;
 	UIBarButtonItem *printItem;
 	bool confirmedReprint;
-	
-	UITapGestureRecognizer *dismissPostcodeRecogniser;
-	UITapGestureRecognizer *tapToCancelPostcode;
-	CLLocationManager *locationManager;
 }
 
 @end
@@ -123,74 +117,6 @@
 	[self reloadData];
 }
 
-- (void)beganPostcode:(id)sender {
-	dismissPostcodeRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPostcode:)];
-	[dismissPostcodeRecogniser setCancelsTouchesInView:YES];
-	[self.tableView addGestureRecognizer:dismissPostcodeRecogniser];
-}
-
-- (void)dismissPostcode:(id)sender {
-	@try {
-		[self.tableView removeGestureRecognizer:dismissPostcodeRecogniser];
-	} @catch (NSException *e) {}
-	dismissPostcodeRecogniser = nil;
-	
-	[self updateButtons];
-	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
-	[cell.textField resignFirstResponder];
-	order.postcode = cell.textField.text;
-	
-	if (order.postcode) {
-		tapToCancelPostcode = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPostcodeLookup:)];
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Getting Current Location" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
-		
-		locationManager = [[CLLocationManager alloc] init];
-		locationManager.delegate = self;
-		locationManager.distanceFilter = kCLDistanceFilterNone;
-		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-		[locationManager startUpdatingLocation];
-	}
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	CLLocation *location = [locations lastObject];
-	[locationManager stopUpdatingLocation];
-	
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Calculating Distance" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
-	
-	AFHTTPRequestOperationManager *request = [AFHTTPRequestOperationManager manager];
-	[request GET:[[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/distancematrix/json?origins=%f,%f&destinations=%@&units=imperial&sensor=false", location.coordinate.latitude, location.coordinate.longitude, [order.postcode stringByReplacingOccurrencesOfString:@" " withString:@"+"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *json) {
-		NSLog(@"%@", json);
-		if ([[json objectForKey:@"status"] isEqualToString:@"OK"]) {
-			//YAY
-			NSDictionary *elements = [[[[json objectForKey:@"rows"] objectAtIndex:0] objectForKey:@"elements"] objectAtIndex:0];
-			if (![[elements objectForKey:@"status"] isEqualToString:@"OK"]) {
-				[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Address Not Found" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-				return;
-			}
-			
-			NSString *distance = [[elements objectForKey:@"distance"] objectForKey:@"text"];
-			NSString *time = [[elements objectForKey:@"duration"] objectForKey:@"text"];
-			NSString *formatted = [[NSString alloc] initWithFormat:@"%@, %@", distance, time];
-			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:formatted detail:nil hideAfter:1 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-			order.postcodeDistance = formatted;
-			
-			[order save];
-			
-			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
-		} else {
-			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Failed to get Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Failed to get Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-	}];
-}
-
-- (void)cancelPostcodeLookup:(id)sender {
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Cancelled Postcode Location" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -198,8 +124,6 @@
 	int sections = 1;
 	if ([order.items count] > 0) {
 		sections = 4;
-		
-		if (table.delivery) sections++;
 	}
 	
 	return sections;
@@ -229,12 +153,7 @@
         if (!cell) {
             cell = [[TextareaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"notes"];
         }
-    } else if (indexPath.section == 4) {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"postcode" forIndexPath:indexPath];
-		if (!cell) {
-			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"postcode"];
-		}
-	}
+    }
     
     if (indexPath.section == 0) {
 		cell.textLabel.font = [UIFont fontWithName:@"FontAwesome" size:cell.textLabel.font.pointSize];
@@ -257,17 +176,7 @@
         [[(TextareaCell *)cell textField] setText:order.notes];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
-    } else if (indexPath.section == 4) {
-		UITextField *field = [(TextFieldCell *)cell textField];
-		[field setText:order.postcode];
-		[field setPlaceholder:@"Address for Delivery"];
-		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
-		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
-		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
-		[field setDelegate:self];
-		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
-		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
-	}
+    }
 	
     return cell;
 }
@@ -309,8 +218,6 @@
             return @"Items in Basket";
         case 3:
             return @"Notes for Order";
-		case 4:
-			return @"Delivery Address";
         default:
             return @"";
     }
@@ -336,8 +243,9 @@
         
         return [@"---- Total £" stringByAppendingFormat:@"%.2f ----", total];
     }
-	if (section == 4) {
-		return order.postcodeDistance;
+	
+	if (section == 3) {
+		return @"Note: Notes are not printed on final receipts";
 	}
     
     return nil;
@@ -376,7 +284,7 @@
 - (void)textFieldDidEndEditing {
     TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 	order.notes = [cell.textField text];
-    [order save];
+	[order save];
     
     @try {
         [self.tableView removeGestureRecognizer:dismissKeyboardGesture];
@@ -404,14 +312,6 @@
 	[self reloadData];
 	[self.refreshControl beginRefreshing];
 	[self refreshBasket:nil];
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[textField resignFirstResponder];
-	
-	return YES;
 }
 
 @end

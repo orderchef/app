@@ -39,8 +39,10 @@
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
-    [self setRefreshControl:[[UIRefreshControl alloc] init]];
-    [self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
+    if (!table) {
+		[self setRefreshControl:[[UIRefreshControl alloc] init]];
+		[self.refreshControl addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventValueChanged];
+	}
     
     [self setTitle];
     

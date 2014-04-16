@@ -6,6 +6,7 @@ var mongoose = require('mongoose')
 	, moment = require('moment')
 	, winston = require('winston')
 	, Discount = require('./Discount')
+	, Order = require('./Order')
 
 var scheme = schema({
 	orders: [{
@@ -30,7 +31,12 @@ var scheme = schema({
 	orderNumber: {
 		type: Number,
 		default: 0
-	}
+	},
+	postcode: String,
+	postcodeDistance: String,
+	deliveryTime: String,
+	cookingTime: String,
+	telephone: String
 })
 
 scheme.methods.update = function (data) {
@@ -39,6 +45,12 @@ scheme.methods.update = function (data) {
 	} catch (e) {
 		this.table = null;
 	}
+
+	this.postcode = data.postcode;
+	this.postcodeDistance = data.postcodeDistance;
+	this.deliveryTime = data.deliveryTime;
+	this.cookingTime = data.cookingTime;
+	this.telephone = data.telephone;
 	
 	this.orders = [];
 	for (var i = 0; i < data.orders.length; i++) {
@@ -60,16 +72,23 @@ scheme.methods.print = function (printer, data) {
 	
 	var categories = [];
 	var items = [];
+
 	var postcode = "";
-	var postcodeDistance = "";
+	if (self.postcode && self.postcode.length > 0) {
+		postcode += " Address: " + self.postcode + "\n";
+		postcode += " Distance: "+ self.postcodeDistance + "\n";
+	}
+	var deliveryTime = "";
+	if (self.deliveryTime && self.deliveryTime.length > 0) {
+		deliveryTime = " Delivery Time: " + self.deliveryTime + "\n";
+	}
+	var telephone = "";
+	if (self.telephone && self.telephone.length > 0) {
+		telephone = " Telephone: " + self.telephone + "\n";
+	}
 
 	for (var i = 0; i < self.orders.length; i++) {
 		var order = self.orders[i];
-
-		if (order.postcode) {
-			postcode = order.postcode;
-			postcodeDistance = order.postcodeDistance;
-		}
 
 		for (var x = 0; x < order.items.length; x++) {
 			var item = order.items[x];
@@ -99,19 +118,15 @@ scheme.methods.print = function (printer, data) {
 	Discount.getDiscounts(tableId, categories, function(discounts) {
 		// Fool the order object with a custom context (this)
 		var ctx = {
-			items: items,
-			postcode: postcode,
-			postcodeDistance: postcodeDistance
+			items: items
 		}
+		var order = new Order();
 		var orderData = order.getOrderData.bind(ctx)(printer, {
 			force: true,
 			prices: true,
 			notes: false
 		});
 
-		if (orderData.postcode.length > 0) {
-			postcode = orderData.postcode;
-		}
 		orderedString += orderData.data;
 
 		var totalString = "";
@@ -130,6 +145,8 @@ scheme.methods.print = function (printer, data) {
 " + orderedString + "\
 " + totalString + "\
 " + postcode + "\
+" + deliveryTime + "\
+" + telephone + "\
 \n";
 		
 		winston.info(output);

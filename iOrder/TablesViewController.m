@@ -18,6 +18,7 @@
 #import "LTHPasscodeViewController.h"
 #import "Employee.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "OrderGroup.h"
 
 @interface TablesViewController () {
     NSArray *tables;
@@ -192,8 +193,6 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
         v.textLabel.textAlignment = NSTextAlignmentCenter;
         v.textLabel.textColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f];
         v.backgroundView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.95f];
-        //v.backgroundView.layer.borderColor = [UIColor grayColor].CGColor;
-        //v.backgroundView.layer.borderWidth = 0.5f;
     }
 }
 
@@ -225,10 +224,23 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"table";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	static NSString *descriptiveCellIdentifier = @"tableDescriptive";
+    UITableViewCell *cell;
+	
+	Table *table = [[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = [[[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
+	if (self.manageEnabled || table.group.orders.count == 0) {
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	} else {
+		cell = [tableView dequeueReusableCellWithIdentifier:descriptiveCellIdentifier forIndexPath:indexPath];
+	}
     
+	cell.textLabel.text = [table name];
+    
+	if (!self.manageEnabled) {
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d Orders", [table.group.orders count]];
+	}
+	
 	cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
     cell.layer.borderWidth = 0.5f;
     cell.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;

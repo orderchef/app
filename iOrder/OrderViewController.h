@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TextareaCell.h"
-#import <CoreLocation/CoreLocation.h>
 #import "MenuViewController.h"
 
 @class Table;
 @class Order;
 
-@interface OrderViewController : UITableViewController <TextareaDelegate, UIActionSheetDelegate, CLLocationManagerDelegate, MenuControlDelegate, UITextFieldDelegate>
+@interface OrderViewController : UITableViewController <TextareaDelegate, UIActionSheetDelegate, MenuControlDelegate>
 
 @property (nonatomic, strong) Table *table;
 @property (nonatomic, strong) Order *order;

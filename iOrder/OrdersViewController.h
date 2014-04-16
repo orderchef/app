@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @class Table;
 @class Order;
 @class OrderGroup;
 
-@interface OrdersViewController : UITableViewController <UIActionSheetDelegate>
+@interface OrdersViewController : UITableViewController <UIActionSheetDelegate, UITextFieldDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) Table *table;
 @property (nonatomic, weak) OrderGroup *group;

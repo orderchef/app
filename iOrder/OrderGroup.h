@@ -19,6 +19,12 @@
 @property (assign) BOOL cleared;
 @property (nonatomic, strong) NSDate *clearedAt;
 
+@property (nonatomic, strong) NSString *postcode;
+@property (nonatomic, strong) NSString *postcodeDistance;
+@property (nonatomic, strong) NSString *deliveryTime;
+@property (nonatomic, strong) NSString *cookingTime;
+@property (nonatomic, strong) NSString *telephone;
+
 @property (nonatomic, strong) Table *table;
 
 - (void)save;

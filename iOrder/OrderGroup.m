@@ -17,6 +17,7 @@
 
 @synthesize _id, created, cleared, clearedAt, orders;
 @synthesize table;
+@synthesize postcode, postcodeDistance, deliveryTime, cookingTime, telephone;
 
 - (id)init {
 	self = [super init];
@@ -28,6 +29,11 @@
 		cleared = false;
 		clearedAt = [NSDate date];
 		orders = [NSArray array];
+		postcode = @"";
+		postcodeDistance = @"";
+		deliveryTime = @"";
+		cookingTime = @"";
+		telephone = @"";
 	}
 	
 	return self;
@@ -42,6 +48,18 @@
 	created = [dateFormat dateFromString:[json objectForKey:@"created"]];
 	cleared = [[json objectForKey:@"cleared"] boolValue];
 	clearedAt = [dateFormat dateFromString:[json objectForKey:@"clearedAt"]];
+	
+	postcode = [json objectForKey:@"postcode"];
+	postcodeDistance = [json objectForKey:@"postcodeDistance"];
+	deliveryTime = [json objectForKeyedSubscript:@"deliveryTime"];
+	cookingTime = [json objectForKeyedSubscript:@"cookingTime"];
+	telephone = [json objectForKeyedSubscript:@"telephone"];
+	
+	if (postcode == nil) postcode = @"";
+	if (postcodeDistance == nil) postcodeDistance = @"";
+	if (deliveryTime == nil) deliveryTime = @"";
+	if (cookingTime == nil) cookingTime = @"";
+	if (telephone == nil) telephone = @"";
 	
 	NSMutableArray *_orders = [[NSMutableArray alloc] init];
 	for (NSDictionary *o in [json objectForKey:@"orders"]) {
@@ -100,7 +118,12 @@
 																			@"cleared": [NSNumber numberWithBool:cleared],
 																			@"clearedAt": [NSNumber numberWithInt:[clearedAt timeIntervalSince1970]],
 																			@"table": tid,
-																			@"orders": orderIds
+																			@"orders": orderIds,
+																			@"postcode": postcode,
+																			@"postcodeDistance": postcodeDistance,
+																			@"deliveryTime": deliveryTime,
+																			@"cookingTime": cookingTime,
+																			@"telephone": telephone
 																			}];
 }
 

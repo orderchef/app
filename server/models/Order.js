@@ -34,16 +34,12 @@ var scheme = schema({
 	},
 	printedAt: {
 		type: Date
-	},
-	postcode: String,
-	postcodeDistance: String
+	}
 })
 
 scheme.methods.update = function (data) {
 	this.notes = data.notes;
 	this.items = [];
-	this.postcode = data.postcode;
-	this.postcodeDistance = data.postcodeDistance;
 	
 	for (var i = 0; i < data.items.length; i++) {
 		var it = data.items[i];
@@ -111,17 +107,10 @@ scheme.methods.getOrderData = function (printer, opts) {
 		}
 	}
 	
-	var postcode = "";
-	if (self.postcode && self.postcode.length > 0) {
-		postcode += " Address: " + self.postcode + "\n";
-		postcode += " Distance: "+self.postcodeDistance+"\n";
-	}
-	
 	return {
 		printedData: printedData,
 		data: orderedString,
-		total: total,
-		postcode: postcode
+		total: total
 	}
 }
 
@@ -164,15 +153,26 @@ scheme.methods.print = function (printer, data) {
 	if (self.notes.length == 0) {
 		notes = "";
 	}
+
+	var cookingTime = "";
+	if (data.cookingTime.length > 0) {
+		cookingTime = " Cooking Time: " + data.cookingTime;
+	}
+	var telephone = "";
+	if (data.telephone.length > 0) {
+		telephone = " Telephone: " + data.telephone + "\n";
+	}
 	
 	var output = "\
+\n\n\n\n\
  Order #" + data.orderNumber + "\n\
  " + table +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
 Ordered Items:\n" + orderedString + "\n\
 " + notes + "\
-"+ totalString + "\
+" + totalString + "\
+" + cookingTime + "\
 \n";
 	
 	winston.info(output);

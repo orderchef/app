@@ -5,36 +5,48 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>186725C4-DCA9-4313-BB32-F1CDE967367D</string>
+	<string>11720726-9EF9-4C20-94A7-DDDD65E05D2D</string>
 	<key>IDESourceControlProjectName</key>
 	<string>OrderChef</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>969D874A-7835-4B07-A5EC-959E6E856D97</key>
-		<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+		<key>085A9A72-411D-4211-8757-66AD573787B2</key>
+		<string>git:matej/orderchef.git</string>
+		<key>622FBA37-C4D2-4DFC-B27E-6249218A82E6</key>
+		<string>ssh://github.com/matejkramny/LTHPasscodeViewController.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>OrderChef.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>969D874A-7835-4B07-A5EC-959E6E856D97</key>
+		<key>085A9A72-411D-4211-8757-66AD573787B2</key>
 		<string>..</string>
+		<key>622FBA37-C4D2-4DFC-B27E-6249218A82E6</key>
+		<string>../iOrder/Passcode</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+	<string>git:matej/orderchef.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>969D874A-7835-4B07-A5EC-959E6E856D97</string>
+	<string>085A9A72-411D-4211-8757-66AD573787B2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>969D874A-7835-4B07-A5EC-959E6E856D97</string>
+			<string>085A9A72-411D-4211-8757-66AD573787B2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>iOrder</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>622FBA37-C4D2-4DFC-B27E-6249218A82E6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Passcode</string>
 		</dict>
 	</array>
 </dict>
