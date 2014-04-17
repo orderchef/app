@@ -28,6 +28,7 @@
 	UITapGestureRecognizer *dismissCookingRecogniser;
 	UITapGestureRecognizer *dismissDeliveryRecogniser;
 	UITapGestureRecognizer *dismissTelephoneRecogniser;
+	UITapGestureRecognizer *dismissCustomerNameRecogniser;
 	
 	UITapGestureRecognizer *tapToCancelPostcode;
 	CLLocationManager *locationManager;
@@ -123,6 +124,9 @@
 	if (table.delivery) {
 		return 4;
 	}
+	if (table.takeaway) {
+		return 3;
+	}
 	
     return 2;
 }
@@ -141,10 +145,14 @@
 		return 2;
 	}
 	
+	if (section == 2 && table.takeaway) {
+		return 2;
+	}
+	
 	if (section == 2) {
 		return 1;
 	} if (section == 3) {
-		return 3;
+		return 4;
 	}
 	
     return 0;
@@ -171,7 +179,7 @@
 	UITableViewCell *cell;
 	if (indexPath.section == 2 || indexPath.section == 3) {
 		NSString *identifier = @"postcode";
-		if (indexPath.row == 0 && indexPath.section == 2) {
+		if ((!table.takeaway && indexPath.section == 2) || (table.takeaway && indexPath.row == 0) || (indexPath.section == 3 && indexPath.row == 0)) {
 			identifier = @"text";
 		}
 		
@@ -214,7 +222,7 @@
 			cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		}
 		cell.detailTextLabel.text = nil;
-	} else if (indexPath.section == 2) {
+	} else if (indexPath.section == 2 && table.delivery) {
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -226,7 +234,7 @@
 		[field setPlaceholder:@"Address for Delivery"];
 		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
 		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
-	} else if (indexPath.section == 3) {
+	} else if (indexPath.section == 3 || (indexPath.section == 2 && table.takeaway)) {
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -235,24 +243,34 @@
 		[field setDelegate:self];
 		
 		if (indexPath.row == 0) {
+			[field setText:group.customerName];
+			[field setPlaceholder:@"Customer Name"];
+			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
+			[field setKeyboardType:UIKeyboardTypeDefault];
+			[field addTarget:self action:@selector(dismissCustomerName:) forControlEvents:UIControlEventEditingDidEnd];
+			[field addTarget:self action:@selector(beganCustomerName:) forControlEvents:UIControlEventEditingDidBegin];
+		} else if (indexPath.row == 1) {
 			[[(TextFieldCell *)cell label] setText:@"Telephone:"];
 			[field setText:group.telephone];
-			[field setPlaceholder:@"07955522239"];
+			[field setPlaceholder:@"Number"];
 			[field setClearButtonMode:UITextFieldViewModeNever];
+			[field setKeyboardType:UIKeyboardTypePhonePad];
 			[field addTarget:self action:@selector(dismissTelephone:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganTelephone:) forControlEvents:UIControlEventEditingDidBegin];
-		} else if (indexPath.row == 1) {
+		} else if (indexPath.row == 2) {
 			[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
 			[field setText:group.deliveryTime];
 			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
 			[field setPlaceholder:@"7:40 pm (time)"];
+			[field setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
 			[field addTarget:self action:@selector(dismissDeliveryTime:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganDeliveryTime:) forControlEvents:UIControlEventEditingDidBegin];
-		} else if (indexPath.row == 2) {
+		} else if (indexPath.row == 3) {
 			[[(TextFieldCell *)cell label] setText:@"Start Cooking At:"];
 			[field setText:group.cookingTime];
 			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
 			[field setPlaceholder:@"7:10 pm (time)"];
+			[field setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
 			[field addTarget:self action:@selector(dismissCookingTime:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganCookingTime:) forControlEvents:UIControlEventEditingDidBegin];
 		}
@@ -303,8 +321,11 @@
 	if (section == 0) {
 		return @"Orders";
 	}
-	if (section == 2) {
+	if (section == 2 && table.delivery) {
 		return @"Delivery Information";
+	}
+	if (section == 2 && table.takeaway) {
+		return @"Customer Details";
 	}
 	
 	return nil;
@@ -385,7 +406,7 @@
 	[cell.textField resignFirstResponder];
 	group.postcode = cell.textField.text;
 	
-	if (group.postcode) {
+	if (group.postcode.length > 0) {
 		tapToCancelPostcode = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPostcodeLookup:)];
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Getting Current Location" detail:@"Tap to Cancel" hideAfter:0 showAnimated:YES hideAnimated:NO hide:NO tapRecognizer:tapToCancelPostcode toView:self.navigationController.view];
 		
@@ -394,6 +415,12 @@
 		locationManager.distanceFilter = kCLDistanceFilterNone;
 		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
 		[locationManager startUpdatingLocation];
+	} else {
+		group.postcode = @"";
+		group.postcodeDistance = @"";
+		[group save];
+		
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 
@@ -449,7 +476,7 @@
 	} @catch (NSException *e) {}
 	dismissCookingRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:3]];
 	[cell.textField resignFirstResponder];
 	group.cookingTime = cell.textField.text;
 	
@@ -470,7 +497,7 @@
 	} @catch (NSException *e) {}
 	dismissDeliveryRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3]];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
 	[cell.textField resignFirstResponder];
 	group.deliveryTime = cell.textField.text;
 	
@@ -491,9 +518,42 @@
 	} @catch (NSException *e) {}
 	dismissTelephoneRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+	int section = 3;
+	if (table.takeaway) {
+		section = 2;
+	}
+	
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:section];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 	[cell.textField resignFirstResponder];
 	group.telephone = cell.textField.text;
+	
+	[group save];
+}
+
+#pragma mark Cusotmer Name
+
+- (void)beganCustomerName:(id)sender {
+	dismissCustomerNameRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissCustomerName:)];
+	[dismissCustomerNameRecogniser setCancelsTouchesInView:YES];
+	[self.tableView addGestureRecognizer:dismissCustomerNameRecogniser];
+}
+
+- (void)dismissCustomerName:(id)sender {
+	@try {
+		[self.tableView removeGestureRecognizer:dismissCustomerNameRecogniser];
+	} @catch (NSException *e) {}
+	dismissCustomerNameRecogniser = nil;
+	
+	int section = 3;
+	if (table.takeaway) {
+		section = 2;
+	}
+	
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+	[cell.textField resignFirstResponder];
+	group.customerName = cell.textField.text;
 	
 	[group save];
 }

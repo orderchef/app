@@ -36,7 +36,8 @@ var scheme = schema({
 	postcodeDistance: String,
 	deliveryTime: String,
 	cookingTime: String,
-	telephone: String
+	telephone: String,
+	customerName: String
 })
 
 scheme.methods.update = function (data) {
@@ -51,7 +52,8 @@ scheme.methods.update = function (data) {
 	this.deliveryTime = data.deliveryTime;
 	this.cookingTime = data.cookingTime;
 	this.telephone = data.telephone;
-	
+	this.customerName = data.customerName;
+
 	this.orders = [];
 	for (var i = 0; i < data.orders.length; i++) {
 		this.orders.push(mongoose.Types.ObjectId(data.orders[i]));
@@ -81,6 +83,10 @@ scheme.methods.print = function (printer, data) {
 	var deliveryTime = "";
 	if (self.deliveryTime && self.deliveryTime.length > 0) {
 		deliveryTime = " Delivery Time: " + self.deliveryTime + "\n";
+	}
+	var customerName = "";
+	if (self.customerName && self.customerName.length > 0) {
+		customerName = " Customer: " + self.customerName + "\n";
 	}
 	var telephone = "";
 	if (self.telephone && self.telephone.length > 0) {
@@ -146,6 +152,7 @@ scheme.methods.print = function (printer, data) {
 " + totalString + "\
 " + postcode + "\
 " + deliveryTime + "\
+" + customerName + "\
 " + telephone + "\
 \n";
 		

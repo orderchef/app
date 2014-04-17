@@ -158,6 +158,10 @@ scheme.methods.print = function (printer, data) {
 	if (data.cookingTime.length > 0) {
 		cookingTime = " Cooking Time: " + data.cookingTime;
 	}
+	var customerName = "";
+	if (data.customerName && data.customerName.length > 0) {
+		customerName = " Customer: " + data.customerName + "\n";
+	}
 	var telephone = "";
 	if (data.telephone.length > 0) {
 		telephone = " Telephone: " + data.telephone + "\n";
@@ -173,6 +177,8 @@ Ordered Items:\n" + orderedString + "\n\
 " + notes + "\
 " + totalString + "\
 " + cookingTime + "\
+" + customerName + "\
+" + telephone + "\
 \n";
 	
 	winston.info(output);

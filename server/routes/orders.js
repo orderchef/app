@@ -251,12 +251,17 @@ exports.router = function (socket) {
 			orders: {
 				$in: [ order ]
 			}
-		}).select('orderNumber cookingTime telephone').exec(function(err, ordergroup) {
+		}).select('orderNumber cookingTime telephone customerName').exec(function(err, ordergroup) {
 			if (err) throw err;
+
+			if (!ordergroup) {
+				return;
+			}
 
 			data.orderNumber = ordergroup.orderNumber;
 			data.cookingTime = ordergroup.cookingTime;
 			data.telephone = ordergroup.telephone;
+			data.customerName = ordergroup.customerName;
 
 			models.Order.findById(order).populate('items.item').exec(function(err, order) {
 				if (err || !order) {

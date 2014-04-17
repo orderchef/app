@@ -17,7 +17,7 @@
 
 @synthesize _id, created, cleared, clearedAt, orders;
 @synthesize table;
-@synthesize postcode, postcodeDistance, deliveryTime, cookingTime, telephone;
+@synthesize postcode, postcodeDistance, deliveryTime, cookingTime, telephone, customerName;
 
 - (id)init {
 	self = [super init];
@@ -34,6 +34,7 @@
 		deliveryTime = @"";
 		cookingTime = @"";
 		telephone = @"";
+		customerName = @"";
 	}
 	
 	return self;
@@ -54,12 +55,14 @@
 	deliveryTime = [json objectForKeyedSubscript:@"deliveryTime"];
 	cookingTime = [json objectForKeyedSubscript:@"cookingTime"];
 	telephone = [json objectForKeyedSubscript:@"telephone"];
+	customerName = [json objectForKeyedSubscript:@"customerName"];
 	
 	if (postcode == nil) postcode = @"";
 	if (postcodeDistance == nil) postcodeDistance = @"";
 	if (deliveryTime == nil) deliveryTime = @"";
 	if (cookingTime == nil) cookingTime = @"";
 	if (telephone == nil) telephone = @"";
+	if (customerName == nil) customerName = @"";
 	
 	NSMutableArray *_orders = [[NSMutableArray alloc] init];
 	for (NSDictionary *o in [json objectForKey:@"orders"]) {
@@ -123,7 +126,8 @@
 																			@"postcodeDistance": postcodeDistance,
 																			@"deliveryTime": deliveryTime,
 																			@"cookingTime": cookingTime,
-																			@"telephone": telephone
+																			@"telephone": telephone,
+																			@"customerName": customerName
 																			}];
 }
 

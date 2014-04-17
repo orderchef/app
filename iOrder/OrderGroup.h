@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *deliveryTime;
 @property (nonatomic, strong) NSString *cookingTime;
 @property (nonatomic, strong) NSString *telephone;
+@property (nonatomic, strong) NSString *customerName;
 
 @property (nonatomic, strong) Table *table;
 
