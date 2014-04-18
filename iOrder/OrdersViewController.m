@@ -113,8 +113,6 @@
 	[super viewWillAppear:animated];
 	
 	[self.tableView reloadData];
-	if (table)
-		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -140,7 +138,7 @@
 			}
 		}
 	}
-	if ([keyPath isEqualToString:@"activeTable"]) {
+	if ([keyPath isEqualToString:@"activeTable"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.table = [Storage getStorage].activeTable;
 		self.group = table.group;
 		
