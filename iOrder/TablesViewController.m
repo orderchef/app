@@ -55,6 +55,14 @@
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
 	}
 	
+	[self.navigationItem setTitle:@"Tables"];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if ([tables count] > 0) {
+			
+		}
+	}
+	
     [self reloadData];
 }
 
@@ -100,6 +108,21 @@
         if ([self.refreshControl isRefreshing]) {
             [self.refreshControl endRefreshing];
         }
+		
+		Table *activeTable = [Storage getStorage].activeTable;
+		if (activeTable) {
+			for (int section = 0; section < tables.count; section++) {
+				NSArray *rows = [tables objectAtIndex:section];
+				for (int row = 0; row < [rows count]; row++) {
+					Table *table = [rows objectAtIndex:row];
+					
+					if ([table._id isEqualToString:activeTable._id]) {
+						[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+						break;
+					}
+				}
+			}
+		}
     } else if ([keyPath isEqualToString:@"employee"]) {
         Storage *storage = [Storage getStorage];
         [self setEditing:NO animated:NO];
@@ -256,7 +279,13 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 		return;
 	}
 	
-	[self performSegueWithIdentifier:@"openBasket" sender:[[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+	Table *table = [[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		[[Storage getStorage] setActiveTable:table];
+		return;
+	}
+	
+	[self performSegueWithIdentifier:@"openBasket" sender:table];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

@@ -11,6 +11,7 @@
 
 @class SocketIOPacket;
 @class ItemCategory;
+@class Table;
 
 @protocol NetworkLoadingProtocol <NSObject>
 
@@ -28,6 +29,8 @@
 @property (nonatomic, strong) NSMutableArray *staff;
 @property (nonatomic, strong) Employee *employee;
 @property (nonatomic, weak) Employee *managedEmployee;
+
+@property (nonatomic, strong) Table *activeTable;
 
 - (void)loadData;
 

@@ -44,6 +44,10 @@
 {
     [super viewDidLoad];
 	
+	[self onLoad];
+}
+
+- (void)onLoad {
 	if (table) {
 		self.navigationItem.title = table.name;
 		[self setRefreshControl:[[UIRefreshControl alloc] init]];
@@ -56,10 +60,19 @@
 	[printItem setTitleTextAttributes:@{
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 										} forState:UIControlStateNormal];
-    [self.navigationItem setRightBarButtonItem:printItem animated:YES];
+    [self.navigationItem setRightBarButtonItem:printItem animated:NO];
 	
 	[self refreshOrders:nil];
     [self reloadData];
+	
+	@try {
+        [table removeObserver:self forKeyPath:@"group" context:nil];
+    }
+    @catch (NSException *exception) {}
+	
+	if (table) {
+		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -91,7 +104,9 @@
 	[super viewWillAppear:animated];
 	
 	[self.tableView reloadData];
-	[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	if (table)
+		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	[[Storage getStorage] addObserver:self forKeyPath:@"activeTable" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -101,6 +116,10 @@
         [table removeObserver:self forKeyPath:@"group" context:nil];
     }
     @catch (NSException *exception) {}
+	@try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"activeTable" context:nil];
+    }
+    @catch (NSException *exception) {}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -108,6 +127,12 @@
 		[self reloadData];
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
+	}
+	if ([keyPath isEqualToString:@"activeTable"]) {
+		self.table = [Storage getStorage].activeTable;
+		self.group = table.group;
+		
+		[self onLoad];
 	}
 }
 

@@ -23,6 +23,8 @@
 	[self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{
 																	 NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 																	 } forState:UIControlStateNormal];
+	
+	[[self navigationItem] setTitle:@"Manager"];
 }
 
 - (void)dismissView:(id)sender {
@@ -80,24 +82,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *segue = @"";
     if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
-			[self performSegueWithIdentifier:@"Reports" sender:nil];
+			segue = @"Reports";
 		} else if (indexPath.row == 1) {
-			[self performSegueWithIdentifier:@"Staff" sender:nil];
+			segue = @"Staff";
 		}
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
-			[self performSegueWithIdentifier:@"Tables" sender:nil];
+			segue = @"Tables";
 		} else if (indexPath.row == 1) {
-			[self performSegueWithIdentifier:@"Items" sender:nil];
+			segue = @"Items";
 		} else if (indexPath.row == 2) {
-			[self performSegueWithIdentifier:@"Categories" sender:nil];
+			segue = @"Categories";
 		} else if (indexPath.row == 3) {
-			[self performSegueWithIdentifier:@"Discounts" sender:nil];
+			segue = @"Discounts";
 		}
 	} else if (indexPath.section == 2) {
-		[self performSegueWithIdentifier:@"about" sender:nil];
+		segue = @"about";
 	}
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
