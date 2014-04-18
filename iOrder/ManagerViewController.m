@@ -102,6 +102,8 @@
 	} else if (indexPath.section == 2) {
 		segue = @"about";
 	}
+	
+	[self performSegueWithIdentifier:segue sender:nil];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

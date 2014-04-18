@@ -20,6 +20,7 @@
 #import "TextFieldCell.h"
 #import <CoreLocation/CoreLocation.h>
 #import <AFNetworking/AFNetworking.h>
+#import "TablesViewController.h"
 
 @interface OrdersViewController () {
 	UIActionSheet *printAndClearSheet;
@@ -45,6 +46,14 @@
     [super viewDidLoad];
 	
 	[self onLoad];
+	[[Storage getStorage] addObserver:self forKeyPath:@"activeTable" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)dealloc {
+	@try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"activeTable" context:nil];
+    }
+    @catch (NSException *exception) {}
 }
 
 - (void)onLoad {
@@ -106,7 +115,6 @@
 	[self.tableView reloadData];
 	if (table)
 		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
-	[[Storage getStorage] addObserver:self forKeyPath:@"activeTable" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -116,10 +124,6 @@
         [table removeObserver:self forKeyPath:@"group" context:nil];
     }
     @catch (NSException *exception) {}
-	@try {
-        [[Storage getStorage] removeObserver:self forKeyPath:@"activeTable" context:nil];
-    }
-    @catch (NSException *exception) {}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -127,6 +131,14 @@
 		[self reloadData];
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navVC = [[[self splitViewController] viewControllers] objectAtIndex:0];
+			if (navVC) {
+				TablesViewController *tablesVC = [[navVC viewControllers] objectAtIndex:0];
+				[tablesVC reloadData];
+			}
+		}
 	}
 	if ([keyPath isEqualToString:@"activeTable"]) {
 		self.table = [Storage getStorage].activeTable;
@@ -253,6 +265,8 @@
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 		[field setReturnKeyType:UIReturnKeyDone];
+		
+		[field removeTarget:nil action:nil forControlEvents:UIControlEventAllEditingEvents];
 		[field setDelegate:self];
 		
 		[field setText:group.postcode];
@@ -266,6 +280,8 @@
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 		[field setReturnKeyType:UIReturnKeyDone];
 		[field setDelegate:self];
+		
+		[field removeTarget:nil action:nil forControlEvents:UIControlEventAllEditingEvents];
 		
 		if (indexPath.row == 0) {
 			[field setText:group.customerName];

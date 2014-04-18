@@ -57,12 +57,6 @@
 	
 	[self.navigationItem setTitle:@"Tables"];
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if ([tables count] > 0) {
-			
-		}
-	}
-	
     [self reloadData];
 }
 
@@ -122,6 +116,11 @@
 					}
 				}
 			}
+		} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			if ([tables count] > 0) {
+				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+				[[Storage getStorage] setActiveTable:[[tables objectAtIndex:0] objectAtIndex:0]];
+			}
 		}
     } else if ([keyPath isEqualToString:@"employee"]) {
         Storage *storage = [Storage getStorage];
@@ -141,6 +140,11 @@
 }
 
 - (void)reloadTables:(id)sender {
+	UINavigationController *navigationController = [[[self splitViewController] viewControllers] objectAtIndex:1];
+	if (navigationController) {
+		[navigationController popToRootViewControllerAnimated:YES];
+	}
+	
     [[[Connection getConnection] socket] sendEvent:@"get.tables" withData:nil];
     [self.refreshControl beginRefreshing];
 }
@@ -281,7 +285,13 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	
 	Table *table = [[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navigationController = [[[self splitViewController] viewControllers] objectAtIndex:1];
+		if (navigationController) {
+			[navigationController popToRootViewControllerAnimated:YES];
+		}
+		
 		[[Storage getStorage] setActiveTable:table];
+		
 		return;
 	}
 	

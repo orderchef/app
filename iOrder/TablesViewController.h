@@ -12,4 +12,6 @@
 
 @property (assign) BOOL manageEnabled;
 
+- (void)reloadData;
+
 @end
