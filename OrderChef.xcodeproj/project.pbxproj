@@ -32,6 +32,8 @@
 		4F5BE44D181DD255007EF69F /* TablesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BE44C181DD255007EF69F /* TablesViewController.m */; };
 		4F5C77C51879B99E00ED9A80 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */; };
 		4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5FD2A718BE76B500A5059B /* DiscountViewController.m */; };
+		4F65EE4C19007F4D004C3096 /* iPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F65EE4B19007F4D004C3096 /* iPadStoryboard.storyboard */; };
+		4F65EE52190087EF004C3096 /* SplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F65EE51190087EF004C3096 /* SplitViewController.m */; };
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7F353518E18D740090FF44 /* SubMenuViewController.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
@@ -124,6 +126,9 @@
 		4F5C77C41879B99E00ED9A80 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4F5FD2A618BE76B500A5059B /* DiscountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscountViewController.h; sourceTree = "<group>"; };
 		4F5FD2A718BE76B500A5059B /* DiscountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscountViewController.m; sourceTree = "<group>"; };
+		4F65EE4B19007F4D004C3096 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
+		4F65EE50190087EF004C3096 /* SplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewController.h; sourceTree = "<group>"; };
+		4F65EE51190087EF004C3096 /* SplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitViewController.m; sourceTree = "<group>"; };
 		4F6F7863181F1BB10042BC47 /* TextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		4F6F7864181F1BB10042BC47 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		4F7F353418E18D740090FF44 /* SubMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubMenuViewController.h; sourceTree = "<group>"; };
@@ -377,6 +382,9 @@
 				4FD939371865F69300A2042F /* fontawesome-webfont.ttf */,
 				4FF0F3AF181DC6DE00447906 /* AppDelegate.h */,
 				4FF0F3B0181DC6DE00447906 /* AppDelegate.m */,
+				4F65EE50190087EF004C3096 /* SplitViewController.h */,
+				4F65EE51190087EF004C3096 /* SplitViewController.m */,
+				4F65EE4B19007F4D004C3096 /* iPadStoryboard.storyboard */,
 				4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */,
 				4F3628C61856527F00971505 /* Utility Classes */,
 				4F3628C41856526800971505 /* Manager VCs */,
@@ -526,6 +534,7 @@
 				4FD939381865F69300A2042F /* fontawesome-webfont.ttf in Resources */,
 				4FF0F3B6181DC6DE00447906 /* Images.xcassets in Resources */,
 				4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */,
+				4F65EE4C19007F4D004C3096 /* iPadStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +605,7 @@
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
+				4F65EE52190087EF004C3096 /* SplitViewController.m in Sources */,
 				4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */,

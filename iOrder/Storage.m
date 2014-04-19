@@ -27,6 +27,7 @@
 
 @synthesize tables, items, categories, staff, employee;
 @synthesize managedEmployee;
+@synthesize activeTable;
 
 + (Storage *)getStorage {
     static Storage *storage;
@@ -102,6 +103,14 @@
         NSString *name = [packet name];
         if ([name isEqualToString:@"get.tables"]) {
             [self setTables:[self loopAndLoad:[packet args] object:[Table class]]];
+			if (self.activeTable) {
+				for (Table *t in [self tables]) {
+					if ([t._id isEqualToString:activeTable._id]) {
+						[self setActiveTable:t];
+						break;
+					}
+				}
+			}
         } else if ([name isEqualToString:@"get.categories"]) {
 			[self setCategories:[self loopAndLoad:[packet args] object:[ItemCategory class]]];
             //[self updateCategories:packet.args];

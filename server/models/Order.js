@@ -117,7 +117,7 @@ scheme.methods.getOrderData = function (printer, opts) {
 scheme.methods.print = function (printer, data) {
 	var self = this;
 	
-	var table = data.table;
+	var table = data.table.name;
 	var employee = data.employee;
 	
 	const kChars = printer.characters;
@@ -156,7 +156,7 @@ scheme.methods.print = function (printer, data) {
 
 	var cookingTime = "";
 	if (data.cookingTime.length > 0) {
-		cookingTime = " Cooking Time: " + data.cookingTime;
+		cookingTime = " Cooking Time: " + data.cookingTime + "\n";
 	}
 	var customerName = "";
 	if (data.customerName && data.customerName.length > 0) {
@@ -165,6 +165,11 @@ scheme.methods.print = function (printer, data) {
 	var telephone = "";
 	if (data.telephone.length > 0) {
 		telephone = " Telephone: " + data.telephone + "\n";
+	}
+	var deliveryTime = "";
+	if (data.table.takeaway && data.deliveryTime.length > 0) {
+		deliveryTime += " Takeaway Time: ";
+		deliveryTime += data.deliveryTime + "\n";
 	}
 	
 	var output = "\
@@ -179,6 +184,7 @@ Ordered Items:\n" + orderedString + "\n\
 " + cookingTime + "\
 " + customerName + "\
 " + telephone + "\
+" + deliveryTime + "\
 \n";
 	
 	winston.info(output);

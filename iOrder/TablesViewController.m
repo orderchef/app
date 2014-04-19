@@ -55,6 +55,8 @@
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:faProperties forState:UIControlStateNormal];
 	}
 	
+	[self.navigationItem setTitle:@"Tables"];
+	
     [self reloadData];
 }
 
@@ -100,6 +102,26 @@
         if ([self.refreshControl isRefreshing]) {
             [self.refreshControl endRefreshing];
         }
+		
+		Table *activeTable = [Storage getStorage].activeTable;
+		if (activeTable && !self.manageEnabled) {
+			for (int section = 0; section < tables.count; section++) {
+				NSArray *rows = [tables objectAtIndex:section];
+				for (int row = 0; row < [rows count]; row++) {
+					Table *table = [rows objectAtIndex:row];
+					
+					if ([table._id isEqualToString:activeTable._id]) {
+						[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+						break;
+					}
+				}
+			}
+		} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.manageEnabled) {
+			if ([tables count] > 0) {
+				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+				[[Storage getStorage] setActiveTable:[[tables objectAtIndex:0] objectAtIndex:0]];
+			}
+		}
     } else if ([keyPath isEqualToString:@"employee"]) {
         Storage *storage = [Storage getStorage];
         [self setEditing:NO animated:NO];
@@ -118,6 +140,11 @@
 }
 
 - (void)reloadTables:(id)sender {
+	UINavigationController *navigationController = [[[self splitViewController] viewControllers] objectAtIndex:1];
+	if (navigationController) {
+		[navigationController popToRootViewControllerAnimated:YES];
+	}
+	
     [[[Connection getConnection] socket] sendEvent:@"get.tables" withData:nil];
     [self.refreshControl beginRefreshing];
 }
@@ -159,6 +186,19 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	titles = tits;
 	
     [self.tableView reloadData];
+	
+	if (![Storage getStorage].activeTable || self.manageEnabled) return;
+	
+	// Select active table
+	for (int section = 0; section < tables.count; section++) {
+		for (int row = 0; row < [[tables objectAtIndex:section] count]; row++) {
+			Table *t = [[tables objectAtIndex:section] objectAtIndex:row];
+			if ([t._id isEqualToString:[[Storage getStorage] activeTable]._id]) {
+				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:YES scrollPosition:UITableViewScrollPositionNone];
+				break;
+			}
+		}
+	}
 }
 
 - (void)addTable:(id)sender {
@@ -256,7 +296,19 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 		return;
 	}
 	
-	[self performSegueWithIdentifier:@"openBasket" sender:[[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+	Table *table = [[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navigationController = [[[self splitViewController] viewControllers] objectAtIndex:1];
+		if (navigationController) {
+			[navigationController popToRootViewControllerAnimated:YES];
+		}
+		
+		[[Storage getStorage] setActiveTable:table];
+		
+		return;
+	}
+	
+	[self performSegueWithIdentifier:@"openBasket" sender:table];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

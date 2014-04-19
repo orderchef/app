@@ -82,7 +82,13 @@ scheme.methods.print = function (printer, data) {
 	}
 	var deliveryTime = "";
 	if (self.deliveryTime && self.deliveryTime.length > 0) {
-		deliveryTime = " Delivery Time: " + self.deliveryTime + "\n";
+		if (data.table.takeaway) {
+			deliveryTime += " Takeaway Time: ";
+		} else {
+			deliveryTime += " Delivery Time: ";
+		}
+
+		deliveryTime += self.deliveryTime + "\n";
 	}
 	var customerName = "";
 	if (self.customerName && self.customerName.length > 0) {
@@ -120,7 +126,7 @@ scheme.methods.print = function (printer, data) {
 	items = _items;
 	_items = null;
 
-	var tableId = mongoose.Types.ObjectId(data.tableid);
+	var tableId = data.table._id;
 	Discount.getDiscounts(tableId, categories, function(discounts) {
 		// Fool the order object with a custom context (this)
 		var ctx = {

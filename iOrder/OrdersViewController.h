@@ -18,4 +18,6 @@
 @property (nonatomic, strong) Table *table;
 @property (nonatomic, weak) OrderGroup *group;
 
+- (void)onLoad;
+
 @end

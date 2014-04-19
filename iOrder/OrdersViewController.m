@@ -20,6 +20,7 @@
 #import "TextFieldCell.h"
 #import <CoreLocation/CoreLocation.h>
 #import <AFNetworking/AFNetworking.h>
+#import "TablesViewController.h"
 
 @interface OrdersViewController () {
 	UIActionSheet *printAndClearSheet;
@@ -44,6 +45,22 @@
 {
     [super viewDidLoad];
 	
+	[self onLoad];
+	[[Storage getStorage] addObserver:self forKeyPath:@"activeTable" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)dealloc {
+	@try {
+        [[Storage getStorage] removeObserver:self forKeyPath:@"activeTable" context:nil];
+    }
+    @catch (NSException *exception) {}
+	@try {
+        [table removeObserver:self forKeyPath:@"group" context:nil];
+    }
+    @catch (NSException *exception) {}
+}
+
+- (void)onLoad {
 	if (table) {
 		self.navigationItem.title = table.name;
 		[self setRefreshControl:[[UIRefreshControl alloc] init]];
@@ -56,10 +73,19 @@
 	[printItem setTitleTextAttributes:@{
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 										} forState:UIControlStateNormal];
-    [self.navigationItem setRightBarButtonItem:printItem animated:YES];
+    [self.navigationItem setRightBarButtonItem:printItem animated:NO];
 	
 	[self refreshOrders:nil];
     [self reloadData];
+	
+	@try {
+        [table removeObserver:self forKeyPath:@"group" context:nil];
+    }
+    @catch (NSException *exception) {}
+	
+	if (table) {
+		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -91,16 +117,10 @@
 	[super viewWillAppear:animated];
 	
 	[self.tableView reloadData];
-	[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	
-    @try {
-        [table removeObserver:self forKeyPath:@"group" context:nil];
-    }
-    @catch (NSException *exception) {}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -108,6 +128,20 @@
 		[self reloadData];
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navVC = [[[self splitViewController] viewControllers] objectAtIndex:0];
+			if (navVC) {
+				TablesViewController *tablesVC = [[navVC viewControllers] objectAtIndex:0];
+				[tablesVC reloadData];
+			}
+		}
+	}
+	if ([keyPath isEqualToString:@"activeTable"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.table = [Storage getStorage].activeTable;
+		self.group = table.group;
+		
+		[self onLoad];
 	}
 }
 
@@ -146,7 +180,7 @@
 	}
 	
 	if (section == 2 && table.takeaway) {
-		return 2;
+		return 3;
 	}
 	
 	if (section == 2) {
@@ -228,6 +262,8 @@
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 		[field setReturnKeyType:UIReturnKeyDone];
+		
+		[field removeTarget:nil action:nil forControlEvents:UIControlEventAllEditingEvents];
 		[field setDelegate:self];
 		
 		[field setText:group.postcode];
@@ -241,6 +277,8 @@
 		[field setAutocorrectionType:UITextAutocorrectionTypeNo];
 		[field setReturnKeyType:UIReturnKeyDone];
 		[field setDelegate:self];
+		
+		[field removeTarget:nil action:nil forControlEvents:UIControlEventAllEditingEvents];
 		
 		if (indexPath.row == 0) {
 			[field setText:group.customerName];
@@ -258,7 +296,10 @@
 			[field addTarget:self action:@selector(dismissTelephone:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganTelephone:) forControlEvents:UIControlEventEditingDidBegin];
 		} else if (indexPath.row == 2) {
-			[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
+			if (table.takeaway)
+				[[(TextFieldCell *)cell label] setText:@"Takeaway Time:"];
+			else
+				[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
 			[field setText:group.deliveryTime];
 			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
 			[field setPlaceholder:@"7:40 pm (time)"];
@@ -497,7 +538,11 @@
 	} @catch (NSException *e) {}
 	dismissDeliveryRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:3];
+	if (table.takeaway) {
+		indexPath = [NSIndexPath indexPathForRow:2 inSection:2];
+	}
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 	[cell.textField resignFirstResponder];
 	group.deliveryTime = cell.textField.text;
 	
