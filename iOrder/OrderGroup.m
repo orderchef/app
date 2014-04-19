@@ -115,6 +115,13 @@
 		[orderIds addObject:o._id];
 	}
 	
+	if (postcode == nil) postcode = @"";
+	if (postcodeDistance == nil) postcodeDistance = @"";
+	if (deliveryTime == nil) deliveryTime = @"";
+	if (cookingTime == nil) cookingTime = @"";
+	if (telephone == nil) telephone = @"";
+	if (customerName == nil) customerName = @"";
+	
 	[[[Connection getConnection] socket] sendEvent:@"save.group" withData:@{
 																			@"_id": _id,
 																			@"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
@@ -132,10 +139,14 @@
 }
 
 - (void)printBill {
+	NSString *employeeName = [Storage getStorage].employee.name;
+	if (!employeeName) {
+		employeeName = @"";
+	}
+	
 	[[Connection getConnection].socket sendEvent:@"print.group" withData:@{
 																		   @"group": _id,
-																		   @"tableid": self.table._id,
-																		   @"employee": [Storage getStorage].employee.name
+																		   @"employee": employeeName
 																		   }];
 }
 

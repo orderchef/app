@@ -125,32 +125,40 @@ exports.router = function (socket) {
 			
 			if (found === false) {
 				models.Item.findById(item, function(err, item) {
-					models.Discount.getDiscounts(mongoose.Types.ObjectId(data.tableid), [item.category], function(discounts) {
-						var price = item.price;
+					models.OrderGroup.findOne({
+						orders: {
+							$in: [order._id]
+						}
+					}).select('table').exec(function(err, orderGroup) {
+						if (err) throw err;
 						
-						var ds = []
-						for (var i = 0; i < discounts.length; i++) {
-							var newPrice = discounts[i].applyDiscount(item.category, price);
-							ds.push({
-								name: discounts[i].name,
-								discount: discounts[i]._id,
-								value: price - newPrice
-							})
+						models.Discount.getDiscounts(orderGroup.table, [item.category], function(discounts) {
+							var price = item.price;
 							
-							price = newPrice;
-						}
-						
-						found = {
-							item: item,
-							notes: "",
-							quantity: 1,
-							price: price,
-							discounts: ds
-						}
-						order.items.push(found)
-						
-						order.save();
-					});
+							var ds = []
+							for (var i = 0; i < discounts.length; i++) {
+								var newPrice = discounts[i].applyDiscount(item.category, price);
+								ds.push({
+									name: discounts[i].name,
+									discount: discounts[i]._id,
+									value: price - newPrice
+								})
+								
+								price = newPrice;
+							}
+							
+							found = {
+								item: item,
+								notes: "",
+								quantity: 1,
+								price: price,
+								discounts: ds
+							}
+							order.items.push(found)
+							
+							order.save();
+						});
+					})
 				})
 				
 				return;
@@ -220,6 +228,7 @@ exports.router = function (socket) {
 		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
 			
 			data.orderNumber = group.orderNumber;
+			data.table = group.table;
 			
 			async.each(group.orders, function(order, cb) {
 				order.populate('items.item', function() {
@@ -242,7 +251,7 @@ exports.router = function (socket) {
 	
 	socket.on('print.order', function(data) {
 		// Prints order to kitchens --except for receipt printer
-		winston.info("Printing order ;)")
+		winston.info("Printing order ;)");
 		
 		var order = mongoose.Types.ObjectId(data.order);
 		data.orderNumber = 0;
@@ -251,7 +260,7 @@ exports.router = function (socket) {
 			orders: {
 				$in: [ order ]
 			}
-		}).select('orderNumber cookingTime telephone customerName').exec(function(err, ordergroup) {
+		}).populate('table').select('table orderNumber deliveryTime cookingTime telephone customerName').exec(function(err, ordergroup) {
 			if (err) throw err;
 
 			if (!ordergroup) {
@@ -260,8 +269,16 @@ exports.router = function (socket) {
 
 			data.orderNumber = ordergroup.orderNumber;
 			data.cookingTime = ordergroup.cookingTime;
+			data.deliveryTime = ordergroup.deliveryTime;
 			data.telephone = ordergroup.telephone;
 			data.customerName = ordergroup.customerName;
+			data.table = ordergroup.table;
+
+			if (!data.orderNumber) data.orderNumber = 'n/a';
+			if (!data.cookingTime) data.cookingTime = '';
+			if (!data.deliveryTime) data.deliveryTime = '';
+			if (!data.telephone) data.telephone = '';
+			if (!data.customerName) data.customerName = '';
 
 			models.Order.findById(order).populate('items.item').exec(function(err, order) {
 				if (err || !order) {

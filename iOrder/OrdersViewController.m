@@ -54,6 +54,10 @@
         [[Storage getStorage] removeObserver:self forKeyPath:@"activeTable" context:nil];
     }
     @catch (NSException *exception) {}
+	@try {
+        [table removeObserver:self forKeyPath:@"group" context:nil];
+    }
+    @catch (NSException *exception) {}
 }
 
 - (void)onLoad {
@@ -117,11 +121,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	
-    @try {
-        [table removeObserver:self forKeyPath:@"group" context:nil];
-    }
-    @catch (NSException *exception) {}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -181,7 +180,7 @@
 	}
 	
 	if (section == 2 && table.takeaway) {
-		return 2;
+		return 3;
 	}
 	
 	if (section == 2) {
@@ -297,7 +296,10 @@
 			[field addTarget:self action:@selector(dismissTelephone:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganTelephone:) forControlEvents:UIControlEventEditingDidBegin];
 		} else if (indexPath.row == 2) {
-			[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
+			if (table.takeaway)
+				[[(TextFieldCell *)cell label] setText:@"Takeaway Time:"];
+			else
+				[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
 			[field setText:group.deliveryTime];
 			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
 			[field setPlaceholder:@"7:40 pm (time)"];
@@ -536,7 +538,11 @@
 	} @catch (NSException *e) {}
 	dismissDeliveryRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:3];
+	if (table.takeaway) {
+		indexPath = [NSIndexPath indexPathForRow:2 inSection:2];
+	}
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 	[cell.textField resignFirstResponder];
 	group.deliveryTime = cell.textField.text;
 	

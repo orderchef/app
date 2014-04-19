@@ -104,7 +104,7 @@
         }
 		
 		Table *activeTable = [Storage getStorage].activeTable;
-		if (activeTable) {
+		if (activeTable && !self.manageEnabled) {
 			for (int section = 0; section < tables.count; section++) {
 				NSArray *rows = [tables objectAtIndex:section];
 				for (int row = 0; row < [rows count]; row++) {
@@ -116,7 +116,7 @@
 					}
 				}
 			}
-		} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.manageEnabled) {
 			if ([tables count] > 0) {
 				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 				[[Storage getStorage] setActiveTable:[[tables objectAtIndex:0] objectAtIndex:0]];
@@ -186,6 +186,19 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	titles = tits;
 	
     [self.tableView reloadData];
+	
+	if (![Storage getStorage].activeTable || self.manageEnabled) return;
+	
+	// Select active table
+	for (int section = 0; section < tables.count; section++) {
+		for (int row = 0; row < [[tables objectAtIndex:section] count]; row++) {
+			Table *t = [[tables objectAtIndex:section] objectAtIndex:row];
+			if ([t._id isEqualToString:[[Storage getStorage] activeTable]._id]) {
+				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] animated:YES scrollPosition:UITableViewScrollPositionNone];
+				break;
+			}
+		}
+	}
 }
 
 - (void)addTable:(id)sender {

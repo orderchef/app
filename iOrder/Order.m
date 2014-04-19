@@ -86,12 +86,17 @@
 						   }];
 	}
 	
+	NSString *_notes = notes;
+	if (!_notes) {
+		_notes = @"";
+	}
+	
 	NSDictionary *data = @{
 						   @"_id": _id,
 						   @"printed": [NSNumber numberWithBool:printed],
 						   @"printedAt": [NSNumber numberWithInt:[printedAt timeIntervalSince1970]],
 						   @"created": [NSNumber numberWithInt:[created timeIntervalSince1970]],
-						   @"notes": notes,
+						   @"notes": _notes,
 						   @"items": _items
 						   };
 	
@@ -104,8 +109,7 @@
 - (void)addItem:(Item *)item andAcknowledge:(void (^)(id))acknowledge {
 	[[Connection getConnection].socket sendEvent:@"add.order item" withData:@{
 																			  @"order": _id,
-																			  @"item": item._id,
-																			  @"tableid": self.group.table._id
+																			  @"item": item._id
 																			  } andAcknowledge:acknowledge];
 	
 	int found = -1;
@@ -140,11 +144,14 @@
 - (void)print {
 	printed = true;
 	printedAt = [[NSDate alloc] init];
+	NSString *employeeName = [Storage getStorage].employee.name;
+	if (!employeeName) {
+		employeeName = @"";
+	}
+	
 	[[Connection getConnection].socket sendEvent:@"print.order" withData:@{
 																		   @"order": _id,
-																		   @"table": group.table.name,
-																		   @"tableid": group.table._id,
-																		   @"employee": [Storage getStorage].employee.name
+																		   @"employee": employeeName
 																		   }];
 }
 

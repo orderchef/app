@@ -103,21 +103,8 @@ scheme.statics.getDiscounts = function (table, categories, callback) {
 	}, function(err, discounts) {
 		if (err) throw err;
 		
-		console.log(discounts)
 		callback(discounts)
 	})
 }
 
 module.exports = mongoose.model("Discount", scheme);
-
-/*
-new module.exports({
-	name: "Dave's Discount",
-	discountPercent: false,
-	value: -0.2,
-	allTables: false,
-	allCategories: true,
-	tables: [mongoose.Types.ObjectId("530f4d4add7430f4013db069")],
-	categories: []
-}).save()
-*/
