@@ -269,7 +269,7 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	
 	Table *table = [[tables objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-	if (self.manageEnabled || table.group.orders.count == 0) {
+	if (self.manageEnabled || (table.orders == 0 && !table.customerName)) {
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:descriptiveCellIdentifier forIndexPath:indexPath];
@@ -278,7 +278,12 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	cell.textLabel.text = [table name];
     
 	if (!self.manageEnabled) {
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d Orders", [table.group.orders count]];
+		NSString *name = @"";
+		if (table.customerName && table.customerName.length > 0) {
+			name = [@", Customer '" stringByAppendingFormat:@"%@'", table.customerName];
+		}
+		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d Order%@%@", table.orders, (table.orders > 1 ? @"s" : @""), name];
 	}
 	
 	cell.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];

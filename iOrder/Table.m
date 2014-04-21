@@ -18,6 +18,7 @@
 @synthesize delivery;
 @synthesize takeaway;
 @synthesize group;
+@synthesize orders, customerName;
 
 - (id)init {
     self = [super init];
@@ -28,6 +29,9 @@
 		
 		delivery = false;
 		takeaway = false;
+		
+		orders = 0;
+		customerName = @"";
     }
     
     return self;
@@ -55,6 +59,17 @@
     [self setName:[json objectForKey:@"name"]];
 	[self setDelivery:[[json objectForKey:@"delivery"] boolValue]];
     [self setTakeaway:[[json objectForKey:@"takeaway"] boolValue]];
+	[self setOrders:[[json objectForKey:@"orders"] intValue]];
+	[self setCustomerName:[json objectForKey:@"customerName"]];
+	
+	NSLog(@"%d, %@", orders, customerName);
+	
+	if (!orders) {
+		orders = 0;
+	}
+	if (!customerName) {
+		customerName = @"";
+	}
 }
 
 - (void)loadItems {

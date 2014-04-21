@@ -12,7 +12,29 @@ exports.router = function (socket) {
 		}, function(err, tables) {
 			if (err) throw err;
 			
-			socket.emit('get.tables', tables)
+			var _tables = [];
+			for (var i = 0; i < tables.length; i++) {
+				_tables.push(tables[i].toObject());
+			}
+			tables = _tables;
+
+			async.each(tables, function(table, cb) {
+				models.OrderGroup.findOne({
+					table: table._id,
+					cleared: false
+				}).select('orders customerName').exec(function(err, ordergroup) {
+					if (err) throw err;
+					
+					if (ordergroup) {
+						table.orders = ordergroup.orders.length;
+						table.customerName = ordergroup.customerName;
+					}
+
+					cb(null);
+				})
+			}, function() {
+				socket.emit('get.tables', tables)
+			})
 		})
 	})
 	

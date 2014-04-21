@@ -129,13 +129,10 @@
         if ([self.refreshControl isRefreshing])
             [self.refreshControl endRefreshing];
 		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navVC = [[[self splitViewController] viewControllers] objectAtIndex:0];
-			if (navVC) {
-				TablesViewController *tablesVC = [[navVC viewControllers] objectAtIndex:0];
-				[tablesVC reloadData];
-			}
-		}
+		table.customerName = group.customerName;
+		table.orders = group.orders.count;
+		
+		[self reloadParentView];
 	}
 	if ([keyPath isEqualToString:@"activeTable"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.table = [Storage getStorage].activeTable;
@@ -149,6 +146,16 @@
 	[group printBill];
 	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+}
+
+- (void)reloadParentView {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navVC = [[[self splitViewController] viewControllers] objectAtIndex:0];
+		if (navVC) {
+			TablesViewController *tablesVC = [[navVC viewControllers] objectAtIndex:0];
+			[tablesVC reloadData];
+		}
+	}
 }
 
 #pragma mark - Table view data source
@@ -342,7 +349,9 @@
 		NSMutableArray *orders = [group.orders mutableCopy];
 		[orders addObject:o];
 		group.orders = orders;
+		table.orders = group.orders.count;
 		
+		[self reloadParentView];
 		[group setOrders:orders];
 	} else if (indexPath.section == 0) {
 		o = [group.orders objectAtIndex:indexPath.row];
@@ -403,6 +412,9 @@
 	[mutableOrders removeObjectAtIndex:indexPath.row];
 	[group setOrders:[mutableOrders copy]];
 	
+	table.orders = group.orders.count;
+	
+	[self reloadParentView];
 	[tableView reloadData];
 	[self setEditing:false];
 }
@@ -599,7 +611,9 @@
 	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 	[cell.textField resignFirstResponder];
 	group.customerName = cell.textField.text;
+	table.customerName = cell.textField.text;
 	
+	[self reloadParentView];
 	[group save];
 }
 

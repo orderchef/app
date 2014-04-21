@@ -131,20 +131,12 @@ scheme.methods.print = function (printer, data) {
 	}
 	
 	var orderedString = orderData.data;
-	var total = orderData.total;
 	
 	var d = new Date();
 	if (this.printedAt) {
 		d = this.printedAt;
 	}
 	var datetime = common.getDatetime(kChars, d);
-	
-	var _total = "";
-	var totalString = "";
-	if (printer.prices) {
-		_total = " "+total.toFixed(2)+" GBP\n";
-		totalString = "Total:"+common.getSpaces(kChars - 6 - _total.length)+_total+"\n";
-	}
 	
 	var servicedBy = "Serviced By " + employee;
 	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
@@ -180,7 +172,6 @@ scheme.methods.print = function (printer, data) {
 " + servicedBy + "\n\n\
 Ordered Items:\n" + orderedString + "\n\
 " + notes + "\
-" + totalString + "\
 " + cookingTime + "\
 " + customerName + "\
 " + telephone + "\

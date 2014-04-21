@@ -19,6 +19,9 @@
 @property (assign) BOOL delivery;
 @property (assign) BOOL takeaway;
 @property (nonatomic, strong) OrderGroup *group;
+// Ephemeral
+@property (assign) int orders;
+@property (nonatomic, strong) NSString *customerName;
 
 - (void)save;
 - (void)loadItems;
