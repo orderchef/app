@@ -174,6 +174,7 @@
 #pragma mark - MenuControlDelegate
 
 - (void)didSelectItem:(Item *)item {
+	NSLog(@"I got called, wtf?");
 	if (table) {
 		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[@"Adding " stringByAppendingString:item.name] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:NO hide:NO tapRecognizer:nil toView:self.parentViewController.view];
 		

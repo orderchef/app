@@ -40,7 +40,7 @@
 	if ([[[Storage getStorage] employee] manager] && !table) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItem:)]];
     } else {
-		[self.navigationItem setRightBarButtonItem:nil];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(returnToBasket:)]];
     }
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -141,6 +141,19 @@
 	}
 }
 
+- (void)returnToBasket:(id)sender {
+	[[self delegate] didSelectItem:nil];
+	
+	UIViewController *controller = nil;
+	for (UIViewController *vc in [self.navigationController viewControllers]) {
+		if ([vc conformsToProtocol:@protocol(MenuControlDelegate)]) {
+			controller = vc;
+			break;
+		}
+	}
+	[self.navigationController popToViewController:controller animated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -193,17 +206,9 @@
 		
 		[activeOrder addItem:item andAcknowledge:^(id args) {
 			[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:[item.name stringByAppendingString:@" Added"] detail:Nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.parentViewController.view];
-			[[self delegate] didSelectItem:item];
-			
-			UIViewController *controller = nil;
-			for (UIViewController *vc in [self.navigationController viewControllers]) {
-				if ([vc conformsToProtocol:@protocol(MenuControlDelegate)]) {
-					controller = vc;
-					break;
-				}
-			}
-			[self.navigationController popToViewController:controller animated:YES];
 		}];
+		
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		
 		return;
 	}

@@ -132,6 +132,12 @@ exports.router = function (socket) {
 					}).select('table').exec(function(err, orderGroup) {
 						if (err) throw err;
 						
+						if (!orderGroup) {
+							// Error!
+							winston.err("Cannot find OrderGroup for order", item);
+							return;
+						}
+
 						models.Discount.getDiscounts(orderGroup.table, [item.category], function(discounts) {
 							var price = item.price;
 							
