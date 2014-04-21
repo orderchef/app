@@ -165,11 +165,8 @@
 	if (table.delivery) {
 		return 4;
 	}
-	if (table.takeaway) {
-		return 3;
-	}
 	
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -186,14 +183,18 @@
 		return 2;
 	}
 	
-	if (section == 2 && table.takeaway) {
+	if (table.delivery && section == 2) {
+		return 1;
+	} else if (table.delivery && section == 3) {
+		return 4;
+	}
+	
+	if (table.takeaway && section == 2) {
 		return 3;
 	}
 	
 	if (section == 2) {
 		return 1;
-	} if (section == 3) {
-		return 4;
 	}
 	
     return 0;
@@ -220,7 +221,7 @@
 	UITableViewCell *cell;
 	if (indexPath.section == 2 || indexPath.section == 3) {
 		NSString *identifier = @"postcode";
-		if ((!table.takeaway && indexPath.section == 2) || (table.takeaway && indexPath.row == 0) || (indexPath.section == 3 && indexPath.row == 0)) {
+		if (indexPath.row == 0 && (indexPath.section == 2 || indexPath.section == 3)) {
 			identifier = @"text";
 		}
 		
@@ -277,7 +278,7 @@
 		[field setPlaceholder:@"Address for Delivery"];
 		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
 		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
-	} else if (indexPath.section == 3 || (indexPath.section == 2 && table.takeaway)) {
+	} else if (indexPath.section >= 2) {
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -588,7 +589,7 @@
 	[group save];
 }
 
-#pragma mark Cusotmer Name
+#pragma mark Customer Name
 
 - (void)beganCustomerName:(id)sender {
 	dismissCustomerNameRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissCustomerName:)];
@@ -603,7 +604,7 @@
 	dismissCustomerNameRecogniser = nil;
 	
 	int section = 3;
-	if (table.takeaway) {
+	if (!table.delivery) {
 		section = 2;
 	}
 	
