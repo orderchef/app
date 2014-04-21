@@ -21,6 +21,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <AFNetworking/AFNetworking.h>
 #import "TablesViewController.h"
+#import "DatePickerTableViewCell.h"
 
 @interface OrdersViewController () {
 	UIActionSheet *printAndClearSheet;
@@ -33,6 +34,8 @@
 	
 	UITapGestureRecognizer *tapToCancelPostcode;
 	CLLocationManager *locationManager;
+	
+	bool showsDatePicker;
 }
 
 @end
@@ -45,6 +48,7 @@
 {
     [super viewDidLoad];
 	
+	showsDatePicker = false;
 	[self onLoad];
 	[[Storage getStorage] addObserver:self forKeyPath:@"activeTable" options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -121,6 +125,10 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	
+	if (showsDatePicker) {
+		[self.group save];
+	}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -171,10 +179,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	/*if (section == 0) {
-		return 0;
-	}*/
-	
 	if (section == 0) {
 		return [group orders].count;
 	}
@@ -186,6 +190,7 @@
 	if (table.delivery && section == 2) {
 		return 1;
 	} else if (table.delivery && section == 3) {
+		if (showsDatePicker) return 5;
 		return 4;
 	}
 	
@@ -205,19 +210,6 @@
 	static NSString *CellIdentifier = @"basket";
 	__unused static NSString *fieldIdentifier = @"text";
 	
-	/*
-    if (indexPath.section == 0) {
-		TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:fieldIdentifier forIndexPath:indexPath];
-		if (!cell) {
-			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:fieldIdentifier];
-		}
-		
-		cell.textField.text = @"";
-		cell.textField.placeholder = @"Customer Name";
-		
-		return cell;
-	}*/
-	
 	UITableViewCell *cell;
 	if (indexPath.section == 2 || indexPath.section == 3) {
 		NSString *identifier = @"postcode";
@@ -225,9 +217,16 @@
 			identifier = @"text";
 		}
 		
-		cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-		if (!cell) {
-			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+		if (indexPath.row == 3 && table.delivery && showsDatePicker) {
+			cell = [tableView dequeueReusableCellWithIdentifier:@"datePicker" forIndexPath:indexPath];
+			if (!cell) {
+				cell = [[DatePickerTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"datePicker"];
+			}
+		} else {
+			cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+			if (!cell) {
+				cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+			}
 		}
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -279,6 +278,18 @@
 		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
 		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
 	} else if (indexPath.section >= 2) {
+		if (indexPath.row == 3 && table.delivery && showsDatePicker) {
+			DatePickerTableViewCell *_cell = (DatePickerTableViewCell *)cell;
+			[_cell.datePicker setDatePickerMode:UIDatePickerModeTime];
+			[_cell.datePicker addTarget:self action:@selector(deliveryDateChanged:) forControlEvents:UIControlEventValueChanged];
+			
+			NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+			timeFormatter.dateFormat = @"hh:mm a";
+			[_cell.datePicker setDate:[timeFormatter dateFromString:self.group.deliveryTime] animated:NO];
+			
+			return cell;
+		}
+		
 		UITextField *field = [(TextFieldCell *)cell textField];
 		[field setSpellCheckingType:UITextSpellCheckingTypeNo];
 		[field setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -304,17 +315,21 @@
 			[field addTarget:self action:@selector(dismissTelephone:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganTelephone:) forControlEvents:UIControlEventEditingDidBegin];
 		} else if (indexPath.row == 2) {
+			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
+			[field setEnabled:true];
+			
 			if (table.takeaway)
 				[[(TextFieldCell *)cell label] setText:@"Takeaway Time:"];
-			else
+			else {
 				[[(TextFieldCell *)cell label] setText:@"Deliver At:"];
+				[field setEnabled:false];
+			}
 			[field setText:group.deliveryTime];
-			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
 			[field setPlaceholder:@"7:40 pm (time)"];
 			[field setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
 			[field addTarget:self action:@selector(dismissDeliveryTime:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganDeliveryTime:) forControlEvents:UIControlEventEditingDidBegin];
-		} else if (indexPath.row == 3) {
+		} else if (indexPath.row == 3 || (indexPath.row == 4 && table.delivery && showsDatePicker)) {
 			[[(TextFieldCell *)cell label] setText:@"Start Cooking At:"];
 			[field setText:group.cookingTime];
 			[field setClearButtonMode:UITextFieldViewModeWhileEditing];
@@ -357,6 +372,13 @@
 	} else if (indexPath.section == 0) {
 		o = [group.orders objectAtIndex:indexPath.row];
 	} else if (indexPath.section == 2 || indexPath.section == 3) {
+		if (table.delivery && indexPath.section == 3 && indexPath.row == 2) {
+			// Delivery.. show magic date picking thing.
+			[self showHideDatePicker];
+			
+			return;
+		}
+		
 		TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 		[cell.textField becomeFirstResponder];
 		
@@ -418,6 +440,14 @@
 	[self reloadParentView];
 	[tableView reloadData];
 	[self setEditing:false];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 3 && table.delivery && showsDatePicker) {
+		return 216;
+	}
+	
+	return 44;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -530,7 +560,7 @@
 	} @catch (NSException *e) {}
 	dismissCookingRecogniser = nil;
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:3]];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow: showsDatePicker ? 4 : 3 inSection:3]];
 	[cell.textField resignFirstResponder];
 	group.cookingTime = cell.textField.text;
 	
@@ -560,6 +590,16 @@
 	group.deliveryTime = cell.textField.text;
 	
 	[group save];
+}
+
+- (void)deliveryDateChanged:(UIDatePicker *)datePicker {
+	NSDate *date = [datePicker date];
+	NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+	timeFormatter.dateFormat = @"hh:mm a";
+	
+	self.group.deliveryTime = [timeFormatter stringFromDate:date];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
+	[cell.textField setText:self.group.deliveryTime];
 }
 
 #pragma mark Telephone
@@ -624,6 +664,37 @@
 	[textField resignFirstResponder];
 	
 	return YES;
+}
+
+#pragma mark - Date Picker stuff
+
+- (void)showHideDatePicker {
+	[self.tableView beginUpdates];
+	
+	NSArray *_indexPath = @[[NSIndexPath indexPathForRow:3 inSection:3]];
+	
+	if (showsDatePicker) {
+		[self hideDatePicker];
+		[self.group save];
+		[self.tableView deleteRowsAtIndexPaths:_indexPath withRowAnimation:UITableViewRowAnimationFade];
+	} else {
+		[self showDatePicker];
+		[self.tableView insertRowsAtIndexPaths:_indexPath withRowAnimation:UITableViewRowAnimationFade];
+	}
+	
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+	
+	[self.tableView endUpdates];
+	
+	[self.tableView scrollToRowAtIndexPath:[_indexPath objectAtIndex:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (void)showDatePicker {
+	showsDatePicker = true;
+}
+
+- (void)hideDatePicker {
+	showsDatePicker = false;
 }
 
 @end
