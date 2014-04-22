@@ -73,6 +73,8 @@
 		self.navigationItem.title = @"";
 	}
 	
+	showsDatePicker = false;
+	
 	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printButton:)];
 	[printItem setTitleTextAttributes:@{
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
@@ -138,7 +140,7 @@
             [self.refreshControl endRefreshing];
 		
 		table.customerName = group.customerName;
-		table.orders = group.orders.count;
+		table.orders = (int)group.orders.count;
 		
 		[self reloadParentView];
 	}
@@ -285,7 +287,12 @@
 			
 			NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
 			timeFormatter.dateFormat = @"hh:mm a";
-			[_cell.datePicker setDate:[timeFormatter dateFromString:self.group.deliveryTime] animated:NO];
+			NSDate *date = [timeFormatter dateFromString:group.deliveryTime];
+			if (group.deliveryTime.length == 0 || !date || [date timeIntervalSince1970] == 0) {
+				date = [[NSDate alloc] init];
+			}
+			
+			[_cell.datePicker setDate:date animated:NO];
 			
 			return cell;
 		}
@@ -365,7 +372,7 @@
 		NSMutableArray *orders = [group.orders mutableCopy];
 		[orders addObject:o];
 		group.orders = orders;
-		table.orders = group.orders.count;
+		table.orders = (int)group.orders.count;
 		
 		[self reloadParentView];
 		[group setOrders:orders];
@@ -397,7 +404,7 @@
 	if (section == 2 && table.delivery) {
 		return @"Delivery Information";
 	}
-	if (section == 2 && table.takeaway) {
+	if (section == 2) {
 		return @"Customer Details";
 	}
 	
@@ -435,7 +442,7 @@
 	[mutableOrders removeObjectAtIndex:indexPath.row];
 	[group setOrders:[mutableOrders copy]];
 	
-	table.orders = group.orders.count;
+	table.orders = (int)group.orders.count;
 	
 	[self reloadParentView];
 	[tableView reloadData];
