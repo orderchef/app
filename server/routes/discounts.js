@@ -44,7 +44,7 @@ exports.router = function (socket) {
 		try {
 			id = mongoose.Types.ObjectId(data._id)
 		} catch (e) {
-			winston.err(e);
+			winston.error(e);
 			return;
 		}
 		

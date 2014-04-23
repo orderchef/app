@@ -134,7 +134,7 @@ exports.router = function (socket) {
 						
 						if (!orderGroup) {
 							// Error!
-							winston.err("Cannot find OrderGroup for order", item);
+							winston.error("Cannot find OrderGroup for order", item);
 							return;
 						}
 
