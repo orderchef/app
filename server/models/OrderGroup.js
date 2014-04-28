@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
 	, winston = require('winston')
 	, Discount = require('./Discount')
 	, Order = require('./Order')
+	, bugsnag = require('bugsnag')
 
 var scheme = schema({
 	orders: [{
@@ -56,7 +57,17 @@ scheme.methods.update = function (data) {
 
 	this.orders = [];
 	for (var i = 0; i < data.orders.length; i++) {
-		this.orders.push(mongoose.Types.ObjectId(data.orders[i]));
+		var id = null;
+		try {
+			id = mongoose.Types.ObjectId(data.orders[i]);
+		} catch (e) {
+			bugsnag.notify(new Error("Invalid order id"), {
+				data: data
+			});
+			continue;
+		}
+
+		this.orders.push(id);
 	}
 }
 

@@ -5,8 +5,10 @@ var mongoose = require('mongoose')
 	, winston = require('winston')
 
 exports.router = function (socket) {
-	socket.on('get.reports', function(data) {
-		winston.info("Listing Reports")
+	socket.on('get.reports_days', function(data) {
+		winston.info("Listing Reports Days");
+
+		return;
 		
 		models.OrderGroup.find({
 			cleared: true

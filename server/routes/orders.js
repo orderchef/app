@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 	, models = require('../models')
 	, async = require('async')
 	, winston = require('winston')
+	, bugsnag = require('bugsnag')
 
 exports.router = function (socket) {
 	socket.on('get.group active', function(data) {
@@ -135,6 +136,11 @@ exports.router = function (socket) {
 						if (!orderGroup) {
 							// Error!
 							winston.error("Cannot find OrderGroup for order", item);
+							bugsnag.notify(new Error("Cannot find OrderGroup for order", {
+								data: data,
+								item: item
+							}));
+
 							return;
 						}
 
@@ -229,7 +235,15 @@ exports.router = function (socket) {
 		// Prints the final bill to receipt printer
 		winston.info("Printing group bill");
 		
-		var group = mongoose.Types.ObjectId(data.group);
+		var group = null;
+		try {
+			group = mongoose.Types.ObjectId(data.group);
+		} catch (e) {
+			bugsnag(new Error("Not an ID when printing Group", {
+				data: data
+			}));
+			return;
+		}
 		
 		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
 			
