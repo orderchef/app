@@ -12,6 +12,6 @@
 
 @interface ReportViewController : UITableViewController
 
-@property (nonatomic, weak) NSArray *reports;
+@property (nonatomic, strong) NSArray *dateRange;
 
 @end

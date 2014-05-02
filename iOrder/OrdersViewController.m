@@ -71,6 +71,9 @@
 		[self.refreshControl addTarget:self action:@selector(refreshOrders:) forControlEvents:UIControlEventValueChanged];
 	} else {
 		self.navigationItem.title = @"";
+		if (group.table) {
+			self.navigationItem.title = group.table.name;
+		}
 	}
 	
 	showsDatePicker = false;
@@ -91,6 +94,11 @@
 	
 	if (table) {
 		[table addObserver:self forKeyPath:@"group" options:NSKeyValueObservingOptionNew context:nil];
+	}
+	
+	if (!table) {
+		self.table = group.table;
+		[self.tableView reloadData];
 	}
 }
 
@@ -357,6 +365,14 @@
 	if (indexPath.section == 1) {
 		if (indexPath.row == 1) {
 			// clear
+			if (group.cleared == true) {
+				// Just print..
+				[self printButton:nil];
+				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+				
+				return;
+			}
+			
 			if (!printAndClearSheet) {
 				printAndClearSheet = [[UIActionSheet alloc] initWithTitle:@"Print and Clear All Orders?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Just Print", @"Print & Clear Table", nil];
 			}

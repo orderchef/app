@@ -43,9 +43,11 @@
 										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
 										} forState:UIControlStateNormal];
     
-	[self setRefreshControl:[[UIRefreshControl alloc] init]];
-    [self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
-    
+	if (self.order.group && !self.order.group.cleared) {
+		[self setRefreshControl:[[UIRefreshControl alloc] init]];
+		[self.refreshControl addTarget:self action:@selector(refreshBasket:) forControlEvents:UIControlEventValueChanged];
+	}
+	
     [self reloadData];
 }
 

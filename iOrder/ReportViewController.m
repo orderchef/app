@@ -11,107 +11,73 @@
 #import "OrdersViewController.h"
 #import "Connection.h"
 #import "AppDelegate.h"
+#import "OrdersViewController.h"
+#import "OrderGroup.h"
+#import "Table.h"
 
 @interface ReportViewController () {
-	float normalTotal;
-	int normalQuantity;
-	float takeawayTotal;
-	int takeawayQuantity;
-	float deliveryTotal;
-	int deliveryQuantity;
-	
-	float total;
-	int quantity;
+	NSArray *orders;
+	OrderGroup *group;
 }
 
 @end
 
 @implementation ReportViewController
 
-@synthesize reports;
+@synthesize dateRange;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	
-	normalTotal = 0;
-	normalQuantity = 0;
-	takeawayTotal = 0;
-	takeawayQuantity = 0;
-	deliveryTotal = 0;
-	deliveryQuantity = 0;
-	total = 0;
-	quantity = 0;
+	orders = @[];
 	
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	[dateFormat setDateFormat:@"EEEE dd"];
-	NSString *dayName = [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[[reports objectAtIndex:0] objectForKey:@"time"] intValue]]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotification:) name:kReportsNotificationName object:nil];
 	
-	[self.navigationItem setTitle:dayName];
+	self.refreshControl = [[UIRefreshControl alloc] init];
+	[self.refreshControl addTarget:self action:@selector(refreshEvents:) forControlEvents:UIControlEventValueChanged];
 	
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(print:)] animated:true];
-	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
-																	NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
-																	} forState:UIControlStateNormal];
+	[self.navigationItem setTitle:@"Date Range"];
 	
-	[self aggregate];
+	[self refreshEvents:nil];
 }
 
-- (void)aggregate {
-	for (NSDictionary *order in reports) {
-		float t = [[order objectForKey:@"total"] floatValue];
-		int q = [[order objectForKey:@"quantity"] intValue];
-		
-		if ([[order objectForKey:@"delivery"] boolValue]) {
-			deliveryTotal += t;
-			deliveryQuantity += q;
-		} else if ([[order objectForKey:@"takeaway"] boolValue]) {
-			takeawayTotal += t;
-			takeawayQuantity += q;
-		} else {
-			normalTotal += t;
-			normalQuantity += q;
-		}
-		
-		total += t;
-		quantity += q;
-	}
-}
-
-- (void)print:(id)sender {
-	NSMutableString *string = [[NSMutableString alloc] init];
-	
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	[dateFormat setDateFormat:@"EEEE dd MMMM yyyy"];
-	NSString *dayName = [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[[reports objectAtIndex:0] objectForKey:@"time"] intValue]]];
-	
-	[string appendFormat:@"\nReport for %@\n", dayName];
-	
-	[string appendFormat:@"Total\n Items Sold: %d\n", quantity];
-	[string appendFormat:@" Sales: %.2f GBP\n\n", total];
-	
-	[string appendFormat:@"Normal Table:\n Items Sold: %d\n", normalQuantity];
-	[string appendFormat:@" Sales: %.2f GBP\n\n", normalTotal];
-	
-	[string appendFormat:@"Takeaway Table:\n Items Sold: %d\n", takeawayQuantity];
-	[string appendFormat:@" Sales: %.2f GBP\n\n", takeawayTotal];
-	
-	[string appendFormat:@"Delivery Table:\n Items Sold: %d\n", deliveryQuantity];
-	[string appendFormat:@" Sales: %.2f GBP\n\n", deliveryTotal];
-	
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Print Data Sent" detail:@"Please check your receipt printer." hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
-	
-	[[[Connection getConnection] socket] sendEvent:@"print" withData:@{@"data": string, @"receiptPrinter": [NSNumber numberWithBool:YES]}];
+- (void)dealloc {
+	@try {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReportsNotificationName object:nil];
+	} @catch (NSException *exception) {}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"items"]) {
-		ReportItemsViewController *vc = (ReportItemsViewController *)segue.destinationViewController;
-		vc.reports = reports;
-	} else if ([segue.identifier isEqualToString:@"orders"]) {
-		OrdersViewController *vc = (OrdersViewController *)segue.destinationViewController;
+	if ([segue.identifier isEqualToString:@"viewOrder"]) {
+		OrdersViewController *ovc = (OrdersViewController *)[segue destinationViewController];
 		
-		vc.group = nil;//reports;
+		//ovc.table = group.table;
+		ovc.group = group;
+	}
+}
+
+- (void)refreshEvents:(id)sender {
+	[self.refreshControl beginRefreshing];
+	[[[Connection getConnection] socket] sendEvent:@"get.reports" withData:
+	 @{
+	   @"from": [NSNumber numberWithInt:(int)[[dateRange objectAtIndex:0] timeIntervalSince1970]],
+	   @"to": [NSNumber numberWithInt:(int)[[dateRange objectAtIndex:1] timeIntervalSince1970]]
+	   }];
+}
+
+- (void)didReceiveNotification:(NSNotification *)notification {
+	NSDictionary *reportData = [notification userInfo];
+	NSString *type = [reportData objectForKey:@"type"];
+	
+	if ([type isEqualToString:@"orders"]) {
+		orders = [reportData objectForKey:@"orders"];
+		[self.refreshControl endRefreshing];
+		[self.tableView reloadData];
+	} else if ([type isEqualToString:@"order"]) {
+		group = [[OrderGroup alloc] init];
+		[group loadFromJSON:[reportData objectForKey:@"order"]];
+		
+		[self performSegueWithIdentifier:@"viewOrder" sender:group];
 	}
 }
 
@@ -119,84 +85,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 2;
+	return [orders count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detail" forIndexPath:indexPath];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	int q = 0;
-	float t = 0.f;
-	
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			cell.textLabel.text = @"Orders";
-		} else {
-			cell.textLabel.text = @"Items Sold";
-		}
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.detailTextLabel.text = nil;
-		
-		return cell;
-	} else if (indexPath.section == 1) {
-		q = quantity;
-		t = total;
-	} else if (indexPath.section == 2) {
-		q = normalQuantity;
-		t = normalTotal;
-	} else if (indexPath.section == 3) {
-		q = takeawayQuantity;
-		t = takeawayTotal;
-	} else {
-		q = deliveryQuantity;
-		t = deliveryTotal;
-	}
-    
-	if (indexPath.row == 0) {
-		cell.textLabel.text = @"Items Sold";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", q];
-	} else if (indexPath.row == 1) {
-		cell.textLabel.text = @"Total";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", t];
-	}
+	NSDictionary *order = [orders objectAtIndex:indexPath.row];
+	cell.textLabel.text = [NSString stringWithFormat:@"Order #%d", [[order objectForKey:@"orderNumber"] intValue]];
+	cell.detailTextLabel.text = [order objectForKey:@"clearedAt"];
 	
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
-		case 1:
-			return @"Grand Total";
-		case 2:
-			return @"Normal Tables";
-		case 3:
-			return @"Takeaway Tables";
-		case 4:
-			return @"Delivery Tables";
-	}
-	
-	return nil;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		if (indexPath.row == 1) {
-			[self performSegueWithIdentifier:@"items" sender:nil];
-		} else {
-			//[self performSegueWithIdentifier:@"orders" sender:nil];
-		}
-		return;
-	}
-	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[[Connection getConnection].socket sendEvent:@"get.report orderGroup" withData:@{
+																					 @"_id": [[orders objectAtIndex:indexPath.row] objectForKey:@"_id"]
+																					 }];
 }
 
 @end

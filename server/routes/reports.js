@@ -5,6 +5,56 @@ var mongoose = require('mongoose')
 	, winston = require('winston')
 
 exports.router = function (socket) {
+	socket.on('get.reports', function(data) {
+		var from, to;
+
+		from = new Date(data.from * 1000);
+		to = new Date(data.to * 1000);
+
+		models.OrderGroup.find({
+			cleared: true,
+			clearedAt: {
+				$gte: from,
+				$lt: to
+			}
+		}).sort('-orderNumber').select('orderNumber clearedAt').exec(function(err, orders) {
+			if (err) throw err;
+
+			var os = [];
+			for (var i = 0; i < orders.length; i++) {
+				var o = orders[i].toObject();
+				var clearedAt = o.clearedAt;
+
+				var hrs = clearedAt.getHours();
+				var mins = clearedAt.getMinutes();
+				if (hrs < 10) hrs = "0"+hrs;
+				if (mins < 10) mins = "0"+mins;
+
+				o.clearedAt = clearedAt.getDate() + '/' + (clearedAt.getMonth()+1) + '/' + clearedAt.getFullYear() + ' ' + hrs + ':' + mins;
+				os.push(o)
+			}
+			socket.emit('get.reports', {
+				orders: os,
+				type: "orders",
+				from: data.from,
+				to: data.to
+			})
+		})
+	});
+
+	socket.on('get.report orderGroup', function(data) {
+		models.OrderGroup.findOne({
+			_id: data._id
+		}).populate('orders').exec(function(err, order) {
+			if (err) throw err;
+
+			socket.emit('get.reports', {
+				type: "order",
+				order: order
+			})
+		});
+	})
+
 	socket.on('get.reports_days', function(data) {
 		winston.info("Listing Reports Days");
 

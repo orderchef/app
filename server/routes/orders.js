@@ -135,10 +135,13 @@ exports.router = function (socket) {
 						
 						if (!orderGroup) {
 							// Error!
-							winston.error("Cannot find OrderGroup for order", item);
+							winston.error("Cannot find OrderGroup for order", {
+								item: item.toObject(),
+								data: data
+							});
 							bugsnag.notify(new Error("Cannot find OrderGroup for order", {
 								data: data,
-								item: item
+								item: item.toObject()
 							}));
 
 							return;
