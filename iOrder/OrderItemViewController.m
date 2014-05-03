@@ -9,6 +9,7 @@
 #import "OrderItemViewController.h"
 #import "Item.h"
 #import "Table.h"
+#import "ItemCategory.h"
 #import "AppDelegate.h"
 #import "OrderGroup.h"
 #import "Order.h"
@@ -49,7 +50,7 @@
 }
 
 - (void)saveItem {
-	TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 	int index = (int)[[order items] indexOfObject:item];
 	
 	NSMutableDictionary *dict = [item mutableCopy];
@@ -64,23 +65,26 @@
 	item = [[order items] objectAtIndex:index];
 	[order save];
 	
-	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) {
-		return 3;
+		return 1;
 	}
 	if (section == 1) {
-		return 0;
+		return 3;
 	}
 	if (section == 2) {
+		return 0;
+	}
+	if (section == 3) {
 		return 1;
 	}
 	
@@ -93,6 +97,14 @@
     UITableViewCell *cell;
 	
 	if (indexPath.section == 0) {
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		
+		cell.textLabel.text = @"Item Category";
+		Item *_item = [item objectForKey:@"item"];
+		if (_item && _item.category) {
+			cell.detailTextLabel.text = _item.category.name;
+		}
+	} else if (indexPath.section == 1) {
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 		
 		Item *it = [item objectForKey:@"item"];
@@ -109,7 +121,7 @@
 			[[cell textLabel] setText:@"Total for Order"];
 			[[cell detailTextLabel] setText:[NSString stringWithFormat:@"£%.2f", price * (float)quantity]];
 		}
-	} else if (indexPath.section == 2) {
+	} else if (indexPath.section == 3) {
 		// notes
 		cell = [tableView dequeueReusableCellWithIdentifier:@"notes" forIndexPath:indexPath];
 		if (!cell) {
@@ -125,7 +137,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 2) {
+	if (indexPath.section == 3) {
 		TextareaCell *cell = (TextareaCell *)[tableView cellForRowAtIndexPath:indexPath];
 		[[cell textField] becomeFirstResponder];
 	}
@@ -134,7 +146,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
+    if (indexPath.section == 3) {
         return 100.f;
     }
     
@@ -142,7 +154,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 2) {
+	if (section == 3) {
 		return @"Item-specific notes";
 	}
 	
@@ -150,7 +162,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	if (section == 1) {
+	if (section == 2) {
 		if (!quantityStepper) {
 			quantityStepper = [[UIStepper alloc] init];
 			[quantityStepper setMinimumValue:1.f];
@@ -175,7 +187,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if (section == 1) {
+	if (section == 2) {
 		return 29.f;
 	}
 	
@@ -207,7 +219,7 @@
 #pragma mark - TextfieldDelegate methods
 
 - (void)dismissKeyboard:(id)sender {
-    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    TextareaCell *cell = (TextareaCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     [[cell textField] resignFirstResponder];
 }
 

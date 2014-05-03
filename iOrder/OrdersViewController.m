@@ -84,11 +84,11 @@
 		}
 	}
 	
+	// Animates the table when refreshing..
 	CATransition *transition = [CATransition animation];
 	transition.type = kCATransitionFade;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.duration = 0.1;
-	
 	[self.tableView.layer addAnimation:transition forKey:@"UITableViewReloadDataAnimationKey"];
 	
 	showsDatePicker = false;
