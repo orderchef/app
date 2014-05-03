@@ -28,6 +28,8 @@
 	
 	startTimeInterval = [[[NSDate alloc] init] timeIntervalSince1970];
 	endTimeInterval = startTimeInterval;
+	
+	[self.navigationItem setTitle:@"Past Orders"];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

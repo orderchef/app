@@ -167,7 +167,7 @@
 }
 
 - (void)reloadParentView {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && self.splitViewController && self.group.cleared == false) {
 		UINavigationController *navVC = [[[self splitViewController] viewControllers] objectAtIndex:0];
 		if (navVC) {
 			TablesViewController *tablesVC = [[navVC viewControllers] objectAtIndex:0];

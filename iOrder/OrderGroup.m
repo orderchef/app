@@ -90,7 +90,14 @@
 	NSString *tid = [json objectForKey:@"table"];
 	for (Table *t in tables) {
 		if ([tid isEqualToString:t._id]) {
-			table = t;
+			table = [[Table alloc] init];
+			table._id = [t._id copy];
+			table.name = [t.name copy];
+			table.delivery = t.delivery;
+			table.takeaway = t.takeaway;
+			table.orders = t.orders;
+			table.customerName = [t.customerName copy];
+			
 			break;
 		}
 	}
