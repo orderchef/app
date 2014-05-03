@@ -17,44 +17,35 @@ exports.router = function (socket) {
 		} else {
 			query.table = mongoose.Types.ObjectId(data.table);
 		}
-	
-		models.OrderGroup.find(query).populate('orders')
-		.exec(function(err, orders) {
-			if (err) {
-				throw err;
-				return;
-			}
-		
-			if (!orders || orders.length == 0) {
-				winston.info("Creating a group for an empty table")
-				order = new models.OrderGroup({
-					table: query.table,
-					cleared: false
-				});
 
-				models.OrderGroup.findOne({}).select('orderNumber').sort('-orderNumber').limit(1).exec(function(err, lastOrder) {
-					if (err) throw err;
+		models.OrderGroup.findOne({}).select('orderNumber').sort('-orderNumber').limit(1).exec(function(err, lastOrder) {
+			if (err) throw err;
 
-					var orderNumber = lastOrder.orderNumber;
-					models.OrderGroup.update({
-						_id: order._id
-					}, {
-						$set: {
-							orderNumber: orderNumber + 1
-						}
-					}, function(err) {
-						if (err) throw err;
-					});
-				});
+			var orderNumber = lastOrder.orderNumber;
 
-				order.save();
+			models.OrderGroup.find(query).populate('orders')
+			.exec(function(err, orders) {
+				if (err) {
+					throw err;
+					return;
+				}
 			
-				orders.push(order)
-			}
-		
-			socket.emit('get.group active', orders);
+				if (!orders || orders.length == 0) {
+					winston.info("Creating a group for an empty table")
+					order = new models.OrderGroup({
+						table: query.table,
+						cleared: false,
+						orderNumber: orderNumber + 1
+					});
+					order.save();
+					
+					orders.push(order)
+				}
+			
+				socket.emit('get.group active', orders);
+			})
 		})
-	})
+	});
 	
 	socket.on('save.group', function(data) {
 		winston.info("Saving group")
@@ -124,64 +115,26 @@ exports.router = function (socket) {
 				}
 			}
 			
-			if (found === false) {
-				models.Item.findById(item, function(err, item) {
-					models.OrderGroup.findOne({
-						orders: {
-							$in: [order._id]
-						}
-					}).select('table').exec(function(err, orderGroup) {
-						if (err) throw err;
-						
-						if (!orderGroup) {
-							// Error!
-							winston.error("Cannot find OrderGroup for order", {
-								item: item.toObject(),
-								data: data
-							});
-							bugsnag.notify(new Error("Cannot find OrderGroup for order", {
-								data: data,
-								item: item.toObject()
-							}));
-
-							return;
-						}
-
-						models.Discount.getDiscounts(orderGroup.table, [item.category], function(discounts) {
-							var price = item.price;
-							
-							var ds = []
-							for (var i = 0; i < discounts.length; i++) {
-								var newPrice = discounts[i].applyDiscount(item.category, price);
-								ds.push({
-									name: discounts[i].name,
-									discount: discounts[i]._id,
-									value: price - newPrice
-								})
-								
-								price = newPrice;
-							}
-							
-							found = {
-								item: item,
-								notes: "",
-								quantity: 1,
-								price: price,
-								discounts: ds
-							}
-							order.items.push(found)
-							
-							order.save();
-						});
-					})
-				})
-				
-				return;
-			} else {
+			if (found) {
 				found.quantity++;
+				order.save();
+
+				return;
 			}
-			
-			order.save();
+
+			models.Item.findById(item, function(err, item) {
+				var price = item.price;
+				
+				found = {
+					item: item,
+					notes: "",
+					quantity: 1,
+					price: price,
+				}
+				order.items.push(found)
+				
+				order.save();
+			})
 		})
 		
 		fn()
@@ -248,8 +201,7 @@ exports.router = function (socket) {
 			return;
 		}
 		
-		models.OrderGroup.findById(group).populate('orders table').exec(function(err, group) {
-			
+		models.OrderGroup.findById(group).populate('discounts orders table').exec(function(err, group) {
 			data.orderNumber = group.orderNumber;
 			data.table = group.table;
 			
@@ -261,6 +213,26 @@ exports.router = function (socket) {
 				})
 			}, function(err) {
 				if (err) throw err;
+
+				// Apply Discounts
+				for (var i = 0; i < group.orders.length; i++) {
+					var o = group.orders[i];
+					for (var i_item = 0; i_item < o.items.length; i_item++) {
+						var item = o.items[i_item];
+
+						if (!(item.item && item.item.category && item.item.category._id)) {
+							continue;
+						}
+
+						for (var i_discount = 0; i_discount < group.discounts.length; i_discount++) {
+							var discount = group.discounts[i_discount];
+
+							console.log("Old: ", item.price);
+							item.price = discount.applyDiscount(item.item.category._id, item.price);
+							console.log("New: ", item.price);
+						}
+					}
+				}
 				
 				for (var i = 0; i < models.printers.length; i++) {
 					if (!models.printers[i].printsBill) continue;

@@ -14,11 +14,9 @@
 @property (nonatomic, strong) NSString *_id;
 @property (nonatomic, strong) NSString *name;
 @property (assign) float value;
-@property (nonatomic, strong) NSArray *tables;
 @property (nonatomic, strong) NSArray *categories;
 
 @property (assign) BOOL discountPercent;
-@property (assign) BOOL allTables;
 @property (assign) BOOL allCategories;
 
 - (void)save;

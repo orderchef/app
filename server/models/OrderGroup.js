@@ -38,7 +38,11 @@ var scheme = schema({
 	deliveryTime: String,
 	cookingTime: String,
 	telephone: String,
-	customerName: String
+	customerName: String,
+	discounts: [{
+		type: ObjectId,
+		ref: 'Discount'
+	}]
 })
 
 scheme.methods.update = function (data) {
@@ -68,6 +72,24 @@ scheme.methods.update = function (data) {
 		}
 
 		this.orders.push(id);
+	}
+
+	this.discounts = [];
+	if (!data.discounts) {
+		return;
+	}
+	for (var i = 0; i < data.discounts.length; i++) {
+		var id = null;
+		try {
+			id = mongoose.Types.ObjectId(data.discounts[i]);
+		} catch (e) {
+			bugsnag.notify(new Error("Invalid group discount id"), {
+				data: data
+			});
+			continue;
+		}
+
+		this.discounts.push(id);
 	}
 }
 
@@ -138,31 +160,30 @@ scheme.methods.print = function (printer, data) {
 	_items = null;
 
 	var tableId = data.table._id;
-	Discount.getDiscounts(tableId, categories, function(discounts) {
-		// Fool the order object with a custom context (this)
-		var ctx = {
-			items: items
-		}
-		var order = new Order();
-		var orderData = order.getOrderData.bind(ctx)(printer, {
-			force: true,
-			prices: true,
-			notes: false
-		});
+	// Fool the order object with a custom context (this)
+	var ctx = {
+		items: items
+	}
+	var order = new Order();
+	var orderData = order.getOrderData.bind(ctx)(printer, {
+		force: true,
+		prices: true,
+		notes: false
+	});
 
-		orderedString += orderData.data;
+	orderedString += orderData.data;
 
-		var totalString = "";
-		var total = "";
-		total = " "+orderData.total.toFixed(2)+" GBP\n";
-		totalString = "\nTotal:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
-	
-		var servicedBy = "Serviced By " + employee;
-		servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
-	
-		var output = "\
- Order #" + data.orderNumber + "\n\
- " + table +"\n\n\
+	var totalString = "";
+	var total = "";
+	total = " "+orderData.total.toFixed(2)+" GBP\n";
+	totalString = "\nTotal:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
+
+	var servicedBy = "Serviced By " + employee;
+	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;
+
+	var output = "\
+Order #" + data.orderNumber + "\n\
+" + table +"\n\n\
 " + datetime + "\
 " + servicedBy + "\n\n\
 " + orderedString + "\
@@ -172,80 +193,15 @@ scheme.methods.print = function (printer, data) {
 " + customerName + "\
 " + telephone + "\
 \n";
-		
-		winston.info(output);
-		
-		printer.socket.emit('print_data', {
-			data: output,
-			address: true,
-			logo: true,
-			footer: true
-		});
+	
+	winston.info(output);
+	
+	printer.socket.emit('print_data', {
+		data: output,
+		address: true,
+		logo: true,
+		footer: true
 	});
-}
-
-scheme.statics.aggregate = function (socket, groups) {
-	var finalData = {
-		orders: [],
-		total: 0,
-		quantity: 0
-	};
-	
-	for (var g = 0; g < groups.length; g++) {
-		var group = groups[g];
-		var date = group.clearedAt;
-		
-		var t = {
-			total: 0,
-			quantity: 0,
-			items: [],
-			delivery: group.table.delivery,
-			takeaway: group.table.takeaway,
-			time: Math.round(date.getTime()/1000)
-		}; // order
-		
-		for (var o = 0; o < group.orders.length; o++) {
-			var order = group.orders[o];
-			
-			for (var i = 0; i < order.items.length; i++) {
-				var item = order.items[i];
-				
-				t.total += item.quantity * item.item.price;
-				t.quantity += item.quantity;
-				
-				var found = false;
-				for (var x = 0; x < t.items.length; x++) {
-					if (t._id == item.item._id.toString()) {
-						found = x;
-						break;
-					}
-				}
-				
-				if (found === false) {
-					t.items.push({
-						_id: item.item._id.toString(),
-						category: item.item.category,
-						name: item.item.name,
-						price: item.item.price,
-						total: item.quantity * item.item.price,
-						quantity: item.quantity
-					})
-				} else {
-					t.items[found].quantity += item.quantity;
-					t.items[found].total += item.quantity * item.item.price;
-				}
-			}
-		}
-		
-		finalData.orders.push(t)
-		finalData.total += t.total;
-		finalData.quantity += t.quantity;
-	}
-	
-	socket.emit('get.reports', {
-		aggregated: finalData,
-		//groups: groups
-	})
 }
 
 module.exports = mongoose.model("OrderGroup", scheme);

@@ -69,8 +69,10 @@
 	
     @try {
         [[Storage getStorage] removeObserver:self forKeyPath:@"items"];
-		[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIDeviceOrientationDidChangeNotification context:nil];
     } @catch (NSException *exception) {}
+	@try {
+		[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIDeviceOrientationDidChangeNotification context:nil];
+	} @catch (NSException *exception) {}
 }
 
 - (void)refreshData:(id)sender {

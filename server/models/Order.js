@@ -13,12 +13,7 @@ var scheme = schema({
 			type: String,
 			default: ""
 		},
-		price: Number,
-		discounts: [{
-			name: String,
-			value: Number,
-			discount: { type: ObjectId, ref: 'Discount' }
-		}]
+		price: Number
 	}],
 	notes: {
 		type: String,
@@ -48,7 +43,6 @@ scheme.methods.update = function (data) {
 			item: mongoose.Types.ObjectId(it.item),
 			quantity: it.quantity,
 			notes: it.notes,
-			discounts: it.discounts,
 			price: it.price
 		});
 	}

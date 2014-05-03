@@ -69,7 +69,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -82,9 +82,6 @@
 	}
 	if (section == 2) {
 		return 1;
-	}
-	if (section == 3) {
-		return [[item objectForKey:@"discounts"] count];
 	}
 	
 	return 0;
@@ -122,12 +119,6 @@
         [[(TextareaCell *)cell textField] setText:[item objectForKey:@"notes"]];
         [[(TextareaCell *)cell textField] setDelegate:(TextareaCell<UITextViewDelegate> *)cell];
         [(TextareaCell *)cell setDelegate:self];
-	} else if (indexPath.section == 3) {
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-		
-		NSDictionary *discount = [[item objectForKey:@"discounts"] objectAtIndex:indexPath.row];
-		cell.textLabel.text = [discount objectForKey:@"name"];
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[discount objectForKey:@"value"] floatValue]];
 	}
 	
 	return cell;
@@ -153,9 +144,6 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 2) {
 		return @"Item-specific notes";
-	}
-	if (section == 3 && [[item objectForKey:@"discounts"] count] > 0) {
-		return @"Discounts";
 	}
 	
 	return nil;

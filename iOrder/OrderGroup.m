@@ -15,7 +15,7 @@
 
 @implementation OrderGroup
 
-@synthesize _id, created, cleared, clearedAt, orders;
+@synthesize _id, created, cleared, clearedAt, orders, discounts;
 @synthesize table;
 @synthesize postcode, postcodeDistance, deliveryTime, cookingTime, telephone, customerName;
 
@@ -29,6 +29,8 @@
 		cleared = false;
 		clearedAt = [NSDate date];
 		orders = [NSArray array];
+		discounts = [NSArray array];
+		
 		postcode = @"";
 		postcodeDistance = @"";
 		deliveryTime = @"";
@@ -49,6 +51,9 @@
 	created = [dateFormat dateFromString:[json objectForKey:@"created"]];
 	cleared = [[json objectForKey:@"cleared"] boolValue];
 	clearedAt = [dateFormat dateFromString:[json objectForKey:@"clearedAt"]];
+	
+	discounts = [json objectForKey:@"discounts"];
+	if (!discounts) discounts = [[NSArray alloc] init];
 	
 	postcode = [json objectForKey:@"postcode"];
 	postcodeDistance = [json objectForKey:@"postcodeDistance"];
@@ -128,6 +133,7 @@
 	if (cookingTime == nil) cookingTime = @"";
 	if (telephone == nil) telephone = @"";
 	if (customerName == nil) customerName = @"";
+	if (discounts == nil) discounts = [[NSArray alloc] init];
 	
 	[[[Connection getConnection] socket] sendEvent:@"save.group" withData:@{
 																			@"_id": _id,
@@ -136,6 +142,7 @@
 																			@"clearedAt": [NSNumber numberWithInt:[clearedAt timeIntervalSince1970]],
 																			@"table": tid,
 																			@"orders": orderIds,
+																			@"discounts": discounts,
 																			@"postcode": postcode,
 																			@"postcodeDistance": postcodeDistance,
 																			@"deliveryTime": deliveryTime,

@@ -11,7 +11,6 @@
 #import "TextSwitchCell.h"
 #import "Discount.h"
 #import "DiscountCategoriesViewController.h"
-#import "DiscountTablesViewController.h"
 #import "AppDelegate.h"
 
 @interface DiscountViewController () {
@@ -55,7 +54,6 @@
 	if (save && discount.name.length > 0) {
 		discount.value = [[(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] textField].text floatValue];
 		discount.discountPercent = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]] checkbox] isOn];
-		discount.allTables = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]] checkbox] isOn];
 		discount.allCategories = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]] checkbox] isOn];
 		
 		[discount save];
@@ -76,14 +74,8 @@
 
 - (void)allCategoriesChanged:(id)sender {
 	[discount setAllCategories:[(UISwitch *)sender isOn]];
-	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
-	//[discount setCategories:[[NSArray alloc] init]];
-}
-
-- (void)allTablesChanged:(id)sender {
-	[discount setAllTables:[(UISwitch *)sender isOn]];
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
-	//[discount setTables:[[NSArray alloc] init]];
+	//[discount setCategories:[[NSArray alloc] init]];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -91,9 +83,6 @@
 	
 	if ([[segue identifier] isEqualToString:@"openCategories"]) {
 		DiscountCategoriesViewController *vc = segue.destinationViewController;
-		vc.discount = discount;
-	} else if ([[segue identifier] isEqualToString:@"openTables"]) {
-		DiscountTablesViewController *vc = segue.destinationViewController;
 		vc.discount = discount;
 	}
 }
@@ -117,13 +106,6 @@
 		return 2; // Value & Percentage Switch
 	}
 	if (section == 2) {
-		// All Tables & Tables
-		if (discount.allTables == false)
-			return 2;
-		
-		return 1;
-	}
-	if (section == 3) {
 		// All Categories & Categories
 		if (discount.allCategories == false)
 			return 2;
@@ -192,25 +174,6 @@ static NSString *selectCellID = @"select";
 		if (indexPath.row == 0) {
 			TextSwitchCell *cell = [self allocSwitchCell:tableView indexPath:indexPath];
 			
-			cell.label.text = @"All Tables";
-			cell.checkbox.on = false;
-			cell.checkbox.on = discount.allTables;
-			
-			[cell.checkbox removeTarget:self action:@selector(allTablesChanged:) forControlEvents:UIControlEventValueChanged];
-			[cell.checkbox addTarget:self action:@selector(allTablesChanged:) forControlEvents:UIControlEventValueChanged];
-			
-			return cell;
-		} else if (indexPath.row == 1) {
-			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selectCellID forIndexPath:indexPath];
-			cell.textLabel.text = @"Select Tables";
-			
-			return cell;
-		}
-	}
-	if (indexPath.section == 3) {
-		if (indexPath.row == 0) {
-			TextSwitchCell *cell = [self allocSwitchCell:tableView indexPath:indexPath];
-			
 			cell.label.text = @"All Categories";
 			cell.checkbox.on = false;
 			cell.checkbox.on = discount.allCategories;
@@ -241,8 +204,6 @@ static NSString *selectCellID = @"select";
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		[[(TextFieldCell *)cell textField] becomeFirstResponder];
 	} else if (indexPath.section == 2 && indexPath.row == 1) {
-		[self performSegueWithIdentifier:@"openTables" sender:nil];
-	} else if (indexPath.section == 3 && indexPath.row == 1) {
 		[self performSegueWithIdentifier:@"openCategories" sender:nil];
 	}
 }

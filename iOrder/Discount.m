@@ -12,7 +12,7 @@
 
 @implementation Discount
 
-@synthesize _id, name, allCategories, allTables, categories, discountPercent, tables, value;
+@synthesize _id, name, allCategories, categories, discountPercent, value;
 
 - (id)init {
     self = [super init];
@@ -21,9 +21,7 @@
 		name = @"";
 		_id = @"";
 		allCategories = false;
-		allTables = false;
 		categories = [NSArray array];
-		tables = [NSArray array];
 		discountPercent = false;
 		value = 0.0;
     }
@@ -35,9 +33,7 @@
     [self set_id:[json objectForKey:@"_id"]];
     [self setName:[json objectForKey:@"name"]];
 	[self setAllCategories:[[json objectForKey:@"allCategories"] boolValue]];
-	[self setAllTables:[[json objectForKey:@"allTables"] boolValue]];
 	[self setCategories:[json objectForKey:@"categories"]];
-	[self setTables:[json objectForKey:@"tables"]];
 	[self setDiscountPercent:[[json objectForKey:@"discountPercent"] boolValue]];
 	[self setValue:[[json objectForKey:@"value"] floatValue]];
 }
@@ -51,9 +47,7 @@
 													  @"_id": _id,
 													  @"name": name,
 													  @"allCategories": [NSNumber numberWithBool:allCategories],
-													  @"allTables": [NSNumber numberWithBool:allTables],
 													  @"categories": categories,
-													  @"tables": tables,
 													  @"discountPercent": [NSNumber numberWithBool:discountPercent],
 													  @"value": [NSNumber numberWithFloat:value]
 													  }];

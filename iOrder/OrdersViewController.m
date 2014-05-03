@@ -22,6 +22,8 @@
 #import <AFNetworking/AFNetworking.h>
 #import "TablesViewController.h"
 #import "DatePickerTableViewCell.h"
+#import "DiscountsViewController.h"
+
 
 @interface OrdersViewController () {
 	UIActionSheet *printAndClearSheet;
@@ -36,7 +38,13 @@
 	CLLocationManager *locationManager;
 	
 	bool showsDatePicker;
+	
+	UIPopoverController *popover;
 }
+
+@end
+
+@interface OrdersViewController (PopoverDelegate) <UIPopoverControllerDelegate>
 
 @end
 
@@ -75,6 +83,13 @@
 			self.navigationItem.title = group.table.name;
 		}
 	}
+	
+	CATransition *transition = [CATransition animation];
+	transition.type = kCATransitionFade;
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.duration = 0.1;
+	
+	[self.tableView.layer addAnimation:transition forKey:@"UITableViewReloadDataAnimationKey"];
 	
 	showsDatePicker = false;
 	
@@ -115,11 +130,15 @@
 		}
 		
 		vc.navigationItem.title = [NSString stringWithFormat:@"Order #%d", row];
+	} else if ([segue.identifier isEqualToString:@"openDiscounts"]) {
+		DiscountsViewController *vc = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+		vc.group = group;
 	}
 }
 
 - (void)reloadData {
 	if (table) group = table.group;
+	
 	[self.tableView reloadData];
 }
 
@@ -181,10 +200,10 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if (table.delivery) {
-		return 4;
+		return 5;
 	}
 	
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -212,6 +231,11 @@
 		return 1;
 	}
 	
+	if (section == 4 || section == 3) {
+		// Discounts
+		return 1;
+	}
+	
     return 0;
 }
 
@@ -219,9 +243,15 @@
 {
 	static NSString *CellIdentifier = @"basket";
 	__unused static NSString *fieldIdentifier = @"text";
+	__unused static NSString *basicCellIdentifier = @"basic";
 	
 	UITableViewCell *cell;
-	if (indexPath.section == 2 || indexPath.section == 3) {
+	if ((!table.delivery && indexPath.section == 3) || indexPath.section == 4) {
+		cell = [tableView dequeueReusableCellWithIdentifier:basicCellIdentifier forIndexPath:indexPath];
+		
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.textLabel.textAlignment = NSTextAlignmentLeft;
+	} else if (indexPath.section == 2 || indexPath.section == 3) {
 		NSString *identifier = @"postcode";
 		if (indexPath.row == 0 && (indexPath.section == 2 || indexPath.section == 3)) {
 			identifier = @"text";
@@ -287,7 +317,7 @@
 		[field setPlaceholder:@"Address for Delivery"];
 		[field addTarget:self action:@selector(dismissPostcode:) forControlEvents:UIControlEventEditingDidEnd];
 		[field addTarget:self action:@selector(beganPostcode:) forControlEvents:UIControlEventEditingDidBegin];
-	} else if (indexPath.section >= 2) {
+	} else if (indexPath.section == 2 || (indexPath.section == 3 && table.delivery)) {
 		if (indexPath.row == 3 && table.delivery && showsDatePicker) {
 			DatePickerTableViewCell *_cell = (DatePickerTableViewCell *)cell;
 			[_cell.datePicker setDatePickerMode:UIDatePickerModeTime];
@@ -353,6 +383,8 @@
 			[field addTarget:self action:@selector(dismissCookingTime:) forControlEvents:UIControlEventEditingDidEnd];
 			[field addTarget:self action:@selector(beganCookingTime:) forControlEvents:UIControlEventEditingDidBegin];
 		}
+	} else if (indexPath.section == 3 || indexPath.section == 4) {
+		[cell.textLabel setText:@"Select Discounts"];
 	}
     
     return cell;
@@ -394,7 +426,7 @@
 		[group setOrders:orders];
 	} else if (indexPath.section == 0) {
 		o = [group.orders objectAtIndex:indexPath.row];
-	} else if (indexPath.section == 2 || indexPath.section == 3) {
+	} else if (indexPath.section == 2 || (indexPath.section == 3 && table.delivery)) {
 		if (table.delivery && indexPath.section == 3 && indexPath.row == 2) {
 			// Delivery.. show magic date picking thing.
 			[self showHideDatePicker];
@@ -407,6 +439,23 @@
 		
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		
+		return;
+	} else if (indexPath.section == 3 || indexPath.section == 4) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navvc = [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:@"openDiscounts"];
+			DiscountsViewController *discounts = (DiscountsViewController *)[[navvc viewControllers] objectAtIndex:0];
+			discounts.group = self.group;
+			
+			popover = [[UIPopoverController alloc] initWithContentViewController:navvc];
+			popover.popoverContentSize = CGSizeMake(320, 416);
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			[popover presentPopoverFromRect:cell.bounds inView:cell.contentView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			popover.delegate = self;
+			
+			return;
+		}
+		
+		[self performSegueWithIdentifier:@"openDiscounts" sender:nil];
 		return;
 	}
 	
@@ -423,6 +472,9 @@
 	if (section == 2) {
 		return @"Customer Details";
 	}
+	if ((section == 3 && !table.delivery) || section == 4) {
+		return @"Discounts";
+	}
 	
 	return nil;
 }
@@ -433,6 +485,9 @@
 	}
 	if (section == 2 && group.postcodeDistance.length > 0) {
 		return [@"Distance to target: " stringByAppendingString:group.postcodeDistance];
+	}
+	if ((section == 4 || (section == 3 && !table.delivery)) && group.discounts.count > 0) {
+		return [NSString stringWithFormat:@"%d Discount%@ Applied", group.discounts.count, group.discounts.count > 1 ? @"s" : @""];
 	}
 	
 	return nil;
@@ -718,6 +773,17 @@
 
 - (void)hideDatePicker {
 	showsDatePicker = false;
+}
+
+@end
+
+@implementation OrdersViewController (PopoverDelegate)
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	if (popoverController == popover) {
+		popover = nil;
+		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+	}
 }
 
 @end

@@ -59,6 +59,7 @@
 	[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 	[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:1.f]];
 	[[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
+	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
 	[[UITableView appearance] setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -101,6 +102,10 @@
     if (isInLockscreen) {
         hud = [MBProgressHUD showHUDAddedTo:vc.view animated:animated];
         hud.yOffset = 40.f;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			hud.yOffset = 0.f;
+		}
     } else {
 		UIViewController *controller = _window.rootViewController;
 		while (controller.presentedViewController) {

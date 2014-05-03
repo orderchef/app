@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class OrderGroup;
+
 @interface DiscountsViewController : UITableViewController
+
+@property (nonatomic, weak) OrderGroup *group;
 
 @end

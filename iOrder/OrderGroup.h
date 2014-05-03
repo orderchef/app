@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSArray *orders;
 @property (assign) BOOL cleared;
 @property (nonatomic, strong) NSDate *clearedAt;
+@property (nonatomic, strong) NSArray *discounts;
 
 @property (nonatomic, strong) NSString *postcode;
 @property (nonatomic, strong) NSString *postcodeDistance;

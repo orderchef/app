@@ -81,8 +81,7 @@
 						   @"item": [(Item *)[item objectForKey:@"item"] _id],
 						   @"quantity": [item objectForKey:@"quantity"],
 						   @"notes": [item objectForKey:@"notes"],
-						   @"price": [item objectForKey:@"price"],
-						   @"discounts": [item objectForKey:@"discounts"]
+						   @"price": [item objectForKey:@"price"]
 						   }];
 	}
 	
@@ -133,7 +132,6 @@
 		[it setObject:item forKey:@"item"];
 		[it setObject:@"" forKey:@"notes"];
 		[it setObject:item.price forKey:@"price"];
-		[it setObject:@[] forKey:@"discounts"];
 		
 		NSMutableArray *_items = [items mutableCopy];
 		[_items addObject:it];
