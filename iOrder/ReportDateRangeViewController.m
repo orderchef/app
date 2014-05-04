@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Matej Kramny. All rights reserved.
 //
 
-#import "ReportViewController.h"
-#import "ReportItemsViewController.h"
+#import "ReportDateRangeViewController.h"
 #import "OrdersViewController.h"
 #import "Connection.h"
 #import "AppDelegate.h"
@@ -15,14 +14,14 @@
 #import "OrderGroup.h"
 #import "Table.h"
 
-@interface ReportViewController () {
+@interface ReportDateRangeViewController () {
 	NSArray *orders;
 	OrderGroup *group;
 }
 
 @end
 
-@implementation ReportViewController
+@implementation ReportDateRangeViewController
 
 @synthesize dateRange;
 

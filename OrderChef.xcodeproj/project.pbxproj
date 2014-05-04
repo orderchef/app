@@ -36,10 +36,8 @@
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7F353518E18D740090FF44 /* SubMenuViewController.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
-		4F9BB4EB190A66E1007B7C6A /* ReportDateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BB4EA190A66E1007B7C6A /* ReportDateViewController.m */; };
-		4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */; };
+		4F9DDFF718644C8A00A7BFE5 /* ReportDateRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
-		4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA343461875DBCD0049734F /* ReportItemsViewController.m */; };
 		4FC01F6D19059734009456BD /* DatePickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC01F6C19059734009456BD /* DatePickerTableViewCell.m */; };
 		4FD59E5818211E870077A70E /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD59E5718211E870077A70E /* Connection.m */; };
 		4FD59E5A182128FF0077A70E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD59E59182128FF0077A70E /* libPods.a */; };
@@ -65,7 +63,6 @@
 		4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */; };
 		4FF29311186D991000795167 /* OrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29310186D991000795167 /* OrdersViewController.m */; };
 		4FF29314186DB90000795167 /* PrintersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29313186DB90000795167 /* PrintersViewController.m */; };
-		4FFD1EE819087365003E10D8 /* ReportOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD1EE719087365003E10D8 /* ReportOrdersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,14 +132,10 @@
 		4F7F353518E18D740090FF44 /* SubMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubMenuViewController.m; sourceTree = "<group>"; };
 		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
 		4F8B98C0185E279C001354CA /* ReportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportsViewController.m; sourceTree = "<group>"; };
-		4F9BB4E9190A66E1007B7C6A /* ReportDateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDateViewController.h; sourceTree = "<group>"; };
-		4F9BB4EA190A66E1007B7C6A /* ReportDateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDateViewController.m; sourceTree = "<group>"; };
-		4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
-		4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		4F9DDFF518644C8A00A7BFE5 /* ReportDateRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDateRangeViewController.h; sourceTree = "<group>"; };
+		4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDateRangeViewController.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderItemViewController.h; sourceTree = "<group>"; };
 		4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderItemViewController.m; sourceTree = "<group>"; };
-		4FA343451875DBCD0049734F /* ReportItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemsViewController.h; sourceTree = "<group>"; };
-		4FA343461875DBCD0049734F /* ReportItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemsViewController.m; sourceTree = "<group>"; };
 		4FC01F6B19059734009456BD /* DatePickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerTableViewCell.h; sourceTree = "<group>"; };
 		4FC01F6C19059734009456BD /* DatePickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerTableViewCell.m; sourceTree = "<group>"; };
 		4FD59E5618211E870077A70E /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
@@ -179,8 +172,6 @@
 		4FF29310186D991000795167 /* OrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersViewController.m; sourceTree = "<group>"; };
 		4FF29312186DB90000795167 /* PrintersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintersViewController.h; sourceTree = "<group>"; };
 		4FF29313186DB90000795167 /* PrintersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintersViewController.m; sourceTree = "<group>"; };
-		4FFD1EE619087365003E10D8 /* ReportOrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportOrdersViewController.h; sourceTree = "<group>"; };
-		4FFD1EE719087365003E10D8 /* ReportOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportOrdersViewController.m; sourceTree = "<group>"; };
 		9E20786A05CA4C89B4B6DCAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -316,14 +307,8 @@
 			children = (
 				4F8B98BF185E279C001354CA /* ReportsViewController.h */,
 				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
-				4FFD1EE619087365003E10D8 /* ReportOrdersViewController.h */,
-				4FFD1EE719087365003E10D8 /* ReportOrdersViewController.m */,
-				4F9BB4E9190A66E1007B7C6A /* ReportDateViewController.h */,
-				4F9BB4EA190A66E1007B7C6A /* ReportDateViewController.m */,
-				4F9DDFF518644C8A00A7BFE5 /* ReportViewController.h */,
-				4F9DDFF618644C8A00A7BFE5 /* ReportViewController.m */,
-				4FA343451875DBCD0049734F /* ReportItemsViewController.h */,
-				4FA343461875DBCD0049734F /* ReportItemsViewController.m */,
+				4F9DDFF518644C8A00A7BFE5 /* ReportDateRangeViewController.h */,
+				4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */,
 			);
 			name = Reports;
 			sourceTree = "<group>";
@@ -611,22 +596,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F9DDFF718644C8A00A7BFE5 /* ReportViewController.m in Sources */,
+				4F9DDFF718644C8A00A7BFE5 /* ReportDateRangeViewController.m in Sources */,
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FC01F6D19059734009456BD /* DatePickerTableViewCell.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
 				4F65EE52190087EF004C3096 /* SplitViewController.m in Sources */,
-				4FA343471875DBCD0049734F /* ReportItemsViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */,
 				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
-				4F9BB4EB190A66E1007B7C6A /* ReportDateViewController.m in Sources */,
 				4F545EF018C11019006BA9E7 /* DiscountCategoriesViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
 				4F3A5D6D1820846800201B8C /* ItemCategory.m in Sources */,
 				4FF29311186D991000795167 /* OrdersViewController.m in Sources */,
-				4FFD1EE819087365003E10D8 /* ReportOrdersViewController.m in Sources */,
 				4FD939321865D06800A2042F /* CategoriesViewController.m in Sources */,
 				4F3A5D701820846800201B8C /* Table.m in Sources */,
 				4F3628C01856025B00971505 /* StaffViewController.m in Sources */,

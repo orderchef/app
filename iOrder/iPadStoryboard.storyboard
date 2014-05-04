@@ -423,10 +423,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="4733" y="-4868"/>
         </scene>
-        <!--Report View Controller - {{ Report }}-->
+        <!--Report Date Range View Controller - {{ Report }}-->
         <scene sceneID="iOn-D1-xVK">
             <objects>
-                <tableViewController id="xcc-Lr-Vcb" customClass="ReportViewController" sceneMemberID="viewController">
+                <tableViewController id="xcc-Lr-Vcb" customClass="ReportDateRangeViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="7ai-Q8-RKw">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

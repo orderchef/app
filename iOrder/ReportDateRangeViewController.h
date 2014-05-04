@@ -10,7 +10,7 @@
 
 @class Report;
 
-@interface ReportViewController : UITableViewController
+@interface ReportDateRangeViewController : UITableViewController
 
 @property (nonatomic, strong) NSArray *dateRange;
 
