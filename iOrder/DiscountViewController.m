@@ -54,7 +54,7 @@
 	if (save && discount.name.length > 0) {
 		discount.value = [[(TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] textField].text floatValue];
 		discount.discountPercent = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]] checkbox] isOn];
-		discount.allCategories = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]] checkbox] isOn];
+		discount.allCategories = [[(TextSwitchCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]] checkbox] isOn];
 		
 		[discount save];
 	}
@@ -155,7 +155,7 @@ static NSString *selectCellID = @"select";
 			
 			cell.label.text = @"Discount Value";
 			cell.textField.placeholder = @"0.00";
-			cell.textField.text = [NSString stringWithFormat:@"%.f", discount.value];
+			cell.textField.text = [NSString stringWithFormat:@"%.2f", discount.value];
 			
 			return cell;
 		} else if (indexPath.row == 1) {

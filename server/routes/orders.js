@@ -201,7 +201,15 @@ exports.router = function (socket) {
 			return;
 		}
 		
-		models.OrderGroup.findById(group).populate('discounts orders table').exec(function(err, group) {
+		models.OrderGroup
+		.findById(group)
+		.populate({
+			path: 'discounts',
+			options: {
+				lean: true
+			}
+		}).populate('orders table')
+		.exec(function(err, group) {
 			data.orderNumber = group.orderNumber;
 			data.table = group.table;
 			
@@ -215,10 +223,19 @@ exports.router = function (socket) {
 				if (err) throw err;
 
 				// Apply Discounts
+				var total = 0;
+				var discounts = {
+					length: 0
+				};
+				// _id: {name: string, value: 23.99}
+
 				for (var i = 0; i < group.orders.length; i++) {
 					var o = group.orders[i];
 					for (var i_item = 0; i_item < o.items.length; i_item++) {
 						var item = o.items[i_item];
+
+						var price = item.price * item.quantity;
+						total += price;
 
 						if (!(item.item && item.item.category && item.item.category._id)) {
 							continue;
@@ -227,12 +244,30 @@ exports.router = function (socket) {
 						for (var i_discount = 0; i_discount < group.discounts.length; i_discount++) {
 							var discount = group.discounts[i_discount];
 
-							console.log("Old: ", item.price);
-							item.price = discount.applyDiscount(item.item.category._id, item.price);
-							console.log("New: ", item.price);
+							if (typeof discounts[discount._id] !== 'object') {
+								discounts[discount._id] = {
+									name: '',
+									value: 0
+								};
+								discounts.length++;
+							}
+
+							discounts[discount._id].name = discount.name;
+							if (discount.discountPercent) {
+								discounts[discount._id].name += ' (-' + (Math.round(discount.value * 100) / 100).toFixed(2) + '%)';
+							} else {
+								discounts[discount._id].name += ' (-' + (Math.round(discount.value * 100) / 100) + ' GBP)';
+							}
+
+							var new_price = discount.applyDiscount(item.item.category._id, price);
+
+							discounts[discount._id].value += price - new_price;
 						}
 					}
 				}
+
+				data.total = total;
+				data.discounts = discounts;
 				
 				for (var i = 0; i < models.printers.length; i++) {
 					if (!models.printers[i].printsBill) continue;

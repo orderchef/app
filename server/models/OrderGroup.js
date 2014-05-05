@@ -205,8 +205,29 @@ scheme.methods.print = function (printer, data) {
 
 	var totalString = "";
 	var total = "";
-	total = " "+orderData.total.toFixed(2)+" GBP\n";
-	totalString = "\nTotal:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
+	total = " "+(Math.round(data.total * 100) / 100).toFixed(2)+" GBP\n";
+	
+	if (data.discounts.length > 0) {
+		totalString = "\nSubtotal:"+common.getSpaces(kChars - 9 - total.length)+total;
+
+		var discountValue = 0;
+		for (var discount in data.discounts) {
+			if (discount == 'length' || !data.discounts.hasOwnProperty(discount)) {
+				continue;
+			}
+
+			discountValue += data.discounts[discount].value;
+
+			var d = data.discounts[discount].name;
+			var value = '-'+(Math.round(data.discounts[discount].value * 100) / 100).toFixed(2) + " GBP\n";
+			totalString += d + common.getSpaces(kChars - d.length - value.length) + value;
+		}
+
+		total = " "+ (Math.round((data.total - discountValue) * 100) / 100).toFixed(2) + " GBP\n";
+		totalString += "Total:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
+	} else {
+		totalString = "\nTotal:"+common.getSpaces(kChars - 6 - total.length)+total+"\n";
+	}
 
 	var servicedBy = "Serviced By " + employee;
 	servicedBy = common.getSpaces(Math.floor((kChars - servicedBy.length)/2)) + servicedBy;

@@ -58,7 +58,6 @@ scheme.methods.getOrderData = function (printer, opts) {
 	
 	var orderedString = "";
 	
-	var total = 0;
 	var printedData = false;
 	for (var i = 0; i < self.items.length; i++) {
 		var it = self.items[i];
@@ -84,7 +83,6 @@ scheme.methods.getOrderData = function (printer, opts) {
 		if (opts.prices) {
 			// Printer prints prices too
 			var val = it.quantity * it.price;
-			total += val;
 			
 			var valueString = " " + val.toFixed(2) + " GBP\n";
 			var string = it.quantity + " " + it.item.name + " ";
@@ -103,8 +101,7 @@ scheme.methods.getOrderData = function (printer, opts) {
 	
 	return {
 		printedData: printedData,
-		data: orderedString,
-		total: total
+		data: orderedString
 	}
 }
 

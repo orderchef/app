@@ -23,6 +23,7 @@ var scheme = schema({
 // Discount applies to only orders which select the discount, but is selected to items which have category (listed)
 
 scheme.methods.update = function (data) {
+	console.log(data);
 	this.name = data.name;
 	this.value = data.value;
 	this.allCategories = data.allCategories;
