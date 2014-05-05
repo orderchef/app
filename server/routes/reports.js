@@ -17,22 +17,26 @@ exports.router = function (socket) {
 				$gte: from,
 				$lt: to
 			}
-		}).sort('-orderNumber').select('orderNumber clearedAt').exec(function(err, orders) {
+		}).sort('-clearedAt')
+		.lean()
+		.select('orderNumber clearedAt table')
+		.populate({
+			path: 'table',
+			select: 'delivery takeaway name',
+			options: {
+				lean: true
+			}
+		})
+		.exec(function(err, orders) {
 			if (err) throw err;
 
 			var os = [];
 			for (var i = 0; i < orders.length; i++) {
-				var o = orders[i].toObject();
-				var clearedAt = o.clearedAt;
-
-				var hrs = clearedAt.getHours();
-				var mins = clearedAt.getMinutes();
-				if (hrs < 10) hrs = "0"+hrs;
-				if (mins < 10) mins = "0"+mins;
-
-				o.clearedAt = clearedAt.getDate() + '/' + (clearedAt.getMonth()+1) + '/' + clearedAt.getFullYear() + ' ' + hrs + ':' + mins;
-				os.push(o)
+				var o = orders[i];
+				o.clearedAt = Math.floor(new Date(o.clearedAt).getTime() / 1000);
+				os.push(o);
 			}
+
 			socket.emit('get.reports', {
 				orders: os,
 				type: "orders",
@@ -53,31 +57,81 @@ exports.router = function (socket) {
 				order: order
 			})
 		});
-	})
+	});
 
-	socket.on('get.reports_days', function(data) {
-		winston.info("Listing Reports Days");
+	socket.on('get.report sales data', function(data) {
+		var from, to;
 
-		return;
-		
+		from = new Date(data.from * 1000);
+		to = new Date(data.to * 1000);
+
 		models.OrderGroup.find({
-			cleared: true
-		}).sort('-clearedAt').populate('orders table').exec(function(err, groups) {
+			cleared: true,
+			clearedAt: {
+				$gte: from,
+				$lt: to
+			}
+		}).select('orders table created cleared clearedAt orderNumber discounts orderTotal'
+		).populate({
+			path: 'table',
+			select: 'delivery takeaway',
+			options: {
+				lean: true
+			}
+		}).exec(function(err, orderGroups) {
 			if (err) throw err;
-			
-			async.each(groups, function(group, cb) {
-				async.each(group.orders, function(order, cb) {
-					order.populate('items.item', function(err) {
-						async.each(order.items, function(item, cb) {
-							item.item.populate('category', cb)
-						}, cb);
-					});
-				}, cb);
-			}, function(err) {
-				if (err) throw err;
-				
-				// Aggregate reports
-				models.OrderGroup.aggregate(socket, groups);
+
+			async.each(orderGroups, function(orderGroup, cb) {
+				orderGroup.updateTotal(cb);
+			}, function() {
+				var totals = {
+					lunchtime: {
+						delivery: 0,
+						takeaway: 0,
+						total: 0
+					},
+					evening: {
+						delivery: 0,
+						takeaway: 0,
+						total: 0
+					},
+					total: {
+						delivery: 0,
+						takeaway: 0,
+						total: 0
+					}
+				};
+
+				for (var i = 0; i < orderGroups.length; i++) {
+					var orderGroup = orderGroups[i];
+
+					var total = null;
+					if (orderGroup.clearedAt.getHours() < 18 && orderGroup.clearedAt.getMinutes() < 31) {
+						// Lunchtime
+						total = totals.lunchtime;
+					} else {
+						// Evening
+						total = totals.evening;
+					}
+
+					if (orderGroup.table.delivery) {
+						total.delivery += orderGroup.orderTotal;
+						totals.total.delivery += orderGroup.orderTotal;
+					} else if (orderGroup.table.takeaway) {
+						total.takeaway += orderGroup.orderTotal;
+						totals.total.takeaway += orderGroup.orderTotal;
+					}
+
+					total.total += orderGroup.orderTotal;
+					totals.total.total += orderGroup.orderTotal;
+				}
+
+				console.log(totals);
+
+				socket.emit('get.reports', {
+					type: 'salesData',
+					totals: totals
+				});
 			});
 		})
 	});

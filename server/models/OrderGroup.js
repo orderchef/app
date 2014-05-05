@@ -42,8 +42,38 @@ var scheme = schema({
 	discounts: [{
 		type: ObjectId,
 		ref: 'Discount'
-	}]
-})
+	}],
+	orderTotal: Number
+});
+
+scheme.methods.updateTotal = function(callback) {
+	var self = this;
+
+	self.populate({
+		path: 'orders',
+		select: 'items',
+		options: {
+			lean: true
+		}
+	}, function(err) {
+		if (err) throw err;
+
+		var total = 0;
+		for (var i = 0; i < self.orders.length; i++) {
+			var order = self.orders[i];
+
+			for (var x = 0; x < order.items.length; x++) {
+				var item = order.items[x];
+
+				total += item.quantity * item.price;
+			}
+		}
+
+		self.orderTotal = total;
+
+		callback();
+	});
+}
 
 scheme.methods.update = function (data) {
 	try {

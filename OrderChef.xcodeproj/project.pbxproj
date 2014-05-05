@@ -36,6 +36,8 @@
 		4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F7864181F1BB10042BC47 /* TextFieldCell.m */; };
 		4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7F353518E18D740090FF44 /* SubMenuViewController.m */; };
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
+		4F9707C91917A7360076381B /* ButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9707C81917A7360076381B /* ButtonsTableViewCell.m */; };
+		4F9707CC1917E5E90076381B /* ReportSalesReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportDateRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
 		4FC01F6D19059734009456BD /* DatePickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC01F6C19059734009456BD /* DatePickerTableViewCell.m */; };
@@ -132,6 +134,10 @@
 		4F7F353518E18D740090FF44 /* SubMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubMenuViewController.m; sourceTree = "<group>"; };
 		4F8B98BF185E279C001354CA /* ReportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportsViewController.h; sourceTree = "<group>"; };
 		4F8B98C0185E279C001354CA /* ReportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportsViewController.m; sourceTree = "<group>"; };
+		4F9707C71917A7360076381B /* ButtonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonsTableViewCell.h; sourceTree = "<group>"; };
+		4F9707C81917A7360076381B /* ButtonsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsTableViewCell.m; sourceTree = "<group>"; };
+		4F9707CA1917E5E90076381B /* ReportSalesReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportSalesReportTableViewController.h; sourceTree = "<group>"; };
+		4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportSalesReportTableViewController.m; sourceTree = "<group>"; };
 		4F9DDFF518644C8A00A7BFE5 /* ReportDateRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDateRangeViewController.h; sourceTree = "<group>"; };
 		4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDateRangeViewController.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderItemViewController.h; sourceTree = "<group>"; };
@@ -274,6 +280,8 @@
 				4F545EE918C0E04B006BA9E7 /* TextSwitchCell.m */,
 				4FC01F6B19059734009456BD /* DatePickerTableViewCell.h */,
 				4FC01F6C19059734009456BD /* DatePickerTableViewCell.m */,
+				4F9707C71917A7360076381B /* ButtonsTableViewCell.h */,
+				4F9707C81917A7360076381B /* ButtonsTableViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -309,6 +317,8 @@
 				4F8B98C0185E279C001354CA /* ReportsViewController.m */,
 				4F9DDFF518644C8A00A7BFE5 /* ReportDateRangeViewController.h */,
 				4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */,
+				4F9707CA1917E5E90076381B /* ReportSalesReportTableViewController.h */,
+				4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */,
 			);
 			name = Reports;
 			sourceTree = "<group>";
@@ -596,6 +606,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F9707CC1917E5E90076381B /* ReportSalesReportTableViewController.m in Sources */,
 				4F9DDFF718644C8A00A7BFE5 /* ReportDateRangeViewController.m in Sources */,
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
@@ -617,6 +628,7 @@
 				4F2E7E3618A4D8DD00BA29CC /* DiscountsViewController.m in Sources */,
 				4FD59E5D182573860077A70E /* OrderViewController.m in Sources */,
 				4F345AD8184E83D000A98BEB /* TextareaCell.m in Sources */,
+				4F9707C91917A7360076381B /* ButtonsTableViewCell.m in Sources */,
 				4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F283A491869CE48001E4223 /* OrderGroup.m in Sources */,
