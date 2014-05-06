@@ -136,7 +136,7 @@ exports.router = function (socket) {
 					total.total += t;
 					totals.total.total += t;
 				}
-				
+
 				socket.emit('get.reports', {
 					type: 'salesData',
 					totals: totals
