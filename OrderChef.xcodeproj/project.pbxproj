@@ -65,6 +65,7 @@
 		4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */; };
 		4FF29311186D991000795167 /* OrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29310186D991000795167 /* OrdersViewController.m */; };
 		4FF29314186DB90000795167 /* PrintersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF29313186DB90000795167 /* PrintersViewController.m */; };
+		4FF337BB19192007006711BD /* ReportPopularDishesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF337BA19192007006711BD /* ReportPopularDishesTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +179,8 @@
 		4FF29310186D991000795167 /* OrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersViewController.m; sourceTree = "<group>"; };
 		4FF29312186DB90000795167 /* PrintersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintersViewController.h; sourceTree = "<group>"; };
 		4FF29313186DB90000795167 /* PrintersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintersViewController.m; sourceTree = "<group>"; };
+		4FF337B919192007006711BD /* ReportPopularDishesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportPopularDishesTableViewController.h; sourceTree = "<group>"; };
+		4FF337BA19192007006711BD /* ReportPopularDishesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportPopularDishesTableViewController.m; sourceTree = "<group>"; };
 		9E20786A05CA4C89B4B6DCAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -319,6 +322,8 @@
 				4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */,
 				4F9707CA1917E5E90076381B /* ReportSalesReportTableViewController.h */,
 				4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */,
+				4FF337B919192007006711BD /* ReportPopularDishesTableViewController.h */,
+				4FF337BA19192007006711BD /* ReportPopularDishesTableViewController.m */,
 			);
 			name = Reports;
 			sourceTree = "<group>";
@@ -611,6 +616,7 @@
 				4F3628B61855E0F900971505 /* LTHPasscodeViewController.m in Sources */,
 				4F6F7865181F1BB10042BC47 /* TextFieldCell.m in Sources */,
 				4FC01F6D19059734009456BD /* DatePickerTableViewCell.m in Sources */,
+				4FF337BB19192007006711BD /* ReportPopularDishesTableViewController.m in Sources */,
 				4FDEE0521852022F009AEB5B /* TableViewController.m in Sources */,
 				4F65EE52190087EF004C3096 /* SplitViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,

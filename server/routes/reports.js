@@ -3,6 +3,7 @@ var mongoose = require('mongoose')
 	, spawn = require('child_process').spawn
 	, async = require('async')
 	, winston = require('winston')
+	, credentials = require('../credentials')
 
 exports.router = function (socket) {
 	socket.on('get.reports', function(data) {
@@ -88,16 +89,19 @@ exports.router = function (socket) {
 					lunchtime: {
 						delivery: 0,
 						takeaway: 0,
+						other: 0,
 						total: 0
 					},
 					evening: {
 						delivery: 0,
 						takeaway: 0,
+						other: 0,
 						total: 0
 					},
 					total: {
 						delivery: 0,
 						takeaway: 0,
+						other: 0,
 						total: 0
 					}
 				};
@@ -114,20 +118,25 @@ exports.router = function (socket) {
 						total = totals.evening;
 					}
 
+					var t = orderGroup.orderTotal;
+					var key = '';
 					if (orderGroup.table.delivery) {
-						total.delivery += orderGroup.orderTotal;
-						totals.total.delivery += orderGroup.orderTotal;
+						key = 'delivery';
 					} else if (orderGroup.table.takeaway) {
-						total.takeaway += orderGroup.orderTotal;
-						totals.total.takeaway += orderGroup.orderTotal;
+						key = 'takeaway';
+					} else {
+						key = 'other';
 					}
 
-					total.total += orderGroup.orderTotal;
-					totals.total.total += orderGroup.orderTotal;
+					if (key.length > 0) {
+						total[key] += t;
+						totals.total[key] += t;
+					}
+
+					total.total += t;
+					totals.total.total += t;
 				}
-
-				console.log(totals);
-
+				
 				socket.emit('get.reports', {
 					type: 'salesData',
 					totals: totals
@@ -135,4 +144,103 @@ exports.router = function (socket) {
 			});
 		})
 	});
+
+	socket.on('get.report popular dishes', function(data) {
+		// heavy op.
+		if (!credentials.do_heavy_reports) {
+			// Not doing this!
+			return;
+		}
+
+		var from, to;
+
+		from = new Date(data.from * 1000);
+		to = new Date(data.to * 1000);
+
+		models.OrderGroup.find({
+			cleared: true,
+			clearedAt: {
+				$gte: from,
+				$lt: to
+			}
+		})
+		.populate({
+			path: 'orders',
+			options: {
+				lean: true
+			}
+		})
+		.lean()
+		.exec(function(err, ordergroups) {
+			if (err) throw err;
+
+			var items = {};
+			var items_length = 0;
+
+			for (var i = 0; i < ordergroups.length; i++) {
+				var group = ordergroups[i];
+				for (var oi = 0; oi < group.orders.length; oi++) {
+					var order = group.orders[oi];
+					for (var ii = 0; ii < order.items.length; ii++) {
+						var item = order.items[ii];
+
+						if (typeof items[item.item] !== 'object') {
+							items[item.item] = {
+								quantity: 0,
+								price: item.price,
+								total: 0,
+								_id: item.item
+							}
+							items_length++;
+						}
+
+						items[item.item].quantity += item.quantity;
+						items[item.item].total += item.quantity * item.price;
+					}
+				}
+			}
+
+			var _items = [];
+			for (var item in items) {
+				if (!items.hasOwnProperty(item)) {
+					continue;
+				}
+
+				_items.push(items[item]);
+			}
+			items = null;
+
+			async.each(_items, function(item, cb) {
+				models.Item.findOne({
+					_id: item._id
+				}).lean().exec(function(err, item_item) {
+					item.item = item_item;
+					
+					cb(err);
+				})
+			}, function(err) {
+				if (err) throw err;
+
+				// Order by best selling
+
+				_items.sort(function(a,b) {
+					if (a.total < b.total) return 1;
+					if (a.total > b.total) return -1;
+					return 0;
+				});
+				var quantity = JSON.parse(JSON.stringify(_items));
+				quantity.sort(function(a,b) {
+					if (a.quantity < b.quantity) return 1;
+					if (a.quantity > b.quantity) return -1;
+					return 0;
+				});
+
+				socket.emit('get.reports', {
+					type: 'popularDishes',
+					price: _items,
+					quantity: quantity
+				});
+			});
+		})
+	})
 }

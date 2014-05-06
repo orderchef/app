@@ -1,0 +1,1 @@
+exports.do_heavy_reports = true;
