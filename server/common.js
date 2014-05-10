@@ -1,9 +1,13 @@
 var moment = require('moment')
 
-exports.getSpaces = function (spaces) {
+exports.getSpaces = function (spaces, character) {
 	var spacer = "";
-	while (spaces >= 0) {
-		spacer += " ";
+	if (typeof character === 'undefined') {
+		character = " ";
+	}
+	
+	while (spaces > 0) {
+		spacer += character;
 		spaces--;
 	}
 	

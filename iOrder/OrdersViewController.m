@@ -23,11 +23,9 @@
 #import "TablesViewController.h"
 #import "DatePickerTableViewCell.h"
 #import "DiscountsViewController.h"
-
+#import "PrintReceiptViewController.h"
 
 @interface OrdersViewController () {
-	UIActionSheet *printAndClearSheet;
-	
 	UITapGestureRecognizer *dismissPostcodeRecogniser;
 	UITapGestureRecognizer *dismissCookingRecogniser;
 	UITapGestureRecognizer *dismissDeliveryRecogniser;
@@ -133,6 +131,10 @@
 	} else if ([segue.identifier isEqualToString:@"openDiscounts"]) {
 		DiscountsViewController *vc = [[segue.destinationViewController viewControllers] objectAtIndex:0];
 		vc.group = group;
+	} else if ([segue.identifier isEqualToString:@"printBill"]) {
+		PrintReceiptViewController *vc = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+		vc.group = group;
+		vc.parentView = self;
 	}
 }
 
@@ -180,9 +182,26 @@
 }
 
 - (void)printButton:(id)sender {
-	[group printBill];
-	
-	[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:@"Final Bill Printed" detail:nil hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.navigationController.view];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navvc = [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:@"printReceipt"];
+		PrintReceiptViewController *vc = (PrintReceiptViewController *)[[navvc viewControllers] objectAtIndex:0];
+		vc.group = self.group;
+		vc.parentView = self;
+		
+		popover = [[UIPopoverController alloc] initWithContentViewController:navvc];
+		vc.popover = popover;
+		
+		popover.popoverContentSize = CGSizeMake(360, 416);
+		UIBarButtonItem *button = (UIBarButtonItem *)sender;
+		UIView *buttonView = [button valueForKey:@"view"];
+		
+		[popover presentPopoverFromRect:buttonView.bounds inView:buttonView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		popover.delegate = self;
+		
+		return;
+	} else {
+		[self performSegueWithIdentifier:@"printBill" sender:nil];
+	}
 }
 
 - (void)reloadParentView {
@@ -213,7 +232,7 @@
 	}
 	
 	if (section == 1) {
-		return 2;
+		return 1;
 	}
 	
 	if (table.delivery && section == 2) {
@@ -297,10 +316,6 @@
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Create New Order";
-		} else {
-			cell.textLabel.text = @"Print Final Bill";
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		}
 		cell.detailTextLabel.text = nil;
 	} else if (indexPath.section == 2 && table.delivery) {
@@ -395,24 +410,6 @@
 	//if (indexPath.section == 0) return;
 	
 	if (indexPath.section == 1) {
-		if (indexPath.row == 1) {
-			// clear
-			if (group.cleared == true) {
-				// Just print..
-				[self printButton:nil];
-				[tableView deselectRowAtIndexPath:indexPath animated:YES];
-				
-				return;
-			}
-			
-			if (!printAndClearSheet) {
-				printAndClearSheet = [[UIActionSheet alloc] initWithTitle:@"Print and Clear All Orders?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Just Print", @"Print & Clear Table", nil];
-			}
-			[printAndClearSheet showInView:self.navigationController.view];
-			
-			return;
-		}
-		
 		o = [[Order alloc] init];
 		o.group = group;
 		[o save];
@@ -480,9 +477,6 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if (section == 1) {
-		return @"Print Final Bill button will only print to Receipt Printers. Cleared Orders are Viewable from the Admin Reports Section.";
-	}
 	if (section == 2 && group.postcodeDistance.length > 0) {
 		return [@"Distance to target: " stringByAppendingString:group.postcodeDistance];
 	}
@@ -526,27 +520,6 @@
 	}
 	
 	return 44;
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex < 2) {
-		[group printBill];
-		
-		NSString *msg = @"Final Bill Printed";
-		if (buttonIndex == 1) {
-			msg = @"Final Bill Printed & Cleared";
-			[group clear];
-		}
-		
-		[(AppDelegate *)[UIApplication sharedApplication].delegate showMessage:msg detail:@"Printed to Receipt Printer only" hideAfter:0.5 showAnimated:NO hideAnimated:YES hide:YES tapRecognizer:nil toView:self.view];
-		[self refreshOrders:nil];
-	}
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 #pragma mark - Text Fields

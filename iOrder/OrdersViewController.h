@@ -19,5 +19,6 @@
 @property (nonatomic, weak) OrderGroup *group;
 
 - (void)onLoad;
+- (void)refreshOrders:(id)sender;
 
 @end

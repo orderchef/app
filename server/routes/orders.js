@@ -224,6 +224,7 @@ exports.router = function (socket) {
 
 				// Apply Discounts
 				var total = 0;
+				var discountsValue = 0;
 				var discounts = {
 					length: 0
 				};
@@ -261,7 +262,9 @@ exports.router = function (socket) {
 
 							var new_price = discount.applyDiscount(item.item.category._id, price);
 
-							discounts[discount._id].value += price - new_price;
+							var discountValue = price - new_price;
+							discounts[discount._id].value += discountValue;
+							discountsValue += discountValue;
 						}
 					}
 				}
@@ -269,11 +272,21 @@ exports.router = function (socket) {
 				data.total = total;
 				data.discounts = discounts;
 				
+				group.orderTotal = total;
+				group.discountTotal = discountsValue;
+				group.save();
+
 				for (var i = 0; i < models.printers.length; i++) {
 					if (!models.printers[i].printsBill) continue;
 				
 					winston.info("Printing bill to "+models.printers[i].name);
-					group.print(models.printers[i], data)
+					var out = group.print(models.printers[i], data);
+					if (data.do_not_print === true) {
+						socket.emit('print_data', {
+							data: out
+						});
+						break;
+					}
 				}
 			})
 		})

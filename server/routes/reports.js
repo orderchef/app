@@ -61,6 +61,8 @@ exports.router = function (socket) {
 	});
 
 	socket.on('get.report sales data', function(data) {
+		console.log("Getting sales data");
+
 		var from, to;
 
 		from = new Date(data.from * 1000);
@@ -72,80 +74,82 @@ exports.router = function (socket) {
 				$gte: from,
 				$lt: to
 			}
-		}).select('orders table created cleared clearedAt orderNumber discounts orderTotal'
-		).populate({
+		})
+		.lean()
+		.select('table created cleared clearedAt orderNumber discountTotal orderTotal')
+		.populate({
 			path: 'table',
 			select: 'delivery takeaway',
 			options: {
 				lean: true
 			}
-		}).exec(function(err, orderGroups) {
+		})
+		.exec(function(err, orderGroups) {
 			if (err) throw err;
 
-			async.each(orderGroups, function(orderGroup, cb) {
-				orderGroup.updateTotal(cb);
-			}, function() {
-				var totals = {
-					lunchtime: {
-						delivery: 0,
-						takeaway: 0,
-						other: 0,
-						total: 0
-					},
-					evening: {
-						delivery: 0,
-						takeaway: 0,
-						other: 0,
-						total: 0
-					},
-					total: {
-						delivery: 0,
-						takeaway: 0,
-						other: 0,
-						total: 0
-					}
-				};
+			var totals = {
+				lunchtime: {
+					delivery: 0,
+					takeaway: 0,
+					other: 0,
+					total: 0
+				},
+				evening: {
+					delivery: 0,
+					takeaway: 0,
+					other: 0,
+					total: 0
+				},
+				total: {
+					delivery: 0,
+					takeaway: 0,
+					other: 0,
+					total: 0
+				}
+			};
 
-				for (var i = 0; i < orderGroups.length; i++) {
-					var orderGroup = orderGroups[i];
+			for (var i = 0; i < orderGroups.length; i++) {
+				var orderGroup = orderGroups[i];
 
-					var total = null;
-					if (orderGroup.clearedAt.getHours() < 18 && orderGroup.clearedAt.getMinutes() < 31) {
-						// Lunchtime
-						total = totals.lunchtime;
-					} else {
-						// Evening
-						total = totals.evening;
-					}
-
-					var t = orderGroup.orderTotal;
-					var key = '';
-					if (orderGroup.table.delivery) {
-						key = 'delivery';
-					} else if (orderGroup.table.takeaway) {
-						key = 'takeaway';
-					} else {
-						key = 'other';
-					}
-
-					if (key.length > 0) {
-						total[key] += t;
-						totals.total[key] += t;
-					}
-
-					total.total += t;
-					totals.total.total += t;
+				var total = null;
+				if (orderGroup.clearedAt.getHours() >= 17 && orderGroup.clearedAt.getMinutes() > 30) {
+					// Evening
+					total = totals.evening;
+				} else {
+					// Lunchtime
+					total = totals.lunchtime;
 				}
 
-				socket.emit('get.reports', {
-					type: 'salesData',
-					totals: totals
-				});
+				var t = orderGroup.orderTotal - orderGroup.discountTotal;
+				if (!t || isNaN(t)) continue;
+
+				var key = '';
+				if (orderGroup.table.delivery) {
+					key = 'delivery';
+				} else if (orderGroup.table.takeaway) {
+					key = 'takeaway';
+				} else {
+					key = 'other';
+				}
+
+				if (key.length > 0) {
+					total[key] += t;
+					totals.total[key] += t;
+				}
+
+				total.total += t;
+				totals.total.total += t;
+			}
+
+			socket.emit('get.reports', {
+				type: 'salesData',
+				totals: totals
 			});
 		})
 	});
 
 	socket.on('get.report popular dishes', function(data) {
+		console.log("Report Popular Dishes")
 		// heavy op.
 		if (!credentials.do_heavy_reports) {
 			// Not doing this!

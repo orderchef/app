@@ -31,6 +31,11 @@
 	
 	[self.navigationItem setTitle:@"Sales Report"];
 	
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printReport:)]];
+	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{
+																	NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
+																	} forState:UIControlStateNormal];
+	
 	[self refreshEvents:nil];
 }
 
@@ -59,6 +64,34 @@
 		[self.refreshControl endRefreshing];
 		[self.tableView reloadData];
 	}
+}
+
+- (void)printReport:(id) sender {
+	__block NSMutableString *report = [[NSMutableString alloc] init];
+	
+	void (^getString)(NSDictionary *) = ^(NSDictionary *data) {
+		[report appendString:@"Delivery Tables: "];
+		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"delivery"] floatValue]];
+		[report appendString:@"Takeaway Tables: "];
+		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"takeaway"] floatValue]];
+		[report appendString:@"Eat In Tables: "];
+		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"other"] floatValue]];
+		[report appendString:@"All Tables: "];
+		[report appendFormat:@"%.2f (GBP)\n\n", [[data objectForKey:@"total"] floatValue]];
+	};
+	
+	[report appendString:@"Total:\n"];
+	getString([salesReport objectForKey:@"total"]);
+	[report appendString:@"Lunchtime (00:00-17:30):\n"];
+	getString([salesReport objectForKey:@"lunchtime"]);
+	[report appendString:@"Evening (17:30-24:00):\n"];
+	getString([salesReport objectForKey:@"evening"]);
+	
+	[[Connection getConnection].socket sendEvent:@"print" withData:@{
+																	 @"data": report,
+																	 @"receiptPrinter": [NSNumber numberWithBool:true],
+																	 @"printDate": [NSNumber numberWithBool:true]
+																	 }];
 }
 
 #pragma mark - Table view data source

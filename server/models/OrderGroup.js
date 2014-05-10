@@ -43,7 +43,8 @@ var scheme = schema({
 		type: ObjectId,
 		ref: 'Discount'
 	}],
-	orderTotal: Number
+	orderTotal: Number,
+	discountTotal: Number
 });
 
 scheme.methods.updateTotal = function(callback) {
@@ -246,6 +247,11 @@ Order #" + data.orderNumber + "\n\
 \n";
 	
 	winston.info(output);
+
+	if (data.do_not_print === true) {
+		// Just return the string..
+		return output;
+	}
 	
 	printer.socket.emit('print_data', {
 		data: output,
@@ -253,6 +259,31 @@ Order #" + data.orderNumber + "\n\
 		logo: true,
 		footer: true
 	});
+
+	if (data.bar_copy === true) {
+		var length = kChars;
+		var half = Math.floor(length / 2);
+		half -= Math.floor('Bar Copy'.length / 2);
+		half -= 1;
+
+		var pre = "\n";
+		pre += common.getSpaces(length, '=')+"\n";
+		pre += common.getSpaces(half, '=')+" ";
+		pre += "Bar Copy";
+		pre += " "+common.getSpaces(half, '=')+"\n";
+		pre += common.getSpaces(length, '=')+"\n\n";
+
+		output = pre + output + pre;
+
+		winston.info(output);
+
+		printer.socket.emit('print_data', {
+			data: output,
+			address: false,
+			logo: false,
+			footer: false
+		});
+	}
 }
 
 module.exports = mongoose.model("OrderGroup", scheme);

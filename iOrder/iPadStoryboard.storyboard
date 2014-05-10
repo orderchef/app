@@ -829,6 +829,79 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1500" y="-631"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wkm-Jk-FQd">
+            <objects>
+                <navigationController storyboardIdentifier="printReceipt" definesPresentationContext="YES" id="e7J-Gf-z0e" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="P9Z-yW-uPW">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="hN9-03-cRw" kind="relationship" relationship="rootViewController" id="KPP-WG-O2Q"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P2d-xU-UfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="783" y="675"/>
+        </scene>
+        <!--Print Receipt View Controller - Final Bill Receipt-->
+        <scene sceneID="3bM-9X-1Tz">
+            <objects>
+                <viewController id="hN9-03-cRw" customClass="PrintReceiptViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5PN-2a-RRH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jal-hR-vDC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K0X-bY-gju">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" text="Loading..." translatesAutoresizingMaskIntoConstraints="NO" id="lIl-D1-hKD">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
+                            </textView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWd-6H-mD5">
+                                <rect key="frame" x="0.0" y="980" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Print (2x) &amp; Clear Table" id="jWu-XB-lE7">
+                                        <connections>
+                                            <action selector="printAndClear:" destination="hN9-03-cRw" id="St9-RQ-v4e"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="gp6-oe-OJh"/>
+                                    <barButtonItem title="Print Copy" id="zLj-mD-7av">
+                                        <connections>
+                                            <action selector="print:" destination="hN9-03-cRw" id="rwf-Md-jIv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aWd-6H-mD5" firstAttribute="leading" secondItem="K0X-bY-gju" secondAttribute="leading" id="2Hk-BD-ITr"/>
+                            <constraint firstAttribute="trailing" secondItem="lIl-D1-hKD" secondAttribute="trailing" id="3f5-zt-ekp"/>
+                            <constraint firstItem="lIl-D1-hKD" firstAttribute="top" secondItem="K0X-bY-gju" secondAttribute="top" id="AJ4-3y-NgR"/>
+                            <constraint firstAttribute="trailing" secondItem="aWd-6H-mD5" secondAttribute="trailing" id="HvK-WQ-n02"/>
+                            <constraint firstItem="lIl-D1-hKD" firstAttribute="leading" secondItem="K0X-bY-gju" secondAttribute="leading" id="Mkv-dH-3KF"/>
+                            <constraint firstItem="Jal-hR-vDC" firstAttribute="top" secondItem="aWd-6H-mD5" secondAttribute="bottom" id="j3e-eS-z81"/>
+                            <constraint firstItem="aWd-6H-mD5" firstAttribute="top" secondItem="lIl-D1-hKD" secondAttribute="bottom" id="u3b-Xt-I10"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Final Bill Receipt" id="o6v-Rt-dHM"/>
+                    <connections>
+                        <outlet property="textView" destination="lIl-D1-hKD" id="trF-sa-FFa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zxz-Qo-6jz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1623" y="673"/>
+        </scene>
         <!--Order View Controller - {{ Order }}-->
         <scene sceneID="vgb-DO-DIO">
             <objects>

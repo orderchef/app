@@ -126,6 +126,9 @@
 			// discounts
 			NSArray *discounts = [self loopAndLoad:[packet args] object:[Discount class]];
 			[[NSNotificationCenter defaultCenter] postNotificationName:kDiscountsNotificationName object:self userInfo:@{ @"discounts": discounts }];
+		} else if ([name isEqualToString:@"print_data"]) {
+			// Print data
+			[[NSNotificationCenter defaultCenter] postNotificationName:kReceiptNotificationName object:self userInfo:(NSDictionary *)[[packet args] objectAtIndex:0]];
 		}
         
         // for specific table

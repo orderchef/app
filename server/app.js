@@ -19,11 +19,11 @@ mongoose.connect("mongodb://127.0.0.1/iorder", {
 	server: {
 		auto_reconnect: true
 	}
-})
+});
 
 io.sockets.on('connection', function(socket) {
 	winston.info("A Socket connected..");
 	
 	routes.router(socket);
-})
+});
 io.set('log level', 1);

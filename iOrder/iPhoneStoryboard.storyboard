@@ -192,6 +192,79 @@
             </objects>
             <point key="canvasLocation" x="944" y="771"/>
         </scene>
+        <!--Print Receipt View Controller - Final Bill Receipt-->
+        <scene sceneID="JRV-lT-KkI">
+            <objects>
+                <viewController id="Z4m-91-7qo" customClass="PrintReceiptViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eZy-jC-TRU"/>
+                        <viewControllerLayoutGuide type="bottom" id="QWJ-My-s56"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dx9-Kv-ELD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" maximumZoomScale="2" editable="NO" text="Loading order..." translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-mf-eNK">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
+                            </textView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjo-pb-gzy">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Print (2x) &amp; Clear Table" id="asg-b6-gPh">
+                                        <connections>
+                                            <action selector="printAndClear:" destination="Z4m-91-7qo" id="WBv-6p-EAF"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="xhr-25-Dfd"/>
+                                    <barButtonItem title="Print Copy" id="h22-65-fpK">
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="print:" destination="Z4m-91-7qo" id="Ffp-iO-vOP"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="QWJ-My-s56" firstAttribute="top" secondItem="kjo-pb-gzy" secondAttribute="bottom" id="0BX-r5-qTY"/>
+                            <constraint firstItem="kjo-pb-gzy" firstAttribute="top" secondItem="mQ9-mf-eNK" secondAttribute="bottom" id="46a-ub-Yku"/>
+                            <constraint firstAttribute="trailing" secondItem="kjo-pb-gzy" secondAttribute="trailing" id="EBP-Zz-uL7"/>
+                            <constraint firstItem="mQ9-mf-eNK" firstAttribute="leading" secondItem="dx9-Kv-ELD" secondAttribute="leading" id="UFE-oz-lgt"/>
+                            <constraint firstItem="kjo-pb-gzy" firstAttribute="leading" secondItem="dx9-Kv-ELD" secondAttribute="leading" id="khF-g0-bDk"/>
+                            <constraint firstAttribute="trailing" secondItem="mQ9-mf-eNK" secondAttribute="trailing" id="pmS-gy-cml"/>
+                            <constraint firstItem="mQ9-mf-eNK" firstAttribute="top" secondItem="dx9-Kv-ELD" secondAttribute="top" id="ulc-Sh-yRb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Final Bill Receipt" id="Yfz-Fz-oAl"/>
+                    <connections>
+                        <outlet property="textView" destination="mQ9-mf-eNK" id="gdc-Dj-j5W"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hgg-sd-GYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1870" y="786"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="oJl-GB-rYL">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="mAt-IA-Vy0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Uev-mI-ux0">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Z4m-91-7qo" kind="relationship" relationship="rootViewController" id="EHb-8F-hF9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i7B-55-N7d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1424" y="786"/>
+        </scene>
         <!--Orders View Controller - {{ Table Name }}-->
         <scene sceneID="tfD-KP-ri5">
             <objects>
@@ -322,6 +395,9 @@ AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
 </data>
                                             </timeZone>
+                                            <connections>
+                                                <segue destination="mAt-IA-Vy0" kind="modal" identifier="printBill" id="pJX-GF-1gn"/>
+                                            </connections>
                                         </datePicker>
                                     </subviews>
                                     <constraints>
@@ -1724,10 +1800,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="QML-Dq-TCZ"/>
-        <segue reference="WC3-Bi-NKW"/>
-        <segue reference="vIn-OU-zy4"/>
-        <segue reference="txN-dp-eX2"/>
         <segue reference="5M3-KS-fLC"/>
+        <segue reference="V0g-3s-5S9"/>
+        <segue reference="txN-dp-eX2"/>
+        <segue reference="vIn-OU-zy4"/>
+        <segue reference="WC3-Bi-NKW"/>
     </inferredMetricsTieBreakers>
 </document>

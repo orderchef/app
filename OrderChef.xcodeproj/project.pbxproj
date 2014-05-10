@@ -38,6 +38,7 @@
 		4F8B98C1185E279C001354CA /* ReportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8B98C0185E279C001354CA /* ReportsViewController.m */; };
 		4F9707C91917A7360076381B /* ButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9707C81917A7360076381B /* ButtonsTableViewCell.m */; };
 		4F9707CC1917E5E90076381B /* ReportSalesReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */; };
+		4F9707CF191EB4210076381B /* PrintReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9707CE191EB4210076381B /* PrintReceiptViewController.m */; };
 		4F9DDFF718644C8A00A7BFE5 /* ReportDateRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */; };
 		4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA097A2184F55CE00398DD4 /* OrderItemViewController.m */; };
 		4FC01F6D19059734009456BD /* DatePickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC01F6C19059734009456BD /* DatePickerTableViewCell.m */; };
@@ -139,6 +140,8 @@
 		4F9707C81917A7360076381B /* ButtonsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsTableViewCell.m; sourceTree = "<group>"; };
 		4F9707CA1917E5E90076381B /* ReportSalesReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportSalesReportTableViewController.h; sourceTree = "<group>"; };
 		4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportSalesReportTableViewController.m; sourceTree = "<group>"; };
+		4F9707CD191EB4210076381B /* PrintReceiptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintReceiptViewController.h; sourceTree = "<group>"; };
+		4F9707CE191EB4210076381B /* PrintReceiptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintReceiptViewController.m; sourceTree = "<group>"; };
 		4F9DDFF518644C8A00A7BFE5 /* ReportDateRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDateRangeViewController.h; sourceTree = "<group>"; };
 		4F9DDFF618644C8A00A7BFE5 /* ReportDateRangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDateRangeViewController.m; sourceTree = "<group>"; };
 		4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderItemViewController.h; sourceTree = "<group>"; };
@@ -249,6 +252,8 @@
 				4F5BE44C181DD255007EF69F /* TablesViewController.m */,
 				4FF2930F186D991000795167 /* OrdersViewController.h */,
 				4FF29310186D991000795167 /* OrdersViewController.m */,
+				4F9707CD191EB4210076381B /* PrintReceiptViewController.h */,
+				4F9707CE191EB4210076381B /* PrintReceiptViewController.m */,
 				4FD59E5B182573860077A70E /* OrderViewController.h */,
 				4FD59E5C182573860077A70E /* OrderViewController.m */,
 				4FA097A1184F55CE00398DD4 /* OrderItemViewController.h */,
@@ -650,6 +655,7 @@
 				4FD59E5818211E870077A70E /* Connection.m in Sources */,
 				4F545EE718C0D140006BA9E7 /* Discount.m in Sources */,
 				4F3628C31856063D00971505 /* EmployeeViewController.m in Sources */,
+				4F9707CF191EB4210076381B /* PrintReceiptViewController.m in Sources */,
 				4F3628B51855E0F900971505 /* LTHNavigationViewController.m in Sources */,
 				4F5FD2A818BE76B500A5059B /* DiscountViewController.m in Sources */,
 			);
