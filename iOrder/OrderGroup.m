@@ -18,6 +18,7 @@
 @synthesize _id, created, cleared, clearedAt, orders, discounts;
 @synthesize table;
 @synthesize postcode, postcodeDistance, deliveryTime, cookingTime, telephone, customerName;
+@synthesize printouts;
 
 - (id)init {
 	self = [super init];
@@ -30,6 +31,7 @@
 		clearedAt = [NSDate date];
 		orders = [NSArray array];
 		discounts = [NSArray array];
+		printouts = [NSArray array];
 		
 		postcode = @"";
 		postcodeDistance = @"";
@@ -105,6 +107,11 @@
 			
 			break;
 		}
+	}
+	
+	printouts = [json objectForKey:@"printouts"];
+	if (!printouts) {
+		printouts = [NSArray array];
 	}
 }
 

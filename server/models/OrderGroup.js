@@ -44,7 +44,11 @@ var scheme = schema({
 		ref: 'Discount'
 	}],
 	orderTotal: Number,
-	discountTotal: Number
+	discountTotal: Number,
+	printouts: [{
+		employee: String,
+		time: Date
+	}]
 });
 
 scheme.methods.updateTotal = function(callback) {

@@ -50,8 +50,21 @@ exports.router = function (socket) {
 	socket.on('get.report orderGroup', function(data) {
 		models.OrderGroup.findOne({
 			_id: data._id
-		}).populate('orders').exec(function(err, order) {
+		})
+		.lean()
+		.populate({
+			path: 'orders',
+			options: {
+				lean: true
+			}
+		})
+		.exec(function(err, order) {
 			if (err) throw err;
+
+			for (var x = 0; x < order.printouts.length; x++) {
+				var t = order.printouts[x].time;
+				order.printouts[x].time = t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+			}
 
 			socket.emit('get.reports', {
 				type: "order",

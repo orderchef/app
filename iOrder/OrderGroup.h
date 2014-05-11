@@ -29,6 +29,9 @@
 
 @property (nonatomic, strong) Table *table;
 
+// List of people who printed it out
+@property (nonatomic, strong) NSArray *printouts;
+
 - (void)save;
 - (void)getOrders;
 - (void)clear;

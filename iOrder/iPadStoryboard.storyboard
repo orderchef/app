@@ -763,7 +763,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="215"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="gbb-EY-22g">
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="gbb-EY-22g">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="216"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <date key="date" timeIntervalSinceReferenceDate="419889792.940198">
@@ -792,6 +792,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             </timeZone>
                                         </datePicker>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="gbb-EY-22g" firstAttribute="top" secondItem="sos-ta-RJB" secondAttribute="top" id="Kik-Nl-GNm"/>
+                                        <constraint firstAttribute="trailing" secondItem="gbb-EY-22g" secondAttribute="trailing" id="MTv-Jf-Cpm"/>
+                                        <constraint firstAttribute="bottom" secondItem="gbb-EY-22g" secondAttribute="bottom" constant="-1" id="SvI-3t-KlZ"/>
+                                        <constraint firstItem="gbb-EY-22g" firstAttribute="leading" secondItem="sos-ta-RJB" secondAttribute="leading" id="Voo-wz-ImQ"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="datePicker" destination="gbb-EY-22g" id="kK7-bB-RsD"/>

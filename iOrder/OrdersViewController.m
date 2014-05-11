@@ -91,12 +91,6 @@
 	
 	showsDatePicker = false;
 	
-	UIBarButtonItem *printItem = [[UIBarButtonItem alloc] initWithTitle:@"\uf02f " style:UIBarButtonItemStylePlain target:self action:@selector(printButton:)];
-	[printItem setTitleTextAttributes:@{
-										NSFontAttributeName: [UIFont fontWithName:@"FontAwesome" size:24]
-										} forState:UIControlStateNormal];
-    [self.navigationItem setRightBarButtonItem:printItem animated:NO];
-	
 	[self refreshOrders:nil];
     [self reloadData];
 	
@@ -192,10 +186,9 @@
 		vc.popover = popover;
 		
 		popover.popoverContentSize = CGSizeMake(360, 416);
-		UIBarButtonItem *button = (UIBarButtonItem *)sender;
-		UIView *buttonView = [button valueForKey:@"view"];
+		UITableViewCell *cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:(NSIndexPath *)sender];
 		
-		[popover presentPopoverFromRect:buttonView.bounds inView:buttonView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[popover presentPopoverFromRect:cell.bounds inView:cell.contentView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		popover.delegate = self;
 		
 		return;
@@ -219,10 +212,10 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if (table.delivery) {
-		return 5;
+		return 6;
 	}
 	
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -232,14 +225,18 @@
 	}
 	
 	if (section == 1) {
-		return 1;
+		return 2;
 	}
 	
-	if (table.delivery && section == 2) {
-		return 1;
-	} else if (table.delivery && section == 3) {
-		if (showsDatePicker) return 5;
-		return 4;
+	if (table.delivery) {
+		if (section == 2) {
+			return 1;
+		}
+		if (section == 3) {
+			if (showsDatePicker) return 5;
+			return 4;
+		}
+		section--;
 	}
 	
 	if (table.takeaway && section == 2) {
@@ -250,9 +247,13 @@
 		return 1;
 	}
 	
-	if (section == 4 || section == 3) {
+	if (section == 3) {
 		// Discounts
 		return 1;
+	}
+	
+	if (section == 4) {
+		return 0;
 	}
 	
     return 0;
@@ -316,6 +317,10 @@
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
 			cell.textLabel.text = @"Create New Order";
+		} else {
+			cell.textLabel.text = @"Print Final Bill";
+			cell.textLabel.textAlignment = NSTextAlignmentCenter;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 		cell.detailTextLabel.text = nil;
 	} else if (indexPath.section == 2 && table.delivery) {
@@ -410,6 +415,11 @@
 	//if (indexPath.section == 0) return;
 	
 	if (indexPath.section == 1) {
+		if (indexPath.row == 1) {
+			[self printButton:indexPath];
+			return;
+		}
+		
 		o = [[Order alloc] init];
 		o.group = group;
 		[o save];
@@ -469,7 +479,7 @@
 	if (section == 2) {
 		return @"Customer Details";
 	}
-	if ((section == 3 && !table.delivery) || section == 4) {
+	if ((section == 3 && !table.delivery) || (section == 4 && table.delivery)) {
 		return @"Discounts";
 	}
 	
@@ -482,6 +492,14 @@
 	}
 	if ((section == 4 || (section == 3 && !table.delivery)) && group.discounts.count > 0) {
 		return [NSString stringWithFormat:@"%d Discount%@ Applied", group.discounts.count, group.discounts.count > 1 ? @"s" : @""];
+	}
+	if ((section == 4 && !table.delivery) || (section == 5 && table.delivery)) {
+		NSMutableString *printouts = [[NSMutableString alloc] init];
+		for (NSDictionary *printout in group.printouts) {
+			[printouts appendFormat:@"Final Bill Printed by %@ at %@\n", [printout objectForKey:@"employee"], [printout objectForKey:@"time"]];
+		}
+		
+		return printouts;
 	}
 	
 	return nil;

@@ -119,7 +119,7 @@
 		} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.manageEnabled) {
 			if ([tables count] > 0) {
 				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
-				[self tableView:self.tableView willSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+				//[self tableView:self.tableView willSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 				
 				[[Storage getStorage] setActiveTable:[[tables objectAtIndex:0] objectAtIndex:0]];
 			}
@@ -277,12 +277,13 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 		cell = [tableView dequeueReusableCellWithIdentifier:descriptiveCellIdentifier forIndexPath:indexPath];
 	}
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	/*
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.manageEnabled) {
 		UIView *bg = [[UIView alloc] init];
 		bg.backgroundColor = [UIColor colorWithRed:0.203f green:0.444f blue:0.768f alpha:0.75f];
 		bg.layer.masksToBounds = YES;
 		cell.selectedBackgroundView = bg;
-	}
+	}*/
     
 	cell.textLabel.text = [table name];
     
@@ -303,8 +304,9 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
     return cell;
 }
 
+/*
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad || self.manageEnabled) {
 		return indexPath;
 	}
 	
@@ -316,7 +318,7 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad || self.manageEnabled) {
 		return indexPath;
 	}
 	
@@ -325,17 +327,7 @@ static NSComparisonResult (^compareTables)(Table *, Table *) = ^NSComparisonResu
 	[cell.detailTextLabel setTextColor:[UIColor blackColor]];
 	
 	return indexPath;
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		return;
-	}
-	
-	if (highlighted) {
-		
-	}
-}
+}*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.manageEnabled) {

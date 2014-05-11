@@ -23,13 +23,21 @@ exports.router = function (socket) {
 
 			var orderNumber = lastOrder.orderNumber;
 
-			models.OrderGroup.find(query).populate('orders')
+			models.OrderGroup
+			.find(query)
+			.lean()
+			.populate({
+				path: 'orders',
+				options: {
+					lean: true
+				}
+			})
 			.exec(function(err, orders) {
 				if (err) {
 					throw err;
 					return;
 				}
-			
+				
 				if (!orders || orders.length == 0) {
 					winston.info("Creating a group for an empty table")
 					order = new models.OrderGroup({
@@ -41,7 +49,14 @@ exports.router = function (socket) {
 					
 					orders.push(order)
 				}
-			
+
+				for (var i = 0; i < orders.length; i++) {
+					for (var x = 0; x < orders[i].printouts.length; x++) {
+						var t = orders[i].printouts[x].time;
+						orders[i].printouts[x].time = t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+					}
+				}
+
 				socket.emit('get.group active', orders);
 			})
 		})
@@ -274,6 +289,15 @@ exports.router = function (socket) {
 				
 				group.orderTotal = total;
 				group.discountTotal = discountsValue;
+
+				if (data.do_not_print !== true) {
+					// Record who printed this
+					group.printouts.push({
+						employee: data.employee,
+						time: Date.now()
+					});
+				}
+
 				group.save();
 
 				for (var i = 0; i < models.printers.length; i++) {

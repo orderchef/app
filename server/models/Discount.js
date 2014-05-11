@@ -12,6 +12,10 @@ var scheme = schema({
 		type: ObjectId,
 		ref: 'Category'
 	}],
+	order: {
+		type: Boolean,
+		default: false
+	},
 	disabled: { type: Boolean, default: false }
 });
 
@@ -28,6 +32,7 @@ scheme.methods.update = function (data) {
 	this.value = data.value;
 	this.allCategories = data.allCategories;
 	this.discountPercent = data.discountPercent;
+	this.order = data.order;
 	this.categories = [];
 	for (var i = 0; i < data.categories.length; i++) {
 		this.categories.push(mongoose.Types.ObjectId(data.categories[i]));
