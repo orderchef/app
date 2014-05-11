@@ -51,6 +51,8 @@ exports.router = function (socket) {
 				}
 
 				for (var i = 0; i < orders.length; i++) {
+					if (!orders[i].printouts) continue;
+					
 					for (var x = 0; x < orders[i].printouts.length; x++) {
 						var t = orders[i].printouts[x].time;
 						orders[i].printouts[x].time = t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
