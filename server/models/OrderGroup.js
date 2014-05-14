@@ -29,10 +29,17 @@ var scheme = schema({
 	clearedAt: {
 		type: Date
 	},
+	
 	orderNumber: {
 		type: Number,
 		default: 0
 	},
+	orderNumber_locked: {
+		type: Boolean,
+		default: false
+	},
+	orderNumber_generated: Date,
+
 	postcode: String,
 	postcodeDistance: String,
 	deliveryTime: String,
@@ -48,7 +55,7 @@ var scheme = schema({
 	printouts: [{
 		employee: String,
 		time: Date
-	}]
+	}],
 });
 
 scheme.methods.updateTotal = function(callback) {

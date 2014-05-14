@@ -18,7 +18,8 @@ exports.router = function (socket) {
 			query.table = mongoose.Types.ObjectId(data.table);
 		}
 
-		models.OrderGroup.findOne({}).select('orderNumber').sort('-orderNumber').limit(1).exec(function(err, lastOrder) {
+		models.OrderGroup.findOne({
+		}).select('orderNumber').sort('-orderNumber_generated').limit(1).exec(function(err, lastOrder) {
 			if (err) throw err;
 
 			var orderNumber = lastOrder.orderNumber;
@@ -43,7 +44,8 @@ exports.router = function (socket) {
 					order = new models.OrderGroup({
 						table: query.table,
 						cleared: false,
-						orderNumber: orderNumber + 1
+						orderNumber: orderNumber + 1,
+						orderNumber_generated: Date.now()
 					});
 					order.save();
 					
@@ -52,7 +54,7 @@ exports.router = function (socket) {
 
 				for (var i = 0; i < orders.length; i++) {
 					if (!orders[i].printouts) continue;
-					
+
 					for (var x = 0; x < orders[i].printouts.length; x++) {
 						var t = orders[i].printouts[x].time;
 						orders[i].printouts[x].time = t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() + " " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
@@ -85,6 +87,8 @@ exports.router = function (socket) {
 		models.OrderGroup.findById(group, function(err, group) {
 			group.cleared = true;
 			group.clearedAt = Date.now();
+			group.orderNumber_locked = true;
+
 			group.save();
 		})
 	});
@@ -217,7 +221,7 @@ exports.router = function (socket) {
 			}));
 			return;
 		}
-		
+
 		models.OrderGroup
 		.findById(group)
 		.populate({
@@ -229,6 +233,18 @@ exports.router = function (socket) {
 		.exec(function(err, group) {
 			data.orderNumber = group.orderNumber;
 			data.table = group.table;
+
+			if (!group.orderNumber_locked) {
+				models.OrderGroup.update({
+					_id: group._id
+				}, {
+					$set: {
+						orderNumber_locked: true
+					}
+				}, function(err) {
+					if (err) throw err;
+				});
+			}
 			
 			async.each(group.orders, function(order, cb) {
 				order.populate('items.item', function() {
@@ -329,11 +345,23 @@ exports.router = function (socket) {
 			orders: {
 				$in: [ order ]
 			}
-		}).populate('table').select('table orderNumber deliveryTime cookingTime telephone customerName').exec(function(err, ordergroup) {
+		}).populate('table').select('table orderNumber orderNumber_locked deliveryTime cookingTime telephone customerName').exec(function(err, ordergroup) {
 			if (err) throw err;
 
 			if (!ordergroup) {
 				return;
+			}
+
+			if (!ordergroup.orderNumber_locked) {
+				models.OrderGroup.update({
+					_id: ordergroup._id
+				}, {
+					$set: {
+						orderNumber_locked: true
+					}
+				}, function(err) {
+					if (err) throw err;
+				});
 			}
 
 			data.orderNumber = ordergroup.orderNumber;
