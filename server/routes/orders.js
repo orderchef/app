@@ -278,6 +278,10 @@ exports.router = function (socket) {
 						for (var i_discount = 0; i_discount < group.discounts.length; i_discount++) {
 							var discount = group.discounts[i_discount];
 
+							if (discount.order == true) {
+								continue;
+							}
+
 							if (typeof discounts[discount._id] !== 'object') {
 								discounts[discount._id] = {
 									name: '',
@@ -302,12 +306,41 @@ exports.router = function (socket) {
 					}
 				}
 
+				for (var i_discount = 0; i_discount < group.discounts.length; i_discount++) {
+					var discount = group.discounts[i_discount];
+
+					if (discount.order != true) {
+						continue;
+					}
+
+					if (typeof discounts[discount._id] !== 'object') {
+						discounts[discount._id] = {
+							name: '',
+							value: 0
+						};
+						discounts.length++;
+					}
+
+					discounts[discount._id].name = discount.name;
+					if (discount.discountPercent) {
+						discounts[discount._id].name += ' (-' + (Math.round(discount.value * 100) / 100).toFixed(2) + '%)';
+					} else {
+						discounts[discount._id].name += ' (-' + (Math.round(discount.value * 100) / 100) + ' GBP)';
+					}
+
+					var new_total = discount.applyDiscount(null, total);
+
+					var discountValue = total - new_total;
+					discounts[discount._id].value += discountValue;
+					discountsValue += discountValue;
+				}
+
 				data.total = total;
 				data.discounts = discounts;
 				
 				group.orderTotal = total;
 				group.discountTotal = discountsValue;
-
+				
 				if (data.do_not_print !== true) {
 					// Record who printed this
 					group.printouts.push({

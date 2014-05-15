@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="2ss-tx-gXq">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Manager View Controller - Manager-->
@@ -1317,17 +1318,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kMG-Xl-l9r">
-                                            <rect key="frame" x="223" y="0.0" width="82" height="43"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kMG-Xl-l9r">
+                                            <rect key="frame" x="581" y="0.0" width="167" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="82" id="qww-wI-IJH"/>
-                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="decimalPad" returnKeyType="done"/>
                                         </textField>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqY-62-ANW">
-                                            <rect key="frame" x="15" y="0.0" width="200" height="43"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqY-62-ANW">
+                                            <rect key="frame" x="15" y="0.0" width="558" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1335,12 +1333,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="leading" secondItem="pqY-62-ANW" secondAttribute="trailing" constant="8" symbolic="YES" id="37c-GC-r5M"/>
-                                        <constraint firstAttribute="trailing" secondItem="kMG-Xl-l9r" secondAttribute="trailing" constant="15" id="5KE-rc-KQr"/>
-                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="bottom" secondItem="pqY-62-ANW" secondAttribute="bottom" id="Smf-e4-Aeq"/>
-                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="top" secondItem="pqY-62-ANW" secondAttribute="top" id="clV-zb-fgn"/>
-                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="top" secondItem="IQ4-MX-L22" secondAttribute="top" id="xyQ-md-tHA"/>
-                                        <constraint firstAttribute="bottom" secondItem="kMG-Xl-l9r" secondAttribute="bottom" id="zk1-CY-FaC"/>
+                                        <constraint firstAttribute="bottom" secondItem="pqY-62-ANW" secondAttribute="bottom" id="0QX-HE-mtA"/>
+                                        <constraint firstItem="pqY-62-ANW" firstAttribute="leading" secondItem="IQ4-MX-L22" secondAttribute="leading" constant="15" id="9Ou-aF-nf9"/>
+                                        <constraint firstItem="pqY-62-ANW" firstAttribute="width" secondItem="kMG-Xl-l9r" secondAttribute="height" multiplier="558:43" id="DTW-pg-sbi"/>
+                                        <constraint firstAttribute="bottom" secondItem="kMG-Xl-l9r" secondAttribute="bottom" id="Dim-5d-QRD"/>
+                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="leading" secondItem="pqY-62-ANW" secondAttribute="trailing" constant="8" id="OcU-o1-V1M"/>
+                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="top" secondItem="IQ4-MX-L22" secondAttribute="top" id="Ofr-J2-B2V"/>
+                                        <constraint firstAttribute="trailing" secondItem="kMG-Xl-l9r" secondAttribute="trailing" constant="20" id="XmM-aO-n4n"/>
+                                        <constraint firstItem="pqY-62-ANW" firstAttribute="top" secondItem="IQ4-MX-L22" secondAttribute="top" id="gcV-yv-CFz"/>
+                                        <constraint firstItem="kMG-Xl-l9r" firstAttribute="leading" secondItem="pqY-62-ANW" secondAttribute="trailing" constant="8" id="sXR-ma-zET"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

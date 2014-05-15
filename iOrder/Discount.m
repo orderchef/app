@@ -12,7 +12,7 @@
 
 @implementation Discount
 
-@synthesize _id, name, allCategories, categories, discountPercent, value;
+@synthesize _id, name, allCategories, categories, discountPercent, value, order;
 
 - (id)init {
     self = [super init];
@@ -24,6 +24,7 @@
 		categories = [NSArray array];
 		discountPercent = false;
 		value = 0.0;
+		order = false;
     }
     
     return self;
@@ -36,6 +37,7 @@
 	[self setCategories:[json objectForKey:@"categories"]];
 	[self setDiscountPercent:[[json objectForKey:@"discountPercent"] boolValue]];
 	[self setValue:[[json objectForKey:@"value"] floatValue]];
+	[self setOrder:[[json objectForKey:@"order"] boolValue]];
 }
 
 - (void)save {
@@ -49,7 +51,8 @@
 													  @"allCategories": [NSNumber numberWithBool:allCategories],
 													  @"categories": categories,
 													  @"discountPercent": [NSNumber numberWithBool:discountPercent],
-													  @"value": [NSNumber numberWithFloat:value]
+													  @"value": [NSNumber numberWithFloat:value],
+													  @"order": [NSNumber numberWithBool:order]
 													  }];
     } @catch (NSException *e) {
 		[Bugsnag notify:e];

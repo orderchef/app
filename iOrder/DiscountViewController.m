@@ -74,8 +74,13 @@
 
 - (void)allCategoriesChanged:(id)sender {
 	[discount setAllCategories:[(UISwitch *)sender isOn]];
-	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 	//[discount setCategories:[[NSArray alloc] init]];
+}
+
+- (void)orderSwitchFlipped:(UISwitch *)flip {
+	[discount setOrder:[flip isOn]];
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -106,6 +111,11 @@
 		return 2; // Value & Percentage Switch
 	}
 	if (section == 2) {
+		return 1;
+	}
+	if (section == 3) {
+		if (discount.order) return 0;
+		
 		// All Categories & Categories
 		if (discount.allCategories == false)
 			return 2;
@@ -171,6 +181,18 @@ static NSString *selectCellID = @"select";
 		}
 	}
 	if (indexPath.section == 2) {
+		TextSwitchCell *cell = [self allocSwitchCell:tableView indexPath:indexPath];
+		
+		cell.label.text = @"Order Discount";
+		cell.checkbox.on = false;
+		cell.checkbox.on = discount.order;
+		
+		[cell.checkbox removeTarget:self action:@selector(orderSwitchFlipped:) forControlEvents:UIControlEventValueChanged];
+		[cell.checkbox addTarget:self action:@selector(orderSwitchFlipped:) forControlEvents:UIControlEventValueChanged];
+		
+		return cell;
+	}
+	if (indexPath.section == 3) {
 		if (indexPath.row == 0) {
 			TextSwitchCell *cell = [self allocSwitchCell:tableView indexPath:indexPath];
 			
@@ -203,7 +225,7 @@ static NSString *selectCellID = @"select";
 	} else if (indexPath.section == 1 && indexPath.row == 0) {
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		[[(TextFieldCell *)cell textField] becomeFirstResponder];
-	} else if (indexPath.section == 2 && indexPath.row == 1) {
+	} else if (indexPath.section == 3 && indexPath.row == 1) {
 		[self performSegueWithIdentifier:@"openCategories" sender:nil];
 	}
 }

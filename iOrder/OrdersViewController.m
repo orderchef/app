@@ -490,7 +490,7 @@
 	if (section == 2 && group.postcodeDistance.length > 0) {
 		return [@"Distance to target: " stringByAppendingString:group.postcodeDistance];
 	}
-	if ((section == 4 || (section == 3 && !table.delivery)) && group.discounts.count > 0) {
+	if (((section == 4 && table.delivery) || (section == 3 && !table.delivery)) && group.discounts.count > 0) {
 		return [NSString stringWithFormat:@"%d Discount%@ Applied", group.discounts.count, group.discounts.count > 1 ? @"s" : @""];
 	}
 	if ((section == 4 && !table.delivery) || (section == 5 && table.delivery)) {

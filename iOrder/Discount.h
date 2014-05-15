@@ -18,6 +18,7 @@
 
 @property (assign) BOOL discountPercent;
 @property (assign) BOOL allCategories;
+@property (assign) BOOL order;
 
 - (void)save;
 - (void)remove;

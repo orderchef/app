@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="UZZ-t0-Anu">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Tables View Controller - Tables-->
@@ -1493,7 +1494,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="decimalPad" returnKeyType="done"/>
                                         </textField>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LH5-Fs-cbW">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LH5-Fs-cbW">
                                             <rect key="frame" x="15" y="0.0" width="200" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -1502,12 +1503,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="leading" secondItem="LH5-Fs-cbW" secondAttribute="trailing" constant="8" symbolic="YES" id="Eqo-Mm-jg6"/>
-                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="bottom" secondItem="LH5-Fs-cbW" secondAttribute="bottom" id="FBK-uS-54p"/>
-                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="top" secondItem="LH5-Fs-cbW" secondAttribute="top" id="ZrA-WX-vuF"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OSO-ko-7HQ" secondAttribute="trailing" constant="15" id="0og-1P-KPb"/>
+                                        <constraint firstItem="LH5-Fs-cbW" firstAttribute="leading" secondItem="grm-57-pIK" secondAttribute="leading" constant="15" id="1EI-lI-9Yn"/>
+                                        <constraint firstItem="LH5-Fs-cbW" firstAttribute="width" secondItem="OSO-ko-7HQ" secondAttribute="height" multiplier="200:43" id="F2J-KZ-M0Q"/>
+                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="leading" secondItem="LH5-Fs-cbW" secondAttribute="trailing" constant="8" id="MTg-vc-c1a"/>
+                                        <constraint firstAttribute="bottom" secondItem="LH5-Fs-cbW" secondAttribute="bottom" id="MZX-tT-3uX"/>
+                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="top" secondItem="grm-57-pIK" secondAttribute="top" id="QaZ-7p-Zee"/>
+                                        <constraint firstAttribute="bottom" secondItem="OSO-ko-7HQ" secondAttribute="bottom" id="Wzk-vz-j7H"/>
                                         <constraint firstAttribute="trailing" secondItem="OSO-ko-7HQ" secondAttribute="trailing" constant="15" id="bzI-n4-C0B"/>
                                         <constraint firstItem="OSO-ko-7HQ" firstAttribute="top" secondItem="grm-57-pIK" secondAttribute="top" id="mzM-Cy-RgL"/>
                                         <constraint firstAttribute="bottom" secondItem="OSO-ko-7HQ" secondAttribute="bottom" id="pvp-Gk-Dzx"/>
+                                        <constraint firstItem="OSO-ko-7HQ" firstAttribute="leading" secondItem="LH5-Fs-cbW" secondAttribute="trailing" constant="8" id="sjf-9z-ky8"/>
+                                        <constraint firstItem="LH5-Fs-cbW" firstAttribute="top" secondItem="grm-57-pIK" secondAttribute="top" id="tq7-dk-V1N"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

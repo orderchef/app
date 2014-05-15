@@ -51,7 +51,7 @@ scheme.methods.applyValue = function (value) {
 }
 
 scheme.methods.applyDiscount = function (category, value) {
-	if (this.allCategories == true) {
+	if (this.order == true || this.allCategories == true) {
 		return this.applyValue(value);
 	}
 	
@@ -69,6 +69,9 @@ scheme.statics.getDiscounts = function (table, categories, callback) {
 		$or: [
 			{
 				allCategories: true
+			},
+			{
+				order: true
 			},
 			{
 				categories: {
