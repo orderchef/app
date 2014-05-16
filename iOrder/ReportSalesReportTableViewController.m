@@ -76,6 +76,8 @@
 		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"takeaway"] floatValue]];
 		[report appendString:@"Eat In Tables: "];
 		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"other"] floatValue]];
+		[report appendString:@"Discounts Given: "];
+		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"discount"] floatValue]];
 		[report appendString:@"All Tables: "];
 		[report appendFormat:@"%.2f (GBP)\n\n", [[data objectForKey:@"total"] floatValue]];
 	};
@@ -103,7 +105,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 4;
+	return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,20 +122,25 @@
 		data = [salesReport objectForKey:@"evening"];
 	}
 	
+	float total = 0;
 	if (indexPath.row == 0) {
 		// Delivery
 		cell.textLabel.text = @"Delivery Tables";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[data objectForKey:@"delivery"] floatValue]];
+		total = [[data objectForKey:@"delivery"] floatValue];
 	} else if (indexPath.row == 1) {
 		cell.textLabel.text = @"Takeaway Tables";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[data objectForKey:@"takeaway"] floatValue]];
+		total = [[data objectForKey:@"takeaway"] floatValue];
 	} else if (indexPath.row == 2) {
 		cell.textLabel.text = @"Eat In Tables";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[data objectForKey:@"other"] floatValue]];
+		total = [[data objectForKey:@"other"] floatValue];
 	} else if (indexPath.row == 3) {
+		cell.textLabel.text = @"Discounts Given";
+		total = [[data objectForKey:@"discount"] floatValue];
+	} else if (indexPath.row == 4) {
 		cell.textLabel.text = @"All Tables";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[data objectForKey:@"total"] floatValue]];
+		total = [[data objectForKey:@"total"] floatValue];
 	}
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", total];
 	
     return cell;
 }

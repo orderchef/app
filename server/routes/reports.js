@@ -105,18 +105,21 @@ exports.router = function (socket) {
 					delivery: 0,
 					takeaway: 0,
 					other: 0,
+					discount: 0,
 					total: 0
 				},
 				evening: {
 					delivery: 0,
 					takeaway: 0,
 					other: 0,
+					discount: 0,
 					total: 0
 				},
 				total: {
 					delivery: 0,
 					takeaway: 0,
 					other: 0,
+					discount: 0,
 					total: 0
 				}
 			};
@@ -134,7 +137,7 @@ exports.router = function (socket) {
 				}
 
 				var t = orderGroup.orderTotal - orderGroup.discountTotal;
-				if (!t || isNaN(t)) continue;
+				if (isNaN(t)) continue;
 
 				var key = '';
 				if (orderGroup.table.delivery) {
@@ -149,6 +152,9 @@ exports.router = function (socket) {
 					total[key] += t;
 					totals.total[key] += t;
 				}
+
+				total.discount += orderGroup.discountTotal;
+				totals.total.discount += orderGroup.discountTotal;
 
 				total.total += t;
 				totals.total.total += t;
