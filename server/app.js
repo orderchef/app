@@ -14,6 +14,7 @@ winston.add(winston.transports.File, { filename: __dirname+'/app.log', handleExc
 bugsnag.register('c987848f96714ef34560d05ef7e53b5d');
 
 mongoose.connect("mongodb://127.0.0.1/iorder", {
+//mongoose.connect("mongodb://86.9.64.192/iorder", {
 	auto_reconnect: true,
 	native_parser: true,
 	server: {

@@ -128,7 +128,7 @@ exports.router = function (socket) {
 				var orderGroup = orderGroups[i];
 
 				var total = null;
-				if (orderGroup.clearedAt.getHours() >= 17 && orderGroup.clearedAt.getMinutes() > 30) {
+				if (orderGroup.clearedAt.getHours() > 17 || (orderGroup.clearedAt.getHours() == 17 && orderGroup.clearedAt.getMinutes() > 30)) {
 					// Evening
 					total = totals.evening;
 				} else {
