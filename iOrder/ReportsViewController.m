@@ -16,6 +16,7 @@
 #import "TextFieldCell.h"
 #import "ButtonsTableViewCell.h"
 #import "ReportPopularDishesTableViewController.h"
+#import "ReportCashingUpViewController.h"
 
 @interface ReportsViewController () {
 	bool showsStartDatePicker;
@@ -61,6 +62,10 @@
 		NSArray *dates = (NSArray *)sender;
 		ReportPopularDishesTableViewController *vc = (ReportPopularDishesTableViewController *)[segue destinationViewController];
 		vc.dateRange = dates;
+	} else if ([segue.identifier isEqualToString:@"reportCashingUp"]) {
+		NSArray *dates = (NSArray *)sender;
+		ReportCashingUpViewController *vc = (ReportCashingUpViewController *)[segue destinationViewController];
+		vc.dateRange = dates;
 	}
 }
 
@@ -84,7 +89,7 @@
 	}
 	
 	if (section == 2) {
-		return 3;
+		return 4;
 	}
 	
 	return 0;
@@ -201,6 +206,8 @@
 			cell.textLabel.text = @"Sales Report";
 		} else if (indexPath.row == 2) {
 			cell.textLabel.text = @"Popular Dishes";
+		} else if (indexPath.row == 3) {
+			cell.textLabel.text = @"Cashing Up Report";
 		}
 	}
 	
@@ -242,6 +249,8 @@
 			destination = @"reportSales";
 		} else if (indexPath.row == 2) {
 			destination = @"reportPopularDishes";
+		} else if (indexPath.row == 3) {
+			destination = @"reportCashingUp";
 		} else {
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			return;

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define kMasterIP @"192.168.0.64"
-//#define kMasterIP @"192.168.1.22"
+//#define kMasterIP @"192.168.0.64"
+#define kMasterIP @"192.168.1.22"
 
 #define kMasterPort 8000
 #define kReportsNotificationName @"ReportsLoadedNotification"

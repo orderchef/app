@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F23D072192D42DB0047F4B8 /* ReportCashingUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F23D071192D42DB0047F4B8 /* ReportCashingUpViewController.m */; };
+		4F23D075192E925E0047F4B8 /* ReportEditCashupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F23D074192E925E0047F4B8 /* ReportEditCashupViewController.m */; };
 		4F283A491869CE48001E4223 /* OrderGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A481869CE48001E4223 /* OrderGroup.m */; };
 		4F283A4C1869CE51001E4223 /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F283A4B1869CE51001E4223 /* Order.m */; };
 		4F2E7E3618A4D8DD00BA29CC /* DiscountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2E7E3518A4D8DD00BA29CC /* DiscountsViewController.m */; };
@@ -81,6 +83,10 @@
 
 /* Begin PBXFileReference section */
 		1A19FE12E07E48C9ACF0FF81 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		4F23D070192D42DB0047F4B8 /* ReportCashingUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportCashingUpViewController.h; sourceTree = "<group>"; };
+		4F23D071192D42DB0047F4B8 /* ReportCashingUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportCashingUpViewController.m; sourceTree = "<group>"; };
+		4F23D073192E925E0047F4B8 /* ReportEditCashupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportEditCashupViewController.h; sourceTree = "<group>"; };
+		4F23D074192E925E0047F4B8 /* ReportEditCashupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportEditCashupViewController.m; sourceTree = "<group>"; };
 		4F283A471869CE48001E4223 /* OrderGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderGroup.h; sourceTree = "<group>"; };
 		4F283A481869CE48001E4223 /* OrderGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderGroup.m; sourceTree = "<group>"; };
 		4F283A4A1869CE51001E4223 /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
@@ -329,6 +335,10 @@
 				4F9707CB1917E5E90076381B /* ReportSalesReportTableViewController.m */,
 				4FF337B919192007006711BD /* ReportPopularDishesTableViewController.h */,
 				4FF337BA19192007006711BD /* ReportPopularDishesTableViewController.m */,
+				4F23D070192D42DB0047F4B8 /* ReportCashingUpViewController.h */,
+				4F23D071192D42DB0047F4B8 /* ReportCashingUpViewController.m */,
+				4F23D073192E925E0047F4B8 /* ReportEditCashupViewController.h */,
+				4F23D074192E925E0047F4B8 /* ReportEditCashupViewController.m */,
 			);
 			name = Reports;
 			sourceTree = "<group>";
@@ -626,6 +636,7 @@
 				4F65EE52190087EF004C3096 /* SplitViewController.m in Sources */,
 				4F3628BA1855E31C00971505 /* Employee.m in Sources */,
 				4F7F353618E18D740090FF44 /* SubMenuViewController.m in Sources */,
+				4F23D072192D42DB0047F4B8 /* ReportCashingUpViewController.m in Sources */,
 				4FF29314186DB90000795167 /* PrintersViewController.m in Sources */,
 				4F545EF018C11019006BA9E7 /* DiscountCategoriesViewController.m in Sources */,
 				4F3628BD1855FF7700971505 /* ManagerViewController.m in Sources */,
@@ -643,6 +654,7 @@
 				4FA097A3184F55CE00398DD4 /* OrderItemViewController.m in Sources */,
 				4FF0F3B1181DC6DE00447906 /* AppDelegate.m in Sources */,
 				4F283A491869CE48001E4223 /* OrderGroup.m in Sources */,
+				4F23D075192E925E0047F4B8 /* ReportEditCashupViewController.m in Sources */,
 				4F283A4C1869CE51001E4223 /* Order.m in Sources */,
 				4F3A5D731820846800201B8C /* Item.m in Sources */,
 				4FF0F3AD181DC6DE00447906 /* main.m in Sources */,
