@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 	, winston = require('winston')
 
 exports.router = function (socket) {
-	socket.on('get.report cashingUp', function(data) {
+	socket.on('get.report cashing up', function(data) {
 		winston.info("Doing Cashing Up")
 		
 		var from, to;
@@ -22,9 +22,44 @@ exports.router = function (socket) {
 		.exec(function(err, cashups) {
 			if (err) throw err;
 			
+			// aggregate the data
+			var aggregate = {
+				voucher: 0,
+				cash: 0,
+				card: 0,
+				pettyCash: 0,
+				labour: 0,
+				tips: 0
+			};
+
+			for (var i = 0; i < cashups.length; i++) {
+				var c = cashups[i];
+
+				aggregate.voucher += c.voucher;
+				aggregate.cash += c.cash;
+				aggregate.card += c.card;
+				aggregate.pettyCash += c.pettyCash;
+				aggregate.labour += c.labour;
+				aggregate.tips += c.tips;
+
+				c.total = c.cash
+						 + c.card
+						 + c.pettyCash
+						 + c.labour
+						 + c.voucher;
+				c.created = new Date(c.created).getTime() / 1000;
+			}
+
+			aggregate.gross = aggregate.cash
+								 + aggregate.card
+								 + aggregate.pettyCash
+								 + aggregate.labour
+								 + aggregate.voucher;
+
 			socket.emit('get.reports', {
 				type: 'cashingUp',
-				cashups: cashups
+				cashups: cashups,
+				aggregate: aggregate
 			});
 		})
 	});
@@ -33,7 +68,7 @@ exports.router = function (socket) {
 		winston.info("Saving Cashup Report")
 		
 		models.CashingUp.findById(data._id, function(err, cashup) {
-			if (err || !category) {
+			if (err || !cashup) {
 				cashup = new models.CashingUp();
 			}
 			

@@ -207,7 +207,7 @@
 		} else if (indexPath.row == 2) {
 			cell.textLabel.text = @"Popular Dishes";
 		} else if (indexPath.row == 3) {
-			cell.textLabel.text = @"Cashing Up Report";
+			cell.textLabel.text = @"Cash Report";
 		}
 	}
 	

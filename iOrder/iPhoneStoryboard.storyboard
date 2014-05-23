@@ -1835,9 +1835,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="DdV-xc-Go5" kind="push" identifier="openCashup" id="b06-S5-Lpd"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="table" textLabel="Ybh-WI-Leo" detailTextLabel="ehj-mm-1Co" style="IBUITableViewCellStyleValue2" id="5Vo-KG-xho">
                                 <rect key="frame" x="0.0" y="163" width="320" height="44"/>
@@ -1871,6 +1868,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tableView>
                     <navigationItem key="navigationItem" title="Cashing Up" id="ZAh-dl-Otg"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="DdV-xc-Go5" kind="push" identifier="openCashup" id="Kfi-Hb-MXU"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VdX-wl-yo6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1934,7 +1934,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <outlet property="textField" destination="dtc-4H-Mgi" id="47o-qf-ZvO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="label_text" id="A05-cX-9i0" customClass="TextFieldCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="label_text" id="A05-cX-9i0" customClass="TextFieldCell">
                                 <rect key="frame" x="0.0" y="207" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A05-cX-9i0" id="ser-ZN-mFf">

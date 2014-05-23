@@ -9,11 +9,12 @@
 #import "ReportCashingUpViewController.h"
 #import "AppDelegate.h"
 #import "Connection.h"
+#import "ReportEditCashupViewController.h"
 
 @interface ReportCashingUpViewController () {
-	NSArray *prices; // many of NSDictionarys
-	NSArray *quantity;
-	NSDictionary *salesReport;
+	NSArray *cashups;
+	NSDictionary *aggregate;
+	bool editing;
 }
 
 @end
@@ -25,14 +26,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	editing = false;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotification:) name:kReportsNotificationName object:nil];
 	
 	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(refreshEvents:) forControlEvents:UIControlEventValueChanged];
 	
-	[self.navigationItem setTitle:@"Popular Dishes"];
+	[self.navigationItem setTitle:@"Cash Report"];
 	
 	[self refreshEvents:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	if (editing) {
+		editing = false;
+		
+		[self refreshEvents:nil];
+	}
 }
 
 - (void)dealloc {
@@ -43,7 +55,7 @@
 
 - (void)refreshEvents:(id)sender {
 	[self.refreshControl beginRefreshing];
-	[[[Connection getConnection] socket] sendEvent:@"get.report cashingUp" withData:
+	[[[Connection getConnection] socket] sendEvent:@"get.report cashing up" withData:
 	 @{
 	   @"from": [NSNumber numberWithInt:(int)[[dateRange objectAtIndex:0] timeIntervalSince1970]],
 	   @"to": [NSNumber numberWithInt:(int)[[dateRange objectAtIndex:1] timeIntervalSince1970]]
@@ -55,8 +67,25 @@
 	NSString *type = [reportData objectForKey:@"type"];
 	
 	if ([type isEqualToString:@"cashingUp"]) {
+		cashups = [reportData objectForKey:@"cashups"];
+		aggregate = [reportData objectForKey:@"aggregate"];
+		
 		[self.refreshControl endRefreshing];
 		[self.tableView reloadData];
+	}
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"openCashup"]) {
+		ReportEditCashupViewController *vc = (ReportEditCashupViewController *)[segue destinationViewController];
+		
+		editing = true;
+		
+		if ([sender isKindOfClass:[NSDictionary class]]) {
+			NSDictionary *cashReport = (NSDictionary *)sender;
+			
+			vc.cashReport = [cashReport mutableCopy];
+		}
 	}
 }
 
@@ -64,14 +93,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0) return 1;
-	if (section == 1) return 7;
-	if (section == 2) return 0;
+	if (section == 1) return 6;
+	if (section == 2) return 1;
+	if (section == 3) return [cashups count];
 	
 	return 0;
 }
@@ -81,23 +111,60 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detail" forIndexPath:indexPath];
 	
 	if (indexPath.section == 0) {
-		cell.textLabel.text = @"Add Cashup";
+		cell.textLabel.text = @"Add Cash Report";
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		cell.detailTextLabel.text = nil;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else if (indexPath.section == 1) {
-		cell.textLabel.text = @"";
-		cell.detailTextLabel.text = @"£0";
+		NSString *key;
+		
+		switch (indexPath.row) {
+			case 0:
+				key = @"cash";
+				cell.textLabel.text = @"Cash";
+				break;
+			case 1:
+				key = @"card";
+				cell.textLabel.text = @"Card";
+				break;
+			case 2:
+				key = @"voucher";
+				cell.textLabel.text = @"Voucher";
+				break;
+			case 3:
+				key = @"pettyCash";
+				cell.textLabel.text = @"Petty Cash";
+				break;
+			case 4:
+				key = @"labour";
+				cell.textLabel.text = @"Labour";
+				break;
+			case 5:
+				key = @"tips";
+				cell.textLabel.text = @"Tips";
+				break;
+		}
+		
+		NSNumber *number = [aggregate objectForKey:key];
+		if (!(number == NULL || [number isKindOfClass:[NSNull class]])) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [number floatValue]];
+		}
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else if (indexPath.section == 2) {
+		cell.textLabel.text = @"Gross";
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[aggregate objectForKey:@"gross"] floatValue]];
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else if (indexPath.section == 3) {
+		NSDictionary *cashup = [cashups objectAtIndex:indexPath.row];
+		NSDate *created = [NSDate dateWithTimeIntervalSince1970:[[cashup objectForKey:@"created"] longValue]];
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:@"dd/MM/YYYY hh:mm"];
+		cell.textLabel.text = [dateFormatter stringFromDate:created];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[cashup objectForKey:@"total"] floatValue]];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
     return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
-		case 1:
-			return @"By Sales (Quantity sold)";
-		default:
-			return nil;
-	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -106,7 +173,31 @@
 		return;
 	}
 	
+	if (indexPath.section == 3) {
+		[self performSegueWithIdentifier:@"openCashup" sender:[cashups objectAtIndex:indexPath.row]];
+	}
+	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 1) {
+		return @"Aggregated Cash Report";
+	}
+	
+	if (section == 3) {
+		return @"Reports Involved";
+	}
+	
+	return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 2) {
+		return @"Gross = Cash + Card + Petty Cash + Labour + Voucher";
+	}
+	
+	return nil;
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ReportEditCashupViewController : UITableViewController
+@interface ReportEditCashupViewController : UITableViewController <UITextFieldDelegate>
+
+@property (nonatomic, strong) NSMutableDictionary *cashReport;
 
 @end

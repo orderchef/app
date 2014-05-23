@@ -19,24 +19,39 @@
 #import "ReportCashingUpViewController.h"
 
 @interface ReportEditCashupViewController () {
-	bool showsDatePicker;
-	NSTimeInterval timeInterval;
+	__weak UITextField *editedTextField;
 }
 
 @end
 
 @implementation ReportEditCashupViewController
 
+@synthesize cashReport;
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	timeInterval = [[[NSDate alloc] init] timeIntervalSince1970];
+	[self.navigationItem setTitle:@"Cash Report"];
 	
-	[self.navigationItem setTitle:@"Reports"];
+	if (!cashReport) {
+		cashReport = [[NSMutableDictionary alloc] init];
+	}
+	
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(saveReport:)]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+}
+
+- (void)saveReport:(id)sender {
+	if (editedTextField) {
+		[editedTextField resignFirstResponder];
+	}
+	
+	[[Connection getConnection].socket sendEvent:@"save.cashup" withData:cashReport];
+	
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
@@ -47,9 +62,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
-		if (showsDatePicker)
-			return 2;
-		return 1;
+		return 2;
 	}
 	
 	if (section == 1) {
@@ -64,19 +77,19 @@
 	__unused static NSString *rightDetailCellID = @"rightDetail";
 	__unused static NSString *basicCellID = @"basic";
 	__unused static NSString *datePickerSelector = @"datePickerSelector";
-	__unused static NSString *datePickerCell = @"datePickerCell";
+	__unused static NSString *datePickerCell = @"datePicker";
 	__unused static NSString *textCellID = @"text";
 	__unused static NSString *labelTextCellID = @"label_text";
 	
 	NSString *cellID;
 	if (indexPath.section == 0) {
-		cellID = basicCellID;
+		cellID = labelTextCellID;
 		
-		if (indexPath.row == 1 && showsDatePicker) {
-			cellID = datePickerSelector;
+		if (indexPath.row == 1) {
+			cellID = datePickerCell;
 		}
 	} else if (indexPath.section == 1) {
-		cellID = basicCellID;
+		cellID = labelTextCellID;
 	}
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
@@ -84,10 +97,10 @@
 	if (indexPath.section == 0) {
 		NSString *targetSelector = @"datePickerStart:";
 		
-		if ([cellID isEqualToString:datePickerSelector]) {
+		if ([cellID isEqualToString:datePickerCell]) {
 			DatePickerTableViewCell *_cell = (DatePickerTableViewCell *)cell;
 			if (!_cell) {
-				cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:datePickerSelector];
+				cell = [[DatePickerTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:datePickerSelector];
 				_cell = (DatePickerTableViewCell *)cell;
 			}
 			
@@ -96,29 +109,77 @@
 			
 			[_cell.datePicker addTarget:self action:NSSelectorFromString(targetSelector) forControlEvents:UIControlEventValueChanged];
 			
-			[_cell.datePicker setMinimumDate:nil];
-			[_cell.datePicker setMaximumDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
-			
-			if (!timeInterval) {
-				timeInterval = [[[NSDate alloc] init] timeIntervalSince1970];
-			}
+			NSTimeInterval timeInterval = [[cashReport objectForKey:@"created"] longValue];
 			
 			NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
 			[_cell.datePicker setDate:date animated:NO];
 		} else {
-			cell.textLabel.text = @"CashUp Date:";
+			TextFieldCell *_cell = (TextFieldCell *)cell;
+			if (!_cell) {
+				cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:labelTextCellID];
+			}
+			
+			NSTimeInterval timeInterval;
+			if (![cashReport objectForKey:@"created"]) {
+				[cashReport setObject:[NSNumber numberWithLong:[[[NSDate alloc] init] timeIntervalSince1970]] forKey:@"created"];
+			}
+			timeInterval = [[cashReport objectForKey:@"created"] longValue];
+			
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setDateFormat:@"dd/MM/yy"];
+			_cell.textField.text = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+			
+			[_cell label].text = @"Cash Report Date";
+			[[_cell textField] setTextAlignment:NSTextAlignmentRight];
+			[[_cell textField] setEnabled:false];
 		}
 	}
 	
 	if (indexPath.section == 1) {
+		TextFieldCell *_cell = (TextFieldCell *)cell;
+		if (!_cell) {
+			cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:labelTextCellID];
+		}
+		
+		[[_cell textField] setTextAlignment:NSTextAlignmentRight];
+		[[_cell textField] setPlaceholder:@"0.00"];
+		[_cell.textField setDelegate:self];
+		[_cell.textField setReturnKeyType:UIReturnKeyNext];
+		[_cell.textField setClearButtonMode:UITextFieldViewModeNever];
+		
+		float number = 0.f;
+		NSString *key;
+		
 		if (indexPath.row == 0) {
-			cell.textLabel.text = @"Cash";
+			_cell.label.text = @"Cash";
+			[_cell.textField setTag:1];
+			key = @"cash";
 		} else if (indexPath.row == 1) {
-			cell.textLabel.text = @"Card";
+			_cell.label.text = @"Card";
+			[_cell.textField setTag:2];
+			key = @"card";
 		} else if (indexPath.row == 2) {
-			cell.textLabel.text = @"Voucher";
+			_cell.label.text = @"Voucher";
+			[_cell.textField setTag:3];
+			key = @"voucher";
 		} else if (indexPath.row == 3) {
-			cell.textLabel.text = @"Petty Cash";
+			_cell.label.text = @"Petty Cash";
+			[_cell.textField setTag:4];
+			key = @"pettyCash";
+		} else if (indexPath.row == 4) {
+			_cell.label.text = @"Labour";
+			[_cell.textField setTag:5];
+			key = @"labour";
+		} else if (indexPath.row == 5) {
+			_cell.label.text = @"Tips";
+			[_cell.textField setTag:6];
+			[_cell.textField setReturnKeyType:UIReturnKeyDone];
+			key = @"tips";
+		}
+		
+		if ([cashReport objectForKey:key]) {
+			number = [[cashReport objectForKey:key] floatValue];
+			[_cell.textField setText:[NSString stringWithFormat:@"%.2f", number]];
 		}
 	}
 	
@@ -126,100 +187,83 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	/*if (indexPath.section == 0) {
-		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		return;
-	} else if (indexPath.section == 1) {
-		if (indexPath.row == 0) {
-			// Show/hide the start date picker
-			if (showsDatePicker[self showHideEnd];
-			[self showHideStart];
-		} else if ([[tableView cellForRowAtIndexPath:indexPath] isMemberOfClass:[TextFieldCell class]]) {
-			// Show/hide the end date picker
-			if (showsDatePicker) [self showHideStart];
-			[self showHideEnd];
-		}
-	} else if (indexPath.section == 2) {
-		// View date range.
-		NSDate *start = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-		NSDate *end = [NSDate dateWithTimeIntervalSince1970:timeInterval
-		
-		NSCalendar *cal = [NSCalendar currentCalendar];
-		NSDateComponents *comps = [cal components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:start];
-		
-		start = [cal dateFromComponents:comps];
-		
-		comps = [cal components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:end];
-		end = [NSDate dateWithTimeIntervalSince1970:((int)[[cal dateFromComponents:comps] timeIntervalSince1970] + (60 * 60 * 24))];
-		
-		NSString *destination;
-		
-		if (indexPath.row == 0) {
-			destination = @"viewOrdersForDate";
-		} else if (indexPath.row == 1) {
-			destination = @"reportSales";
-		} else if (indexPath.row == 2) {
-			destination = @"reportPopularDishes";
-		} else if (indexPath.row == 3) {
-			destination = @"reportCashingUp";
-		} else {
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			return;
-		}
-		
-		[self performSegueWithIdentifier:destination sender:@[start, end]];
-	}*/
+	if (indexPath.section == 1) {
+		TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
+		[cell.textField becomeFirstResponder];
+	}
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 1 && (
-								   ((indexPath.row == 2 && !showsDatePicker) || (indexPath.row == 3 && showsDatePicker)) ||
-								   (indexPath.row == 1 && showsDatePicker))) {
+	if (indexPath.section == 0 && indexPath.row == 1) {
 		return 216;
 	}
 	
 	return 44;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0) {
-		return @"Step 1. Set Report Date Range";
-	}
-	if (section == 2) {
-		return @"Step 2. Choose Report Type";
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	int tag = [textField tag];
+	
+	if (tag >= 6) {
+		[textField resignFirstResponder];
+		return YES;
 	}
 	
-	return nil;
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:1]];
+	[cell.textField becomeFirstResponder];
+	
+	return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	int tag = [textField tag];
+	
+	NSNumber *number = [NSNumber numberWithFloat:[[textField text] floatValue]];
+	if (!number) number = [NSNumber numberWithFloat:0.f];
+	NSString *key = nil;
+	
+	switch (tag) {
+		case 1:
+			key = @"cash";
+			break;
+		case 2:
+			key = @"card";
+			break;
+		case 3:
+			key = @"voucher";
+			break;
+		case 4:
+			key = @"pettyCash";
+			break;
+		case 5:
+			key = @"labour";
+			break;
+		case 6:
+			key = @"tips";
+			break;
+		default:
+			return;
+	}
+	
+	[cashReport setObject:number forKey:key];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	editedTextField = textField;
 }
 
 #pragma mark - DatePicker Targets
 
 - (void)datePickerStart:(UIDatePicker *)datePicker {
-	timeInterval = [[datePicker date] timeIntervalSince1970];
+	NSTimeInterval timeInterval = [[datePicker date] timeIntervalSince1970];
+	[cashReport setObject:[NSNumber numberWithLong:timeInterval] forKey:@"created"];
 	
-	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	TextFieldCell *cell = (TextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"dd/MM/yy"];
 	cell.textField.text = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
 }
 
-- (void)showHideStart {
-	[self.tableView beginUpdates];
-	
-	NSArray *_indexPath = @[[NSIndexPath indexPathForRow:1 inSection:1]];
-	
-	if (showsDatePicker) {
-		showsDatePicker = false;
-		[self.tableView deleteRowsAtIndexPaths:_indexPath withRowAnimation:UITableViewRowAnimationFade];
-	} else {
-		showsDatePicker = true;
-		[self.tableView insertRowsAtIndexPaths:_indexPath withRowAnimation:UITableViewRowAnimationFade];
-	}
-	
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-	
-	[self.tableView endUpdates];
-	
-	[self.tableView scrollToRowAtIndexPath:[_indexPath objectAtIndex:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-}
 @end
