@@ -308,12 +308,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iOrder/ReportCashingUpViewController.m"
-            timestampString = "422574445.846063"
+            timestampString = "424035939.247846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "-prepareForSegue:sender:"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "-didReceiveNotification:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

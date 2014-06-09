@@ -32,6 +32,7 @@
 	self.refreshControl = [[UIRefreshControl alloc] init];
 	[self.refreshControl addTarget:self action:@selector(refreshEvents:) forControlEvents:UIControlEventValueChanged];
 	
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Print" style:UIBarButtonItemStylePlain target:self action:@selector(printReport:)]];
 	[self.navigationItem setTitle:@"Cash Report"];
 	
 	[self refreshEvents:nil];
@@ -51,6 +52,34 @@
 	@try {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReportsNotificationName object:nil];
 	} @catch (NSException *exception) {}
+}
+
+- (void)printReport:(id)sender {
+	__block NSMutableString *report = [[NSMutableString alloc] init];
+	
+	NSDictionary *dict = @{
+						   @"cash": @"Cash",
+						   @"card": @"Card",
+						   @"voucher": @"Voucher",
+						   @"pettyCash": @"Petty Cash",
+						   @"labour": @"Labour",
+						   @"tips": @"Tips"
+						   };
+	
+	for (NSString *key in [dict allKeys]) {
+		NSNumber *number = [aggregate objectForKey:key];
+		NSString *numberString = [NSString stringWithFormat:@"£%.2f", [number floatValue]];
+		
+		[report appendFormat:@"%@: %@\n", [dict objectForKey:key], numberString];
+	}
+	
+	[report appendFormat:@"\nGross: %@\n", [NSString stringWithFormat:@"£%.2f", [[aggregate objectForKey:@"gross"] floatValue]]];
+	
+	[[Connection getConnection].socket sendEvent:@"print" withData:@{
+																	 @"data": report,
+																	 @"receiptPrinter": [NSNumber numberWithBool:true],
+																	 @"printDate": [NSNumber numberWithBool:true]
+																	 }];
 }
 
 - (void)refreshEvents:(id)sender {
