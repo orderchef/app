@@ -11,5 +11,6 @@
 @interface ReportEditCashupViewController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *cashReport;
+@property (assign) bool justEat;
 
 @end

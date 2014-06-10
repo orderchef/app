@@ -27,14 +27,25 @@
 @implementation ReportEditCashupViewController
 
 @synthesize cashReport;
+@synthesize justEat;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
 	[self.navigationItem setTitle:@"Cash Report"];
+	if (self.justEat) {
+		[self.navigationItem setTitle:@"JustEat Receipt"];
+	}
 	
 	if (!cashReport) {
 		cashReport = [[NSMutableDictionary alloc] init];
+		if (self.justEat) {
+			[cashReport setObject:[NSNumber numberWithBool:true] forKey:@"isJustEat"];
+		}
+	} else {
+		if ([cashReport objectForKey:@"isJustEat"]) {
+			self.justEat = [[cashReport objectForKey:@"isJustEat"] boolValue];
+		}
 	}
 	
 	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(saveReport:)]];
@@ -66,6 +77,7 @@
 	}
 	
 	if (section == 1) {
+		if (self.justEat) return 1;
 		return 6;
 	}
 	
@@ -105,6 +117,9 @@
 			}
 			
 			[_cell.datePicker setDatePickerMode:UIDatePickerModeDate];
+			if (self.justEat)
+				[_cell.datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
+			
 			[_cell.datePicker removeTarget:nil action:nil forControlEvents:UIControlEventValueChanged];
 			
 			[_cell.datePicker addTarget:self action:NSSelectorFromString(targetSelector) forControlEvents:UIControlEventValueChanged];
@@ -127,9 +142,13 @@
 			
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"dd/MM/yy"];
+			if (self.justEat)
+				[dateFormatter setDateFormat:@"dd/MM/yy hh:mm"];
 			_cell.textField.text = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
 			
 			[_cell label].text = @"Cash Report Date";
+			if (self.justEat)
+				_cell.label.text = @"Receipt Date";
 			[[_cell textField] setTextAlignment:NSTextAlignmentRight];
 			[[_cell textField] setEnabled:false];
 		}
@@ -150,7 +169,12 @@
 		float number = 0.f;
 		NSString *key;
 		
-		if (indexPath.row == 0) {
+		if (indexPath.row == 0 && self.justEat) {
+			_cell.label.text = @"JustEat Total";
+			[_cell.textField setTag:1];
+			[_cell.textField setReturnKeyType:UIReturnKeyDone];
+			key = @"justEat";
+		} else if (indexPath.row == 0 && !self.justEat) {
 			_cell.label.text = @"Cash";
 			[_cell.textField setTag:1];
 			key = @"cash";
@@ -206,7 +230,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	int tag = [textField tag];
 	
-	if (tag >= 6) {
+	if (tag >= 6 || self.justEat) {
 		[textField resignFirstResponder];
 		return YES;
 	}
@@ -245,6 +269,11 @@
 			break;
 		default:
 			return;
+	}
+	
+	if (self.justEat) {
+		[cashReport setObject:number forKey:@"justEat"];
+		return;
 	}
 	
 	[cashReport setObject:number forKey:key];

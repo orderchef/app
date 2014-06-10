@@ -63,17 +63,18 @@
 						   @"voucher": @"Voucher",
 						   @"pettyCash": @"Petty Cash",
 						   @"labour": @"Labour",
-						   @"tips": @"Tips"
+						   @"tips": @"Tips",
+						   @"justEat": @"Just Eat"
 						   };
 	
 	for (NSString *key in [dict allKeys]) {
 		NSNumber *number = [aggregate objectForKey:key];
-		NSString *numberString = [NSString stringWithFormat:@"£%.2f", [number floatValue]];
+		NSString *numberString = [NSString stringWithFormat:@"%.2f GBP", [number floatValue]];
 		
 		[report appendFormat:@"%@: %@\n", [dict objectForKey:key], numberString];
 	}
 	
-	[report appendFormat:@"\nGross: %@\n", [NSString stringWithFormat:@"£%.2f", [[aggregate objectForKey:@"gross"] floatValue]]];
+	[report appendFormat:@"\nGross: %@\n", [NSString stringWithFormat:@"%.2f GBP", [[aggregate objectForKey:@"gross"] floatValue]]];
 	
 	[[Connection getConnection].socket sendEvent:@"print" withData:@{
 																	 @"data": report,
@@ -109,11 +110,16 @@
 		ReportEditCashupViewController *vc = (ReportEditCashupViewController *)[segue destinationViewController];
 		
 		editing = true;
+		vc.justEat = false;
 		
 		if ([sender isKindOfClass:[NSDictionary class]]) {
 			NSDictionary *cashReport = (NSDictionary *)sender;
 			
 			vc.cashReport = [cashReport mutableCopy];
+		}
+		if ([sender isKindOfClass:[NSNumber class]] && [(NSNumber *)sender boolValue] == true) {
+			// Is JustEat
+			vc.justEat = true;
 		}
 	}
 }
@@ -127,8 +133,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (section == 0) return 1;
-	if (section == 1) return 6;
+	if (section == 0) return 2;
+	if (section == 1) return 7;
 	if (section == 2) return 1;
 	if (section == 3) return [cashups count];
 	
@@ -140,7 +146,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detail" forIndexPath:indexPath];
 	
 	if (indexPath.section == 0) {
-		cell.textLabel.text = @"Add Cash Report";
+		if (indexPath.row == 0) {
+			cell.textLabel.text = @"Add Cash Report";
+		} else {
+			cell.textLabel.text = @"Add JustEat Receipt";
+		}
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.detailTextLabel.text = nil;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -172,6 +182,10 @@
 				key = @"tips";
 				cell.textLabel.text = @"Tips";
 				break;
+			case 6:
+				key = @"justEat";
+				cell.textLabel.text = @"Just Eat";
+				break;
 		}
 		
 		NSNumber *number = [aggregate objectForKey:key];
@@ -187,8 +201,15 @@
 		NSDictionary *cashup = [cashups objectAtIndex:indexPath.row];
 		NSDate *created = [NSDate dateWithTimeIntervalSince1970:[[cashup objectForKey:@"created"] longValue]];
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"dd/MM/YYYY hh:mm"];
-		cell.textLabel.text = [dateFormatter stringFromDate:created];
+		
+		NSString *pre = @"Cash ";
+		NSString *dateFormat = @"dd/MM/YYYY hh:mm";
+		if ([cashup objectForKey:@"isJustEat"] && [[cashup objectForKey:@"isJustEat"] boolValue]) {
+			pre = @"JustEat ";
+		}
+		
+		[dateFormatter setDateFormat:dateFormat];
+		cell.textLabel.text = [NSString stringWithFormat:@"%@%@", pre, [dateFormatter stringFromDate:created]];
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"£%.2f", [[cashup objectForKey:@"total"] floatValue]];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
@@ -199,6 +220,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0 && indexPath.row == 0) {
 		[self performSegueWithIdentifier:@"openCashup" sender:nil];
+		return;
+	} else if (indexPath.section == 0 && indexPath.row == 1) {
+		[self performSegueWithIdentifier:@"openCashup" sender:[NSNumber numberWithBool:true]];
 		return;
 	}
 	
@@ -223,7 +247,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 2) {
-		return @"Gross = Cash + Card + Petty Cash + Labour + Voucher";
+		return @"Gross = Cash + Card + Petty Cash + Labour + Voucher + JustEat";
 	}
 	
 	return nil;
