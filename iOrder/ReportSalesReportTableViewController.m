@@ -69,17 +69,21 @@
 - (void)printReport:(id) sender {
 	__block NSMutableString *report = [[NSMutableString alloc] init];
 	
+	[report appendString:@"Sales Report\n"];
+	
 	void (^getString)(NSDictionary *) = ^(NSDictionary *data) {
 		[report appendString:@"Delivery Tables: "];
-		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"delivery"] floatValue]];
+		[report appendFormat:@"%.2f GBP\n", [[data objectForKey:@"delivery"] floatValue]];
 		[report appendString:@"Takeaway Tables: "];
-		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"takeaway"] floatValue]];
+		[report appendFormat:@"%.2f GBP\n", [[data objectForKey:@"takeaway"] floatValue]];
 		[report appendString:@"Eat In Tables: "];
-		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"other"] floatValue]];
+		[report appendFormat:@"%.2f GBP\n", [[data objectForKey:@"other"] floatValue]];
 		[report appendString:@"Discounts Given: "];
-		[report appendFormat:@"%.2f (GBP)\n", [[data objectForKey:@"discount"] floatValue]];
+		[report appendFormat:@"%.2f GBP\n", [[data objectForKey:@"discount"] floatValue]];
+		[report appendString:@"JustEat Total: "];
+		[report appendFormat:@"%.2f GBP\n", [[data objectForKey:@"justEat"] floatValue]];
 		[report appendString:@"All Tables: "];
-		[report appendFormat:@"%.2f (GBP)\n\n", [[data objectForKey:@"total"] floatValue]];
+		[report appendFormat:@"%.2f GBP\n\n", [[data objectForKey:@"total"] floatValue]];
 	};
 	
 	[report appendString:@"Total:\n"];
@@ -105,7 +109,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 5;
+	return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,6 +141,9 @@
 		cell.textLabel.text = @"Discounts Given";
 		total = [[data objectForKey:@"discount"] floatValue];
 	} else if (indexPath.row == 4) {
+		cell.textLabel.text = @"JustEat Total";
+		total = [[data objectForKey:@"justEat"] floatValue];
+	} else if (indexPath.row == 5) {
 		cell.textLabel.text = @"All Tables";
 		total = [[data objectForKey:@"total"] floatValue];
 	}

@@ -77,7 +77,7 @@
 	}
 	
 	if (section == 1) {
-		if (self.justEat) return 1;
+		if (self.justEat) return 3;
 		return 6;
 	}
 	
@@ -170,19 +170,27 @@
 		NSString *key;
 		
 		if (indexPath.row == 0 && self.justEat) {
-			_cell.label.text = @"JustEat Total";
+			_cell.label.text = @"JustEat Paid";
 			[_cell.textField setTag:1];
-			[_cell.textField setReturnKeyType:UIReturnKeyDone];
 			key = @"justEat";
 		} else if (indexPath.row == 0 && !self.justEat) {
 			_cell.label.text = @"Cash";
 			[_cell.textField setTag:1];
 			key = @"cash";
-		} else if (indexPath.row == 1) {
+		} else if (indexPath.row == 1 && self.justEat) {
+			_cell.label.text = @"JustEat Total";
+			[_cell.textField setTag:2];
+			key = @"justEatUnpaid";
+		} else if (indexPath.row == 1 && !self.justEat) {
 			_cell.label.text = @"Card";
 			[_cell.textField setTag:2];
 			key = @"card";
-		} else if (indexPath.row == 2) {
+		} else if (indexPath.row == 2 && self.justEat) {
+			_cell.label.text = @"Delivery Charge";
+			[_cell.textField setTag:3];
+			key = @"justEatDelivery";
+			[_cell.textField setReturnKeyType:UIReturnKeyDone];
+		} else if (indexPath.row == 2 && !self.justEat) {
 			_cell.label.text = @"Voucher";
 			[_cell.textField setTag:3];
 			key = @"voucher";
@@ -230,7 +238,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	int tag = [textField tag];
 	
-	if (tag >= 6 || self.justEat) {
+	if (tag >= 6 || (self.justEat && tag == 3)) {
 		[textField resignFirstResponder];
 		return YES;
 	}
@@ -251,12 +259,18 @@
 	switch (tag) {
 		case 1:
 			key = @"cash";
+			if (self.justEat)
+				key = @"justEat";
 			break;
 		case 2:
 			key = @"card";
+			if (self.justEat)
+				key = @"justEatUnpaid";
 			break;
 		case 3:
 			key = @"voucher";
+			if (self.justEat)
+				key = @"justEatDelivery";
 			break;
 		case 4:
 			key = @"pettyCash";
@@ -271,16 +285,19 @@
 			return;
 	}
 	
-	if (self.justEat) {
-		[cashReport setObject:number forKey:@"justEat"];
-		return;
-	}
-	
 	[cashReport setObject:number forKey:key];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	editedTextField = textField;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (self.justEat && section == 1) {
+		return @"JustEat Total goes to the Sales Report, Paid goes to the Cash Report.";
+	}
+	
+	return nil;
 }
 
 #pragma mark - DatePicker Targets

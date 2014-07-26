@@ -57,6 +57,8 @@
 - (void)printReport:(id)sender {
 	__block NSMutableString *report = [[NSMutableString alloc] init];
 	
+	[report appendString:@"Cashing Up Report\n"];
+	
 	NSDictionary *dict = @{
 						   @"cash": @"Cash",
 						   @"card": @"Card",
