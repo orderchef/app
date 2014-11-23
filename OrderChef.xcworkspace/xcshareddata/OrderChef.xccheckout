@@ -12,24 +12,32 @@
 	<dict>
 		<key>085A9A72-411D-4211-8757-66AD573787B2</key>
 		<string>git:matej/orderchef.git</string>
+		<key>3E02169055262138F7D692446C25677927AC13EE</key>
+		<string>github.com:matejkramny/LTHPasscodeViewController.git</string>
 		<key>622FBA37-C4D2-4DFC-B27E-6249218A82E6</key>
 		<string>ssh://github.com/matejkramny/LTHPasscodeViewController.git</string>
+		<key>D990FB75ED962B1642F6E497E5009A6A7A258CC2</key>
+		<string>git:matej/orderchef.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>OrderChef.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>085A9A72-411D-4211-8757-66AD573787B2</key>
-		<string>..</string>
-		<key>622FBA37-C4D2-4DFC-B27E-6249218A82E6</key>
+		<string>../../iOrder</string>
+		<key>3E02169055262138F7D692446C25677927AC13EE</key>
 		<string>../iOrder/Passcode</string>
+		<key>622FBA37-C4D2-4DFC-B27E-6249218A82E6</key>
+		<string>../../iOrder/iOrder/Passcode</string>
+		<key>D990FB75ED962B1642F6E497E5009A6A7A258CC2</key>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>git:matej/orderchef.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>085A9A72-411D-4211-8757-66AD573787B2</string>
+	<string>D990FB75ED962B1642F6E497E5009A6A7A258CC2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -44,7 +52,23 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D990FB75ED962B1642F6E497E5009A6A7A258CC2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>orderchef</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>622FBA37-C4D2-4DFC-B27E-6249218A82E6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Passcode</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3E02169055262138F7D692446C25677927AC13EE</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Passcode</string>
 		</dict>

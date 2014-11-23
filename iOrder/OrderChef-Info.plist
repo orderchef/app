@@ -29,7 +29,7 @@
 		<string>fontawesome-webfont.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
-	<string>iPhoneStoryboard</string>
+	<string>New</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>iPadStoryboard</string>
 	<key>UIRequiredDeviceCapabilities</key>

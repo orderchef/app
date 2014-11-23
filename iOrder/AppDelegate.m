@@ -26,13 +26,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Connection getConnection];
-    [Storage getStorage];
-    [self customizeAppearance];
+    //[Connection getConnection];
+    //[Storage getStorage];
+    //[self customizeAppearance];
     
-    [Bugsnag startBugsnagWithApiKey:@"c987848f96714ef34560d05ef7e53b5d"];
+    //[Bugsnag startBugsnagWithApiKey:@"c987848f96714ef34560d05ef7e53b5d"];
     
-    [[Connection getConnection] addObserver:self forKeyPath:@"isConnected" options:NSKeyValueObservingOptionNew context:nil];
+    //[[Connection getConnection] addObserver:self forKeyPath:@"isConnected" options:NSKeyValueObservingOptionNew context:nil];
     
     return YES;
 }

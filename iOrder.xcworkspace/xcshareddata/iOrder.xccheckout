@@ -10,22 +10,30 @@
 	<string>iOrder</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>3E02169055262138F7D692446C25677927AC13EE</key>
+		<string>github.com:matejkramny/LTHPasscodeViewController.git</string>
 		<key>B002AAC6-E593-4336-AA22-1DEF98093B1D</key>
 		<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+		<key>D990FB75ED962B1642F6E497E5009A6A7A258CC2</key>
+		<string>git:matej/orderchef.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>iOrder.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>3E02169055262138F7D692446C25677927AC13EE</key>
+		<string>..iOrder/Passcode/</string>
 		<key>B002AAC6-E593-4336-AA22-1DEF98093B1D</key>
+		<string>../../iOrder copy</string>
+		<key>D990FB75ED962B1642F6E497E5009A6A7A258CC2</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://lab.castawaydev.org/Matej/pos.git</string>
+	<string>git:matej/orderchef.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B002AAC6-E593-4336-AA22-1DEF98093B1D</string>
+	<string>D990FB75ED962B1642F6E497E5009A6A7A258CC2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +43,22 @@
 			<string>B002AAC6-E593-4336-AA22-1DEF98093B1D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>iOrder copy</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D990FB75ED962B1642F6E497E5009A6A7A258CC2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>orderchef</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3E02169055262138F7D692446C25677927AC13EE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Passcode</string>
 		</dict>
 	</array>
 </dict>

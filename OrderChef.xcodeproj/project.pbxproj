@@ -26,6 +26,7 @@
 		4F3A5D701820846800201B8C /* Table.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D6F1820846800201B8C /* Table.m */; };
 		4F3A5D731820846800201B8C /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D721820846800201B8C /* Item.m */; };
 		4F3A5D79182085F100201B8C /* Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A5D78182085F100201B8C /* Storage.m */; };
+		4F3A673F19F6A86500DB9BA2 /* New.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3A673E19F6A86500DB9BA2 /* New.storyboard */; };
 		4F450870186388B900C1F374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45086F186388B900C1F374 /* QuartzCore.framework */; };
 		4F545EE718C0D140006BA9E7 /* Discount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EE618C0D140006BA9E7 /* Discount.m */; };
 		4F545EEA18C0E04B006BA9E7 /* TextSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F545EE918C0E04B006BA9E7 /* TextSwitchCell.m */; };
@@ -121,6 +122,7 @@
 		4F3A5D721820846800201B8C /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		4F3A5D77182085F100201B8C /* Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Storage.h; sourceTree = "<group>"; };
 		4F3A5D78182085F100201B8C /* Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Storage.m; sourceTree = "<group>"; };
+		4F3A673E19F6A86500DB9BA2 /* New.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = New.storyboard; sourceTree = "<group>"; };
 		4F45086F186388B900C1F374 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4F545EE518C0D140006BA9E7 /* Discount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Discount.h; sourceTree = "<group>"; };
 		4F545EE618C0D140006BA9E7 /* Discount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Discount.m; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				4F65EE51190087EF004C3096 /* SplitViewController.m */,
 				4F65EE4B19007F4D004C3096 /* iPadStoryboard.storyboard */,
 				4FF0F3D3181DC8C700447906 /* iPhoneStoryboard.storyboard */,
+				4F3A673E19F6A86500DB9BA2 /* New.storyboard */,
 				4F3628C61856527F00971505 /* Utility Classes */,
 				4F3628C41856526800971505 /* Manager VCs */,
 				4F3628C51856527400971505 /* VCs */,
@@ -560,6 +563,7 @@
 				4FF0F3B6181DC6DE00447906 /* Images.xcassets in Resources */,
 				4FF0F3D4181DC8C700447906 /* iPhoneStoryboard.storyboard in Resources */,
 				4F65EE4C19007F4D004C3096 /* iPadStoryboard.storyboard in Resources */,
+				4F3A673F19F6A86500DB9BA2 /* New.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
